@@ -31,8 +31,11 @@
           <stringArguments>
             <stringArg name="classpath">
               <args>
+<<<<<<< HEAD
                 <arg>$MODULE_DIR$/../../server/build/classes/kotlin/main</arg>
                 <arg>$MODULE_DIR$/../../server/build/resources/main</arg>
+=======
+>>>>>>> 32fa90ff2cfcac8683ec5033c388a1e9467bc6b0
                 <arg>$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-stdlib-jdk8/1.7.22/b75c999616784d452613d670fec56a527f2bd3d1/kotlin-stdlib-jdk8-1.7.22.jar</arg>
                 <arg>$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework.boot/spring-boot-starter-data-jpa/3.0.5/3878bf2b2555fc1d38a9ebde0169eec4eaf6bf1c/spring-boot-starter-data-jpa-3.0.5.jar</arg>
                 <arg>$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework.boot/spring-boot-starter-web/3.0.5/c8f9a85fed134963b69cb2f2a0dcf151047b6cd1/spring-boot-starter-web-3.0.5.jar</arg>
@@ -176,7 +179,11 @@
     <content url="file://$MODULE_DIR$/../../server/src/test">
       <sourceFolder url="file://$MODULE_DIR$/../../server/src/test/kotlin" isTestSource="true" />
     </content>
+<<<<<<< HEAD
     <orderEntry type="jdk" jdkName="openjdk-18" jdkType="JavaSDK" />
+=======
+    <orderEntry type="jdk" jdkName="jbr-17" jdkType="JavaSDK" />
+>>>>>>> 32fa90ff2cfcac8683ec5033c388a1e9467bc6b0
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="server.main" />
     <orderEntry type="library" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.7.22" level="project" />

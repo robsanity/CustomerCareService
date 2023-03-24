@@ -2,6 +2,9 @@
 <project version="4">
   <component name="CompilerConfiguration">
     <bytecodeTargetLevel>
+      <module name="it.polito.wa2.g35.server.main" target="17" />
+      <module name="it.polito.wa2.g35.server.test" target="17" />
+      <module name="server" target="17" />
       <module name="server.main" target="17" />
       <module name="server.test" target="17" />
     </bytecodeTargetLevel>

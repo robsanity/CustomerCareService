@@ -1,7 +1,7 @@
 package it.polito.wa2.g35.server.products
 
 data class ProductDTO(
-    val productId: String,
+    val id: String,
     val name: String
 )
 

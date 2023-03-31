@@ -18,7 +18,9 @@ function App() {
 
   return (
     <div>
-      <p>porcodio</p>
+      {products.map((product) => {
+        return (<p>{product.name}</p>)
+      })}
     </div>
   );
 }

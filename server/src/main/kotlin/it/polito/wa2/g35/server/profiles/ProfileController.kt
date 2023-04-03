@@ -12,6 +12,14 @@ class ProfileController(private val profileService: ProfileService) {
         return profileService.getProfile(email)
     }
 
+    @PostMapping("/profiles/{email}")
+    @ResponseStatus(HttpStatus.OK)
+    fun postProfile(@RequestBody p: ProfileDTO?){
+        if (p != null){
+            profileService.postProfile(p)
+        }
+    }
+
     @PutMapping("/profiles/{email}")
     @ResponseStatus(HttpStatus.OK)
     fun updateProfile(@RequestBody p: ProfileDTO?) {

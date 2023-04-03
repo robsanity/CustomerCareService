@@ -5,5 +5,5 @@ interface ProfileService {
 
     fun postProfile(){}
 
-    fun putProfile(){}
+    fun updateProfile(profile: ProfileDTO) : ProfileDTO?
 }

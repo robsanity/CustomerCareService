@@ -2,8 +2,8 @@ package it.polito.wa2.g35.server.profiles
 
 data class ProfileDTO(
     val email: String,
-    val name: String,
-    val surname: String
+    var name: String,
+    var surname: String
 )
 
 fun Profile.toDTO() : ProfileDTO{

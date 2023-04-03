@@ -7,7 +7,7 @@ import jakarta.persistence.Table
 /*Automatically mapped to database table */
 @Entity
 @Table(name="users")
-class Profile{
+class Profile(email: String, name: String, surname: String) {
     @Id
     var email: String = ""
     var name: String = ""

@@ -14,8 +14,9 @@ class ProfileServiceImpl(private val profileRepository: ProfileRepository) : Pro
         val newProfile = Profile(profile.email,profile.name,profile.surname)
         return profileRepository.save(newProfile).toDTO()
     }
-    override fun updateProfile(email: String, name: String, surname: String): ProfileDTO? {
-        val updatedProfile = Profile(email, name, surname)
+
+    override fun updateProfile(p: ProfileDTO): ProfileDTO? {
+        val updatedProfile = Profile(p.email, p.name, p.surname)
         return profileRepository.save(updatedProfile).toDTO()
     }
 }

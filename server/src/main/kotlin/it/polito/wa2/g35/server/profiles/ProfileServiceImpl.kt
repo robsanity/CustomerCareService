@@ -10,13 +10,20 @@ class ProfileServiceImpl(private val profileRepository: ProfileRepository) : Pro
         return profileRepository.findByIdOrNull(email)?.toDTO()
     }
 
-    override fun postProfile(profile: ProfileDTO): ProfileDTO? {
-        val newProfile = Profile(profile.email,profile.name,profile.surname)
-        return profileRepository.save(newProfile).toDTO()
+    override fun postProfile(profile: ProfileDTO?): ProfileDTO? {
+        if (profile != null) {
+            return profileRepository.save(Profile(profile.email, profile.name, profile.surname)).toDTO()
+        } else {
+            return  null
+        }
     }
 
     override fun updateProfile(profile: ProfileDTO): ProfileDTO? {
-        val updatedProfile = Profile(profile.email, profile.name, profile.surname)
-        return profileRepository.save(updatedProfile).toDTO()
+        val checkIfProfileExists = profileRepository.findByIdOrNull(profile.email)
+        return if(checkIfProfileExists != null) {
+            profileRepository.save(Profile(profile.email, profile.name, profile.surname)).toDTO()
+        } else {
+            null
+        }
     }
 }

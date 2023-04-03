@@ -9,3 +9,7 @@ data class ProfileDTO(
 fun Profile.toDTO() : ProfileDTO{
     return ProfileDTO(this.email, this.name, this.surname)
 }
+
+fun ProfileDTO.toProfile() : Profile {
+    return Profile(this.email, this.name, this.surname)
+}

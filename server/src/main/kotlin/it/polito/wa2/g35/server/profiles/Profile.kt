@@ -9,7 +9,7 @@ import jakarta.persistence.Table
 @Table(name="users")
 class Profile(email: String, name: String, surname: String) {
     @Id
-    var email: String = ""
-    var name: String = ""
-    var surname: String = ""
+    var email: String = email
+    var name: String = name
+    var surname: String = surname
 }

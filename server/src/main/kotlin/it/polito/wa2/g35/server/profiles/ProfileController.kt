@@ -13,7 +13,7 @@ class ProfileController(private val profileService: ProfileService) {
     }
 
     @PostMapping("/profiles/{email}")
-    @ResponseStatus(HttpStatus.OK)
+    @ResponseStatus(HttpStatus.CREATED)
     fun postProfile(@RequestBody p: ProfileDTO?){
         if (p != null){
             profileService.postProfile(p)

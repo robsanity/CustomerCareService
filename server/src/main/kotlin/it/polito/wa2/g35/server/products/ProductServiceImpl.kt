@@ -1,5 +1,6 @@
 package it.polito.wa2.g35.server.products
 
+import it.polito.wa2.g35.server.exceptions.ProductNotFoundException
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 
@@ -12,7 +13,11 @@ class ProductServiceImpl(
     }
 
     override fun getProduct(productId: String): ProductDTO? {
-        return productRepository.findByIdOrNull(productId)?.toDTO()
+        val product = productRepository.findByIdOrNull(productId)?.toDTO()
+        if(product != null)
+            return product
+        else
+            throw ProductNotFoundException("Product not found with this product id!")
     }
 
 }

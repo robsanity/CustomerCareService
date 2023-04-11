@@ -1,4 +1,4 @@
-import {Form, Table} from "react-bootstrap"
+import {Button, Col, Form, Row, Table} from "react-bootstrap"
 import {useState} from "react";
 
 function ProductsTable(props) {
@@ -37,12 +37,24 @@ function SearchByID(props) {
     return (
         <>
             {!props.productSearch && (
+                <Row>
+                <Col>
+                    Search a product
+                </Col>
+                    <Col>
                 <Form onSubmit={handleSubmit}>
+
                     <Form.Label>
                         <Form.Control type="id" placeholder="insert an id" value={id}
                                       onChange={(ev) => setId(ev.target.value)}/>
                     </Form.Label>
+
+                    <Col>
+                    <Button className="mb-3" variant="primary" type="submit">Search</Button>
+                    </Col>
                 </Form>
+                    </Col>
+                </Row>
             )}
             {props.productSearch && (
                 <div className={"card"}>

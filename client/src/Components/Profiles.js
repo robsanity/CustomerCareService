@@ -36,9 +36,9 @@ function SearchByEmail(props) {
                     Search a profile
                 </Col>
                 <Col>
-                    <Form onChange={ event => setOp("search")}>
+                    <Form onSubmit={handleSubmit}>
                         <Col>
-                        <Form.Label>
+                        <Form.Label onChange={ event => setOp("search")}>
                             <Form.Control type="email" placeholder="Insert an email" value={email} onChange={event => setEmail(event.target.value)}></Form.Control>
                         </Form.Label>
                         </Col>
@@ -47,12 +47,12 @@ function SearchByEmail(props) {
                 </Col>
                     </Form>
                 </Col>
-
+                <Row> {props.profiles} </Row>
             </Row>
             <Row>
                 <Col>Post a profile</Col>
                 <Col>
-                <Form onSubmit={handleSubmit}>
+                <Form  onSubmit={handleSubmit} >
                     <Col>
                     <Form.Label onChange={ event => setOp("post")}>
                         <Form.Control type="email" placeholder="Insert an email" value={props.profile.email} onChange={event => props.setProfile({"email": event.target.value})} />
@@ -78,11 +78,12 @@ function SearchByEmail(props) {
                 </Form.Label>
                 </Col>
                 <Col>
-                <Button className="mb-3" variant="primary" type="submit">Put</Button>
+                <Button className="mb-3" variant="primary" type="submit" >Put</Button>
                 </Col>
             </Form>
                 </Col>
             </Row>
+            <Row>{props.message}</Row>
 
         </>
     )

@@ -60,8 +60,9 @@ async function getProfileByEmail(email) {
     }
 }*/
 async function addProfile(profile){
+    const url = APIURL + "/profiles" ;
     return new Promise((resolve, reject) => {
-        fetch(new URL('profiles', APIURL), {
+        fetch(url, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -83,15 +84,14 @@ async function addProfile(profile){
 
 }
 async function updateProfile(profile){
+    const url = APIURL + "/profiles" + profile.email;
     return new Promise((resolve, reject) => {
-        fetch(new URL('profiles/' + profile.email , APIURL), {
+        fetch(url, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({
-                profile: profile,
-            }),
+            body: profile,
         }).then((response) => {
             if (response.ok) {
                 resolve(null);

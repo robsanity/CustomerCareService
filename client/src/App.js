@@ -40,7 +40,7 @@ function App() {
     }
 
     function searchProfileByEmail(email){
-        API.getProfileByEmail(email).then((profile) => {setProfiles(profile) })
+        API.getProfileByEmail(email).then((profiles) => {setProfiles(profiles) })
             .catch(err => console.log(err));
     }
     function addProfile(profile) {
@@ -54,7 +54,7 @@ function App() {
         <>
             <Container>
             <Row>
-            <ProductsTable products={products} searchProductById={searchProductById} productSearch={productSearch}/>
+            <ProductsTable products={products} searchProductById={searchProductById} productSearch={productSearch} message={message} setMessage={setMessage}/>
             </Row>
             <Row>
                 <Profiles profiles={profiles} setProfiles={setProfiles} searchProfileByEmail={searchProfileByEmail} addProfile={addProfile} updateProfile={updateProfile} message={message} setMessage={setMessage} />

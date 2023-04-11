@@ -12,13 +12,13 @@ class ProfileController(private val profileService: ProfileService) {
     fun getProfile(@PathVariable email: String) : ProfileDTO? {
         return profileService.getProfile(email)
     }
-
+    @CrossOrigin(origins = ["http://localhost:3000"])
     @PostMapping("/profiles")
     @ResponseStatus(HttpStatus.CREATED)
     fun postProfile(@RequestBody p: ProfileDTO){
         profileService.postProfile(p)
     }
-
+    @CrossOrigin(origins = ["http://localhost:3000"])
     @PutMapping("/profiles/{email}")
     @ResponseStatus(HttpStatus.OK)
     fun updateProfile(@PathVariable("email") email: String, @RequestBody p: ProfileDTO) {

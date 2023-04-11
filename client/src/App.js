@@ -1,10 +1,18 @@
 import './App.css';
-import {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import API from "./API";
 import ProductsTable from "./Components/ProductsTable";
+import { BrowserRouter as Router, Routes, Route, Navigate, useNavigate } from 'react-router-dom';
 import Profiles from "./Components/Profiles";
 import "bootstrap/dist/css/bootstrap.min.css";
-import {Row} from "react-bootstrap";
+import {Container, Row} from "react-bootstrap";
+import * as PropTypes from "prop-types";
+
+
+Route.propTypes = {
+    path: PropTypes.string,
+    element: PropTypes.any
+};
 
 function App() {
 
@@ -43,13 +51,16 @@ function App() {
         API.updateProfile(profile).then(() => setMessage("Profile updated")).catch(err => console.log(err))
     }
     return (
-        <> <Row>
-            <ProductsTable products={products} searchProductById={searchProductById} productSearch={productSearch}/>
-        </Row>
+        <>
+            <Container>
             <Row>
-                <Profiles profiles={profiles} searchProfileByEmail={searchProfileByEmail} addProfile={addProfile} updateProfile={updateProfile} message={message} setMessage={setMessage} />
+            <ProductsTable products={products} searchProductById={searchProductById} productSearch={productSearch}/>
             </Row>
-        </>
+            <Row>
+                <Profiles profiles={profiles} setProfiles={setProfiles} searchProfileByEmail={searchProfileByEmail} addProfile={addProfile} updateProfile={updateProfile} message={message} setMessage={setMessage} />
+            </Row>
+            </Container>
+            </>
     );
 }
 

@@ -4,6 +4,7 @@ import {useState} from "react";
 function ProductsTable(props) {
     return (
         <>
+            <th>Products</th>
             <Table className="table table-striped">
                 <thead>
                 <tr>

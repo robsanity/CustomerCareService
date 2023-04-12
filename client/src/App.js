@@ -2,9 +2,10 @@ import './App.css';
 import {useEffect, useState} from "react";
 import API from "./API";
 import ProductsTable from "./Components/ProductsTable";
-import Profiles from "./Components/Profiles";
 import "bootstrap/dist/css/bootstrap.min.css";
-import {Row} from "react-bootstrap";
+import "bootstrap-icons/font/bootstrap-icons.css";
+import SearchByID from "./Components/ProductSearch";
+import Profiles from "./Components/Profile";
 
 function App() {
 
@@ -12,12 +13,14 @@ function App() {
     const [productSearch, setProductSearch] = useState("");
     const [profiles, setProfiles] = useState([])
     const [message, setMessage] = useState("")
+
     useEffect(() => {
         function loadProducts() {
             API.getAllProducts().then((list) => {
                 setProducts(list);
             })
         }
+
         loadProducts();
     }, []);
 
@@ -25,30 +28,36 @@ function App() {
         try {
             const prod = await API.getProductById(id);
             setProductSearch(prod);
-            console.log(productSearch)
         } catch (e) {
             throw new TypeError(e);
         }
     }
 
-    function searchProfileByEmail(email){
-        API.getProfileByEmail(email).then((profile) => {setProfiles(profile) })
+    function searchProfileByEmail(email) {
+        API.getProfileByEmail(email).then((profile) => {
+            setProfiles(profile)
+        })
             .catch(err => console.log(err));
     }
+
     function addProfile(profile) {
-        API.addProfile(profile).then( () => setMessage("Profile added"))
+        API.addProfile(profile).then(() => setMessage("Profile added"))
             .catch(err => console.log(err));
     }
+
     function updateProfile(profile) {
         API.updateProfile(profile).then(() => setMessage("Profile updated")).catch(err => console.log(err))
     }
+
     return (
-        <> <Row>
+        <>
             <ProductsTable products={products} searchProductById={searchProductById} productSearch={productSearch}/>
-        </Row>
-            <Row>
-                <Profiles profiles={profiles} searchProfileByEmail={searchProfileByEmail} addProfile={addProfile} updateProfile={updateProfile} message={message} setMessage={setMessage} />
-            </Row>
+
+            <SearchByID products={products} searchProductById={searchProductById}
+                        productSearch={productSearch} setProductSearch={setProductSearch}/>
+
+            <Profiles profiles={profiles} searchProfileByEmail={searchProfileByEmail} addProfile={addProfile}
+                      updateProfile={updateProfile} message={message} setMessage={setMessage}/>
         </>
     );
 }

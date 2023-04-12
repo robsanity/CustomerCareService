@@ -59,7 +59,7 @@ async function getProfileByEmail(email) {
         throw productsJson;
     }
 }*/
-async function addProfile(profile){
+ function addProfile(profile){
     const url = APIURL + "/profiles" ;
     return new Promise((resolve, reject) => {
         fetch(url, {
@@ -67,9 +67,7 @@ async function addProfile(profile){
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({
-                profile: profile
-            }),
+            body: JSON.stringify(profile),
         }).then((response) => {
             if(response.ok){
                 resolve(null);
@@ -83,15 +81,15 @@ async function addProfile(profile){
     });
 
 }
-async function updateProfile(profile){
-    const url = APIURL + "/profiles" + profile.email;
+ function updateProfile(profile){
+    const url = APIURL + "/profiles/" + profile.email;
     return new Promise((resolve, reject) => {
         fetch(url, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: profile,
+            body: JSON.stringify(profile),
         }).then((response) => {
             if (response.ok) {
                 resolve(null);

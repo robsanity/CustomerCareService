@@ -39,9 +39,13 @@ function App() {
         }
     }
 
-    function searchProfileByEmail(email){
-        API.getProfileByEmail(email).then((profiles) => {setProfiles(profiles) })
-            .catch(err => console.log(err));
+    const searchProfileByEmail = async (email) => {
+        try {
+            const profile = await API.getProfileByEmail(email);
+            setProfiles(profile);
+        } catch(err){
+            throw new TypeError(err);
+        }
     }
     function addProfile(profile) {
         API.addProfile(profile).then( () => setMessage("Profile added"))

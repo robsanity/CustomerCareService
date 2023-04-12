@@ -4,11 +4,11 @@ import {compareArraysAsSet} from "@testing-library/jest-dom/dist/utils";
 
 /* TODO */
 function Profiles(props) {
-    const[profile, setProfile] = useState([])
-    const[upProfile, setUpProfile] = useState([])
+    const[profile, setProfile] = useState({email:"" , name:"" , surname:""})
+    const[upProfile, setUpProfile] = useState({email:"" , name:"" , surname:""})
     return (
         <>
-            { <SearchByEmail upProfile={upProfile} setUpProfile={setUpProfile} profile={profile} setProfile={setProfile} searchProfileByEmail={props.searchProfileByEmail} addProfile={props.addProfile} updateProfile={props.updateProfile}/>  }
+            { <SearchByEmail upProfile={upProfile} setUpProfile={setUpProfile} profile={profile} profiles={props.profiles} setProfile={setProfile} searchProfileByEmail={props.searchProfileByEmail} addProfile={props.addProfile} updateProfile={props.updateProfile}/>  }
         </>
     )
 }
@@ -18,15 +18,19 @@ function SearchByEmail(props) {
     const [email, setEmail] =useState("")
     const handleSubmit = (event) => {
         event.preventDefault();
-        if(op==="post") {
-            props.addProfile(props.profile)
-        }
-        else if(op==="put"){
-            props.updateProfile(props.upProfile)
-        }
-        else if(op==="search"){
-            props.searchProfileByEmail(email)
-        }
+        props.searchProfileByEmail(email);
+    }
+    const handleSubmitPost = (event) => {
+        event.preventDefault();
+        props.addProfile(props.profile);
+        console.log(props.profile)
+
+
+    }
+    const handleSubmitPut = (event) => {
+        event.preventDefault();
+        props.updateProfile(props.upProfile);
+        console.log(props.upProfile)
     }
 
     return (
@@ -38,7 +42,7 @@ function SearchByEmail(props) {
                 <Col>
                     <Form onSubmit={handleSubmit}>
                         <Col>
-                        <Form.Label onChange={ event => setOp("search")}>
+                        <Form.Label >
                             <Form.Control type="email" placeholder="Insert an email" value={email} onChange={event => setEmail(event.target.value)}></Form.Control>
                         </Form.Label>
                         </Col>
@@ -47,17 +51,28 @@ function SearchByEmail(props) {
                 </Col>
                     </Form>
                 </Col>
-                <Row> {props.profiles} </Row>
+                <Row> <div className={"card"}>
+                    <div className={"card-header"}>
+                        {props.profiles.email}
+                    </div>
+                    <ul className={"list-group-item"}>
+                        {props.profiles.name}
+                    </ul>
+                    <ul className={"list-group-item"}>
+                        {props.profiles.surname}
+                    </ul>
+
+                </div> </Row>
             </Row>
             <Row>
                 <Col>Post a profile</Col>
                 <Col>
-                <Form  onSubmit={handleSubmit} >
+                <Form onSubmit={handleSubmitPost}>
                     <Col>
                     <Form.Label onChange={ event => setOp("post")}>
-                        <Form.Control type="email" placeholder="Insert an email" value={props.profile.email} onChange={event => props.setProfile({"email": event.target.value})} />
-                        <Form.Control type="string" placeholder="Insert a name" value={props.profile.name}  onChange={event => props.setProfile({"name": event.target.value})}/>
-                        <Form.Control type="string" placeholder="Insert a surname" value={props.profile.surname} onChange={event => props.setProfile({"surname":event.target.value})}  />
+                        <Form.Control type="email" placeholder="Insert an email" value={props.profile.email} onChange={event => props.setProfile( (prev) => ({...prev, "email": event.target.value}))} />
+                        <Form.Control type="string" placeholder="Insert a name" value={props.profile.name}  onChange={event => props.setProfile((prev) => ({...prev, "name": event.target.value}))}/>
+                        <Form.Control type="string" placeholder="Insert a surnname" value={props.profile.surname}  onChange={event => props.setProfile((prev) => ({...prev, "surname": event.target.value}))}/>
                     </Form.Label>
                     </Col>
                     <Col>
@@ -65,16 +80,17 @@ function SearchByEmail(props) {
                     </Col>
                     </Form>
                 </Col>
+                <Row> {props.message} </Row>
             </Row>
             <Row>
                 <Col>Update a profile</Col>
                 <Col>
-            <Form onSubmit={handleSubmit}>
+            <Form onSubmit={handleSubmitPut}>
                 <Col>
-                <Form.Label onChange={ event => setOp("put")}>
-                    <Form.Control type="email" placeholder="Insert an email" value={props.upProfile.email} onChange={event => props.setUpProfile({"email": event.target.value})} />
-                    <Form.Control type="string" placeholder="Insert a name" value={props.upProfile.name}  onChange={event => props.setUpProfile({"name": event.target.value})}/>
-                    <Form.Control type="string" placeholder="Insert a surname" value={props.upProfile.surname} onChange={event => props.setUpProfile({"surname":event.target.value})}  />
+                <Form.Label >
+                    <Form.Control type="email" placeholder="Insert an email" value={props.upProfile.email} onChange={event => props.setUpProfile( (prev) => ({...prev, "email": event.target.value}))} />
+                    <Form.Control type="string" placeholder="Insert a name" value={props.upProfile.name}  onChange={event => props.setUpProfile((prev) => ({...prev, "name": event.target.value}))}/>
+                    <Form.Control type="string" placeholder="Insert a surname" value={props.upProfile.surname} onChange={event => props.setUpProfile((prev) => ({...prev, "surname": event.target.value}))}  />
                 </Form.Label>
                 </Col>
                 <Col>

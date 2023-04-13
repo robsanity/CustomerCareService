@@ -1,31 +1,36 @@
 import {useState} from "react";
 import {Form} from "react-bootstrap";
 
+/* TODO */
 function Profiles(props) {
     const [profile, setProfile] = useState("");
 
     return (
         <>
-            {!profile && <SearchByEmail profile={profile} setProfile={setProfile()}/>}
+            {!profile && <SearchByEmail profile={profile} setProfile={setProfile}/>}
         </>
     )
 }
 
 function SearchByEmail(props) {
+    const [id, setId] = useState("");
     const handleSubmit = (event) => {
         event.preventDefault();
-        // TODO: add props.searchProfileByEmail(props.profile);
     }
+
     return (
         <>
-            <Form>
+            <Form onSubmit={handleSubmit}>
                 <Form.Label>
-                    <Form.Control type="id" placeholder="insert an id" value={props.profile}
-                    />
+                    <Form.Control type="email" placeholder="insert email" value={id}
+                                  className={"border-margin"}
+                                  onChange={(ev) => setId(ev.target.value)}/>
                 </Form.Label>
             </Form>
+
         </>
-    )
+    );
 }
+
 
 export default Profiles;

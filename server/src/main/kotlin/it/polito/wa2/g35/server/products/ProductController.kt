@@ -6,15 +6,15 @@ import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
+@CrossOrigin(origins = ["http://localhost:3000"])
 class ProductController(private val productService: ProductService) {
 
-    @CrossOrigin(origins = ["http://localhost:3000"])
+
     @GetMapping("/products/")
     fun getAll(): List<ProductDTO> {
         return productService.getAll()
     }
-
-    @CrossOrigin(origins = ["http://localhost:3000"])
+    
     @GetMapping("/products/{productId}")
     fun getProduct(@PathVariable productId: String): ProductDTO? {
         return productService.getProduct(productId)

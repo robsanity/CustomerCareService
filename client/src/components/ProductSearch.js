@@ -3,7 +3,7 @@ import {Alert, Button, Card, Col, Form, Row} from "react-bootstrap";
 
 function ProductSearch(props) {
     const [id, setId] = useState("");
-    const [error, setError] = useState()
+    const [error, setError] = useState();
     const handleSubmit = (event) => {
         event.preventDefault();
         const err = props.searchProductById(id);

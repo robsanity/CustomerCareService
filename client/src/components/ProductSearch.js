@@ -3,9 +3,11 @@ import {Alert, Button, Card, Col, Form, Row} from "react-bootstrap";
 
 function ProductSearch(props) {
     const [id, setId] = useState("");
+    const [error, setError] = useState()
     const handleSubmit = (event) => {
         event.preventDefault();
-        props.searchProductById(id);
+        const err = props.searchProductById(id);
+        console.log(err)
     }
     return (
         <Card body={true}>
@@ -61,9 +63,9 @@ function ProductSearch(props) {
 
                     </Alert>
                 )}
-                {props.productSearch === undefined && (
+                {error && (
                     <Alert variant="danger" className={"mt-3"} id={"search-result"}>
-                        Product not found with this product id!
+                        err
                     </Alert>
                 )}
             </div>

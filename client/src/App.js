@@ -4,12 +4,12 @@ import API from "./API";
 import ProductsTable from "./components/ProductsTable";
 import { Route } from 'react-router-dom';
 import "bootstrap/dist/css/bootstrap.min.css";
-import {Button, Card, Col, Container, Row} from "react-bootstrap";
+import {Col, Container, Row} from "react-bootstrap";
 import * as PropTypes from "prop-types";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import ProductSearch from "./components/ProductSearch";
 import ProfileSearch from "./components/ProfileSearch";
-import { ProfileCreate, ProfileUpdate } from "./components/ProfileActions";
+import { ProfileActions, ProfileActionsMode } from "./components/ProfileActions";
 
 Route.propTypes = {
     path: PropTypes.string,
@@ -21,50 +21,59 @@ function App() {
     const [products, setProducts] = useState([]);
     const [productSearch, setProductSearch] = useState("");
     const [profileSearch, setProfileSearch] = useState("");
-    const [message, setMessage] = useState("")
+    const [modalError, setModalError] = useState("")
 
     useEffect(() => {
         function loadProducts() {
-            API.getAllProducts().then((list) => {
-                setProducts(list);
+            API.getAllProducts().then((response) => {
+                setProducts(response);
+            }).catch(err => {
+                setProducts(undefined)
+                console.error(err.detail)
             })
         }
 
         loadProducts();
     }, []);
 
-    const searchProductById = async (id) => {
+    const searchProductById = (id) => {
         API.getProductById(id).then((product) => {
             setProductSearch(product);
         }).catch(err => {
             setProductSearch(undefined)
-            throw new TypeError(err);
+            console.error(err.detail)
         })
     }
 
-    const searchProfileByEmail = async (email) => {
+    const searchProfileByEmail = (email) => {
         API.getProfileByEmail(email).then((profile) => {
             setProfileSearch(profile)
         }).catch(err => {
             setProfileSearch(undefined)
-            throw new TypeError(err)
+            console.error(err.detail)
         });
     }
 
-    function addProfile(profile) {
-        API.addProfile(profile).then(() => setMessage("Profile added"))
-            .catch(err => console.log(err));
+    const addProfile = (profile) => {
+        API.addProfile(profile).then((response) => {
+            setModalError(response)
+        }).catch(err => {
+            setModalError(err)
+        });
     }
 
-    function updateProfile(profile) {
-        API.updateProfile(profile).then(() => setMessage("Profile updated")).catch(err => console.log(err))
+    const updateProfile = (profile) => {
+        API.updateProfile(profile).then((response) => {
+            setModalError(response)
+        }).catch(err => {
+            setModalError(err)
+        });
     }
 
     return (
         <Container className={"py-5 px-3"}>
             <Row>
-                <ProductsTable products={products} searchProductById={searchProductById} productSearch={productSearch}
-                               message={message} setMessage={setMessage}/>
+                <ProductsTable products={products} searchProductById={searchProductById} productSearch={productSearch}/>
             </Row>
             <Row className={"my-4"}>
                 <Col className={"ps-0"}>
@@ -79,8 +88,8 @@ function App() {
             <Row className={"text-center"}>
                 <Col></Col>
                 <Col>
-                    <ProfileCreate/>
-                    <ProfileUpdate/>
+                    <ProfileActions action={ProfileActionsMode.CREATE} addProfile={addProfile} modalError={modalError} setModalError={setModalError}/>
+                    <ProfileActions action={ProfileActionsMode.UPDATE} updateProfile={updateProfile} modalError={modalError} setModalError={setModalError}/>
                 </Col>
             </Row>
         </Container>

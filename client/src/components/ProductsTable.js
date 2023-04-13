@@ -4,8 +4,8 @@ import {useState} from "react";
 function ProductsTable(props) {
     return (
         <>
-            <th>Products</th>
-            <Table className="table table-striped">
+            <h2>PRODUCTS TABLE</h2>
+            <Table className="table table-striped resize border-margin">
                 <thead>
                 <tr>
                     <th scope="col">Id</th>
@@ -21,12 +21,9 @@ function ProductsTable(props) {
                 ))}
                 </tbody>
             </Table>
-            <SearchByID products={props.products} searchProductById={props.searchProductById}
-                        productSearch={props.productSearch}/>
         </>
     );
 }
-
 function SearchByID(props) {
     const [id, setId] = useState("");
     const handleSubmit = (event) => {

@@ -1,23 +1,23 @@
 import {useState} from "react";
 import {Alert, Button, Card, Col, Form, Row} from "react-bootstrap";
 
-function ProductSearch(props) {
-    const [id, setId] = useState("");
+function ProfileSearch(props) {
+    const [email, setEmail] = useState("");
     const handleSubmit = (event) => {
         event.preventDefault();
-        props.searchProductById(id);
+        props.searchProfileByEmail(email);
     }
     return (
         <Card body={true}>
             <Card.Title>
-                Product Search
-                <small className="text-body-secondary float-end">GET /api/products/productId</small>
+                Profile Search
+                <small className="text-body-secondary float-end">GET /api/profiles/email</small>
             </Card.Title>
             <Form onSubmit={handleSubmit}>
                 <Row>
                     <Col xs={12} md={7} className={"text-center"}>
-                        <Form.Control type={"text"} placeholder={"Insert Product Id"} value={id}
-                                      onChange={(ev) => setId(ev.target.value)}/>
+                        <Form.Control type={"text"} placeholder={"Insert Profile Email"} value={email}
+                                      onChange={(ev) => setEmail(ev.target.value)}/>
                     </Col>
                     <Col xs={12} md={5} className={"text-center"}>
                         <Button variant={"success"}
@@ -28,8 +28,8 @@ function ProductSearch(props) {
                         </Button>
                         <Button variant={"outline-danger"} id={"delete-btn"}
                                 onClick={() => {
-                                    props.setProductSearch("");
-                                    setId("");
+                                    props.setProfileSearch("");
+                                    setEmail("");
                                 }}>
                             <i className={"bi bi-backspace-fill"}/> Clear
                         </Button>
@@ -38,32 +38,36 @@ function ProductSearch(props) {
             </Form>
 
             <div>
-                {props.productSearch && (
+                {props.profileSearch && (
                     <Alert variant="success" className={"mt-3"} id={"search-result"}>
                         <Row>
-                            <Col xs={4}>
-                                <p className={"fw-bold"}>ID: </p>
+                            <Col xs={6}>
+                                <p className={"fw-bold"}>Email</p>
                             </Col>
-                            <Col xs={8}>
-                                <p className={"fw-bold"}>Name:</p>
+                            <Col xs={3}>
+                                <p className={"fw-bold"}>Name</p>
                             </Col>
-
+                            <Col xs={3}>
+                                <p className={"fw-bold"}>Surname</p>
+                            </Col>
                         </Row>
                         <Row>
-                            <Col xs={4}>
-                                <p>{props.productSearch.id}</p>
+                            <Col xs={6}>
+                                <p>{props.profileSearch.email}</p>
                             </Col>
-                            <Col xs={8}>
-                                <p>{props.productSearch.name}</p>
-
+                            <Col xs={3}>
+                                <p>{props.profileSearch.name}</p>
+                            </Col>
+                            <Col xs={3}>
+                                <p>{props.profileSearch.surname}</p>
                             </Col>
                         </Row>
 
                     </Alert>
                 )}
-                {props.productSearch === undefined && (
+                {props.profileSearch === undefined && (
                     <Alert variant="danger" className={"mt-3"} id={"search-result"}>
-                        Product not found with this product id!
+                        Profile with given email doesn't exists!
                     </Alert>
                 )}
             </div>
@@ -71,4 +75,4 @@ function ProductSearch(props) {
     );
 }
 
-export default ProductSearch;
+export default ProfileSearch;

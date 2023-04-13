@@ -1,14 +1,15 @@
 import './App.css';
 import React, {useEffect, useState} from "react";
 import API from "./API";
-import ProductsTable from "./Components/ProductsTable";
+import ProductsTable from "./components/ProductsTable";
 import { Route } from 'react-router-dom';
-import Profiles from "./Components/Profiles";
 import "bootstrap/dist/css/bootstrap.min.css";
-import {Container, Row} from "react-bootstrap";
+import {Button, Card, Col, Container, Row} from "react-bootstrap";
 import * as PropTypes from "prop-types";
 import "bootstrap-icons/font/bootstrap-icons.css";
-import SearchByID from "./Components/ProductSearch";
+import ProductSearch from "./components/ProductSearch";
+import ProfileSearch from "./components/ProfileSearch";
+import { ProfileCreate, ProfileUpdate } from "./components/ProfileActions";
 
 Route.propTypes = {
     path: PropTypes.string,
@@ -19,7 +20,7 @@ function App() {
 
     const [products, setProducts] = useState([]);
     const [productSearch, setProductSearch] = useState("");
-    const [profiles, setProfiles] = useState([])
+    const [profileSearch, setProfileSearch] = useState("");
     const [message, setMessage] = useState("")
 
     useEffect(() => {
@@ -33,19 +34,21 @@ function App() {
     }, []);
 
     const searchProductById = async (id) => {
-        try {
-            const prod = await API.getProductById(id);
-            setProductSearch(prod);
-        } catch (e) {
-            throw new TypeError(e);
-        }
+        API.getProductById(id).then((product) => {
+            setProductSearch(product);
+        }).catch(err => {
+            setProductSearch(undefined)
+            throw new TypeError(err);
+        })
     }
 
-    function searchProfileByEmail(email) {
+    const searchProfileByEmail = async (email) => {
         API.getProfileByEmail(email).then((profile) => {
-            setProfiles(profile)
-        })
-            .catch(err => console.log(err));
+            setProfileSearch(profile)
+        }).catch(err => {
+            setProfileSearch(undefined)
+            throw new TypeError(err)
+        });
     }
 
     function addProfile(profile) {
@@ -58,19 +61,29 @@ function App() {
     }
 
     return (
-            <Container>
+        <Container className={"py-5 px-3"}>
             <Row>
-            <ProductsTable products={products} searchProductById={searchProductById} productSearch={productSearch} message={message} setMessage={setMessage}/>
+                <ProductsTable products={products} searchProductById={searchProductById} productSearch={productSearch}
+                               message={message} setMessage={setMessage}/>
             </Row>
-            <Row>
-                <Profiles profiles={profiles} setProfiles={setProfiles} searchProfileByEmail={searchProfileByEmail} addProfile={addProfile} updateProfile={updateProfile} message={message} setMessage={setMessage} />
+            <Row className={"my-4"}>
+                <Col className={"ps-0"}>
+                    <ProductSearch products={products} searchProductById={searchProductById}
+                                   productSearch={productSearch} setProductSearch={setProductSearch}/>
+                </Col>
+                <Col className={"pe-0"}>
+                    <ProfileSearch searchProfileByEmail={searchProfileByEmail} profileSearch={profileSearch}
+                                   setProfileSearch={setProfileSearch}/>
+                </Col>
             </Row>
-            <SearchByID products={products} searchProductById={searchProductById}
-                        productSearch={productSearch} setProductSearch={setProductSearch}/>
-            <Profiles profiles={profiles} searchProfileByEmail={searchProfileByEmail} addProfile={addProfile}
-                      updateProfile={updateProfile} message={message} setMessage={setMessage}/>
-            </Container>
-
+            <Row className={"text-center"}>
+                <Col></Col>
+                <Col>
+                    <ProfileCreate/>
+                    <ProfileUpdate/>
+                </Col>
+            </Row>
+        </Container>
     );
 }
 

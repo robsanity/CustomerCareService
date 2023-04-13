@@ -1,14 +1,17 @@
-import {Button, Col, Form, Row, Table} from "react-bootstrap"
+import {Button, Card, Col, Form, Row, Table} from "react-bootstrap"
 import {useState} from "react";
 
 function ProductsTable(props) {
     return (
-        <>
-            <h2>PRODUCTS TABLE</h2>
-            <Table className="table table-striped resize border-margin">
+        <Card body={true}>
+            <Card.Title>
+                Products
+                <small className="text-body-secondary float-end">GET /api/products/</small>
+            </Card.Title>
+            <Table responsive>
                 <thead>
                 <tr>
-                    <th scope="col">Id</th>
+                    <th scope="col">ID</th>
                     <th scope="col">Name</th>
                 </tr>
                 </thead>
@@ -21,9 +24,10 @@ function ProductsTable(props) {
                 ))}
                 </tbody>
             </Table>
-        </>
+        </Card>
     );
 }
+
 function SearchByID(props) {
     const [id, setId] = useState("");
     const handleSubmit = (event) => {
@@ -35,21 +39,20 @@ function SearchByID(props) {
         <>
             {!props.productSearch && (
                 <Row>
-                <Col>
-                    Search a product
-                </Col>
                     <Col>
-                <Form onSubmit={handleSubmit}>
-
-                    <Form.Label>
-                        <Form.Control type="id" placeholder="insert an id" value={id}
-                                      onChange={(ev) => setId(ev.target.value)}/>
-                    </Form.Label>
-
-                    <Col>
-                    <Button className="mb-3" variant="primary" type="submit">Search</Button>
+                        Search a product
                     </Col>
-                </Form>
+                    <Col>
+                        <Form onSubmit={handleSubmit}>
+
+                            <Form.Label>
+                                <Form.Control type="id" placeholder="insert an id" value={id}
+                                              onChange={(ev) => setId(ev.target.value)}/>
+                            </Form.Label>
+                            <Col>
+                                <Button className="mb-3" variant="primary" type="submit">Search</Button>
+                            </Col>
+                        </Form>
                     </Col>
                 </Row>
             )}

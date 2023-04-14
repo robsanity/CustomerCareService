@@ -5,21 +5,18 @@ import it.polito.wa2.g35.server.exceptions.ProfileNotFoundException
 import jakarta.validation.Valid
 import org.springframework.http.HttpStatus
 import org.springframework.validation.BindingResult
-import org.springframework.validation.FieldError
 
 import org.springframework.web.bind.annotation.*
-import javax.naming.Binding
 
 @RestController
-
+@CrossOrigin(origins = ["http://localhost:3000"])
 class ProfileController(private val profileService: ProfileService) {
-    @CrossOrigin(origins = ["http://localhost:3000"])
     @GetMapping("/profiles/{email}")
     @ResponseStatus(HttpStatus.OK)
     fun getProfile(@PathVariable email: String): ProfileDTO? {
         return profileService.getProfile(email)
     }
-    @CrossOrigin(origins = ["http://localhost:3000"])
+
     @PostMapping("/profiles")
     @ResponseStatus(HttpStatus.CREATED)
     fun postProfile(
@@ -32,7 +29,6 @@ class ProfileController(private val profileService: ProfileService) {
             profileService.postProfile(p)
     }
 
-    @CrossOrigin(origins = ["http://localhost:3000"])
     @PutMapping("/profiles/{email}")
     @ResponseStatus(HttpStatus.OK)
     fun updateProfile(
@@ -48,5 +44,4 @@ class ProfileController(private val profileService: ProfileService) {
             } else
                 throw ProfileNotFoundException("Profile with given email doesn't exists!")
     }
-
 }

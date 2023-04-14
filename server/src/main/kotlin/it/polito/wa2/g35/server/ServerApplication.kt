@@ -20,10 +20,9 @@ class WebServerConfiguration {
     fun addCorsConfig(): WebMvcConfigurer {
         return object : WebMvcConfigurer {
             override fun addCorsMappings(registry: CorsRegistry) {
-                registry.addMapping("/**")
-                    //.allowedMethods("*")
+                registry
+                    .addMapping("/**")
                     .allowedOriginPatterns("/http://localhost:3000/")
-                //.allowCredentials(true)
             }
         }
     }

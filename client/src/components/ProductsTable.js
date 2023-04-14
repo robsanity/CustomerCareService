@@ -1,5 +1,4 @@
-import {Button, Card, Col, Form, Row, Table} from "react-bootstrap"
-import {useState} from "react";
+import {Card, Table} from "react-bootstrap"
 
 function ProductsTable(props) {
     return (
@@ -30,4 +29,5 @@ function ProductsTable(props) {
         </Card>
     );
 }
+
 export default ProductsTable;

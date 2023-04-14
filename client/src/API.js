@@ -4,7 +4,7 @@ async function getAllProducts() {
     const url = APIURL + "/products/";
     const response = await fetch(url);
     const res = await response.json()
-    if (response.ok) {
+    if (response.status === 200) {
         return res
     } else {
         throw res
@@ -13,9 +13,14 @@ async function getAllProducts() {
 
 async function getProductById(id) {
     const url = APIURL + "/products/" + id;
-    const response = await fetch(url);
+    const response = await fetch(url, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+        }
+    });
     const res = await response.json()
-    if (response.ok) {
+    if (response.status === 200) {
         return res
     } else {
         throw res
@@ -25,9 +30,14 @@ async function getProductById(id) {
 
 async function getProfileByEmail(email) {
     const url = APIURL + "/profiles/" + email;
-    const response = await fetch(url);
+    const response = await fetch(url, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    });
     const res = await response.json()
-    if (response.ok) {
+    if (response.status === 200) {
         return res
     } else {
         throw res

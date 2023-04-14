@@ -1,23 +1,11 @@
-.products-table {
-    margin-left: 1rem;
-    margin-right: 1rem;
+#root {
+    background-image: url("../public/grey_wash_wall.png");
+    background-size: auto;
+    background-repeat: repeat;
+    min-height: 100vh;
 }
 
-.border-margin {
-    border-radius: 1.5rem !important;
-    margin-left: 1.5rem;
-}
-
-#search-result {
-    width: fit-content;
-    line-height: 5px;
-    padding-bottom: 5px !important;
-}
-
-.resize {
-    width: auto !important;
-}
-
-.padding-row {
-    border: 10rem !important;
+.card {
+    box-shadow: #3b3b3b 1px 1px 10px;
+    background-color: #efefef !important;
 }

@@ -12,7 +12,7 @@ class ProfileServiceImpl(private val profileRepository: ProfileRepository) : Pro
         if(profile != null) {
             return profile
         } else {
-            throw ProfileNotFoundException("Profile with given email doesn't exists!")
+            throw ProfileNotFoundException("Profile with given email doesn't exist!")
         }
     }
 

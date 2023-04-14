@@ -17,12 +17,12 @@ class ProblemDetailsHandler: ResponseEntityExceptionHandler() {
     @ExceptionHandler(DuplicateProfileException::class)
     fun handleDuplicateProduct(e: DuplicateProfileException) = ProblemDetail
         .forStatusAndDetail(HttpStatus.CONFLICT, e.message!!)
-    @ExceptionHandler(PathVariableMissingException::class)
-    fun handleProfileNotFound(e: PathVariableMissingException) = ProblemDetail
-        .forStatusAndDetail( HttpStatus.BAD_REQUEST, e.message!!)
+    @ExceptionHandler(BadRequestException::class)
+    fun handleBadRequestException(e: BadRequestException) = ProblemDetail
+        .forStatusAndDetail(HttpStatus.BAD_REQUEST, e.message!!)
 }
 
 class DuplicateProfileException(message : String) : RuntimeException(message)
 class ProfileNotFoundException(message : String) : RuntimeException(message)
 class ProductNotFoundException(message : String) : RuntimeException(message)
-class PathVariableMissingException(message : String) : RuntimeException(message)
+class BadRequestException(message : String) : RuntimeException(message)

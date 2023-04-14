@@ -11,13 +11,13 @@ import org.springframework.web.bind.annotation.*
 @RestController
 @CrossOrigin(origins = ["http://localhost:3000"])
 class ProfileController(private val profileService: ProfileService) {
-    @GetMapping("/profiles/{email}")
+    @GetMapping("/API/profiles/{email}")
     @ResponseStatus(HttpStatus.OK)
     fun getProfile(@PathVariable email: String): ProfileDTO? {
         return profileService.getProfile(email)
     }
 
-    @PostMapping("/profiles")
+    @PostMapping("/API/profiles")
     @ResponseStatus(HttpStatus.CREATED)
     fun postProfile(
         @RequestBody @Valid p: ProfileDTO,
@@ -29,7 +29,7 @@ class ProfileController(private val profileService: ProfileService) {
             profileService.postProfile(p)
     }
 
-    @PutMapping("/profiles/{email}")
+    @PutMapping("/API/profiles/{email}")
     @ResponseStatus(HttpStatus.OK)
     fun updateProfile(
         @PathVariable("email") email: String,

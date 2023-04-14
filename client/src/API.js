@@ -1,4 +1,4 @@
-const APIURL = "http://localhost:8080";
+const APIURL = "http://localhost:8080/API";
 
 async function getAllProducts() {
     const url = APIURL + "/products/";

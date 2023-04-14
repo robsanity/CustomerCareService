@@ -116,6 +116,7 @@ function SearchByEmail(props) {
                                                   ...prev,
                                                   "name": event.target.value
                                               }))}/>
+                                println(upProfile.name);
                                 <Form.Control type="string" placeholder="Insert a surname"
                                               value={props.upProfile.surname}
                                               onChange={event => props.setUpProfile((prev) => ({

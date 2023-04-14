@@ -48,13 +48,13 @@ export function ProfileActions(props) {
             </Modal.Header>
             <Modal.Body>
                 {props.action === ProfileActionsMode.CREATE && props.modalError && (
-                    <Alert variant={props.modalError.status === 409 ? "danger" : "success"}>
-                        {props.modalError.status === 409 ? props.modalError.detail : "Profile created successfully!"}
+                    <Alert variant={props.modalError.status === 409 || props.modalError.status === 400 ? "danger" : "success"}>
+                        {props.modalError.status === 409 || props.modalError.status === 400 ? props.modalError.detail : "Profile created successfully!"}
                     </Alert>
                 )}
                 {props.action === ProfileActionsMode.UPDATE && props.modalError && (
-                    <Alert variant={props.modalError.status === 404 ? "danger" : "success"}>
-                        {props.modalError.status === 404 ? props.modalError.detail : "Profile updated successfully!"}
+                    <Alert variant={props.modalError.status === 404 || props.modalError.status === 400 ? "danger" : "success"}>
+                        {props.modalError.status === 404 || props.modalError.status === 400 ? props.modalError.detail : "Profile updated successfully!"}
                     </Alert>
                 )}
                 <Form id={"createProfileForm"} onSubmit={handleSubmit}>

@@ -8,9 +8,9 @@ import jakarta.validation.constraints.Size
 data class ProfileDTO(
     @field:Email(regexp = ".*"+"@"+".*"+"\\."+".*") @Size(min=4,max=40) @NotBlank
     val email: String,
-    @field:Size(min=2,max=20) @NotBlank
+    @field:Size(min=2,max=25) @NotBlank
     var name: String,
-    @field:Size(min=2,max=20) @NotBlank
+    @field:Size(min=2,max=25) @NotBlank
     var surname: String
 )
 

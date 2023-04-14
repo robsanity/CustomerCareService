@@ -3,9 +3,14 @@ import {Alert, Button, Card, Col, Form, Row} from "react-bootstrap";
 
 function ProfileSearch(props) {
     const [email, setEmail] = useState("");
+    const [error, setError] = useState();
     const handleSubmit = (event) => {
         event.preventDefault();
-        props.searchProfileByEmail(email);
+        if(email !== "") {
+            props.searchProfileByEmail(email).catch((err) => {
+                setError(err)
+            })
+        }
     }
     return (
         <Card body={true}>
@@ -30,6 +35,7 @@ function ProfileSearch(props) {
                                 onClick={() => {
                                     props.setProfileSearch("");
                                     setEmail("");
+                                    setError()
                                 }}>
                             <i className={"bi bi-backspace-fill"}/> Clear
                         </Button>
@@ -65,9 +71,9 @@ function ProfileSearch(props) {
 
                     </Alert>
                 )}
-                {props.profileSearch === undefined && (
+                {error && props.profileSearch === undefined && (
                     <Alert variant="danger" className={"mt-3"} id={"search-result"}>
-                        Profile with given email doesn't exists!
+                        {error["detail"]}
                     </Alert>
                 )}
             </div>

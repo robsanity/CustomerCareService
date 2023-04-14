@@ -2,14 +2,14 @@ import './App.css';
 import React, {useEffect, useState} from "react";
 import API from "./API";
 import ProductsTable from "./components/ProductsTable";
-import { Route } from 'react-router-dom';
+import {Route} from 'react-router-dom';
 import "bootstrap/dist/css/bootstrap.min.css";
 import {Col, Container, Row} from "react-bootstrap";
 import * as PropTypes from "prop-types";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import ProductSearch from "./components/ProductSearch";
 import ProfileSearch from "./components/ProfileSearch";
-import { ProfileActions, ProfileActionsMode } from "./components/ProfileActions";
+import {ProfileActions, ProfileActionsMode} from "./components/ProfileActions";
 
 Route.propTypes = {
     path: PropTypes.string,
@@ -27,6 +27,7 @@ function App() {
         function loadProducts() {
             API.getAllProducts().then((response) => {
                 setProducts(response);
+
             }).catch(err => {
                 setProducts(undefined)
                 console.error(err.detail)
@@ -37,21 +38,29 @@ function App() {
     }, []);
 
     const searchProductById = (id) => {
-        API.getProductById(id).then((product) => {
-            setProductSearch(product);
-        }).catch(err => {
-            setProductSearch(undefined)
-            console.error(err.detail)
+        return new Promise((resolve, reject) => {
+            API.getProductById(id).then((product) => {
+                setProductSearch(product);
+                resolve(product)
+            }).catch(err => {
+                setProductSearch(undefined)
+                console.error(err)
+                reject(err)
+            })
         })
     }
 
     const searchProfileByEmail = (email) => {
-        API.getProfileByEmail(email).then((profile) => {
-            setProfileSearch(profile)
-        }).catch(err => {
-            setProfileSearch(undefined)
-            console.error(err.detail)
-        });
+        return new Promise((resolve, reject) => {
+            API.getProfileByEmail(email).then((profile) => {
+                setProfileSearch(profile)
+                resolve(profile)
+            }).catch(err => {
+                setProfileSearch(undefined)
+                console.error(err)
+                reject(err)
+            });
+        })
     }
 
     const addProfile = (profile) => {
@@ -88,8 +97,10 @@ function App() {
             <Row className={"text-center"}>
                 <Col></Col>
                 <Col>
-                    <ProfileActions action={ProfileActionsMode.CREATE} addProfile={addProfile} modalError={modalError} setModalError={setModalError}/>
-                    <ProfileActions action={ProfileActionsMode.UPDATE} updateProfile={updateProfile} modalError={modalError} setModalError={setModalError}/>
+                    <ProfileActions action={ProfileActionsMode.CREATE} addProfile={addProfile} modalError={modalError}
+                                    setModalError={setModalError}/>
+                    <ProfileActions action={ProfileActionsMode.UPDATE} updateProfile={updateProfile}
+                                    modalError={modalError} setModalError={setModalError}/>
                 </Col>
             </Row>
         </Container>

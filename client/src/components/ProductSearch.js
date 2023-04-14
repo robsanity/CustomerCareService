@@ -6,8 +6,11 @@ function ProductSearch(props) {
     const [error, setError] = useState();
     const handleSubmit = (event) => {
         event.preventDefault();
-        const err = props.searchProductById(id);
-        console.log(err)
+        if(id !== "") {
+            props.searchProductById(id).catch((err) => {
+                setError(err)
+            });
+        }
     }
     return (
         <Card body={true}>
@@ -15,14 +18,15 @@ function ProductSearch(props) {
                 Product Search
                 <small className="text-body-secondary float-end">GET /api/products/productId</small>
             </Card.Title>
-            <Form onSubmit={handleSubmit}>
+            <Form onSubmit={handleSubmit} noValidate={true}>
                 <Row>
                     <Col xs={12} md={7} className={"text-center"}>
-                        <Form.Control type={"text"} placeholder={"Insert Product Id"} value={id}
+                        <Form.Control type={"text"} placeholder={"Insert Product Id"} value={id} required={true}
                                       onChange={(ev) => setId(ev.target.value)}/>
                     </Col>
                     <Col xs={12} md={5} className={"text-center"}>
                         <Button variant={"success"}
+                                type={"submit"}
                                 onClick={handleSubmit}
                                 className={"me-3"}
                         >
@@ -63,9 +67,9 @@ function ProductSearch(props) {
 
                     </Alert>
                 )}
-                {error && (
+                {error && props.productSearch === undefined && (
                     <Alert variant="danger" className={"mt-3"} id={"search-result"}>
-                        err
+                        {error["detail"]}
                     </Alert>
                 )}
             </div>

@@ -100,7 +100,8 @@ function App() {
                     <ProfileActions action={ProfileActionsMode.CREATE} addProfile={addProfile} modalError={modalError}
                                     setModalError={setModalError}/>
                     <ProfileActions action={ProfileActionsMode.UPDATE} updateProfile={updateProfile}
-                                    modalError={modalError} setModalError={setModalError}/>
+                                    modalError={modalError} setModalError={setModalError}
+                                    searchProfileByEmail={searchProfileByEmail}/>
                 </Col>
             </Row>
         </Container>

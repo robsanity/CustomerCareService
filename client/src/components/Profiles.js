@@ -1,6 +1,5 @@
 import {useState} from "react";
 import {Button, Col, Form, Row} from "react-bootstrap";
-import {compareArraysAsSet} from "@testing-library/jest-dom/dist/utils";
 
 /* TODO */
 function Profiles(props) {
@@ -26,14 +25,10 @@ function SearchByEmail(props) {
     const handleSubmitPost = (event) => {
         event.preventDefault();
         props.addProfile(props.profile);
-        console.log(props.profile)
-
-
     }
     const handleSubmitPut = (event) => {
         event.preventDefault();
         props.updateProfile(props.upProfile);
-        console.log(props.upProfile)
     }
 
     return (

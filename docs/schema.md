@@ -5,6 +5,7 @@ entity Ticket {
     creationTimestamp : Date
     issueDescription : string
     priority : number
+    status: string
     idExpert: Expert
     idProduct : Product
     idCustomer : Customer
@@ -28,7 +29,7 @@ entity Expert {
 }
 
 entity Role {
-    roleId : number <<generated>>
+    *roleId : number <<generated>>
     description : string
 }
 

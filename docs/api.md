@@ -44,6 +44,16 @@ Accessibile da:
 - manager
 - expert (se idExpert è il suo)
 
+#### /ticket/:idCustomer
+RequestParam: idCustomer : number
+RequestBody: empty
+Response: 200 OK, 404 Not Found, 401 Unauthorized, 500 Internal Server Error
+ResponseBody : Ticket[]
+
+Accessibile da:
+- manager
+- expert (se idExpert è il suo)
+
 #### /ticket/:priority
 RequestParam: priority : number
 RequestBody: empty

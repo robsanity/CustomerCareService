@@ -8,7 +8,7 @@ import jakarta.persistence.Table
 
 
 @Entity
-@Table(name = "products")
+@Table(name = "product")
 class Product {
     @Id
     var id: String = ""

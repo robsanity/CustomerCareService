@@ -6,15 +6,15 @@ import jakarta.persistence.*
 import java.util.Date
 
 @Entity
-@Table(name = "Order")
+@Table(name = "Orders")
 class Order (
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(updatable = false, nullable = false)
-    var idOrder: Long? = null,
+    var id: Long? = null,
 
     @Temporal(TemporalType.TIMESTAMP)
-    val orderDate: Date,
+    val Date: Date,
 
     @Temporal(TemporalType.TIMESTAMP)
     val warrantyDuration: Date,

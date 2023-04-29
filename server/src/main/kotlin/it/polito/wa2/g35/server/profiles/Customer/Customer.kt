@@ -8,8 +8,8 @@ import jakarta.persistence.Table
 
 /*Automatically mapped to database table */
 @Entity
-@Table(name = "users")
+@Table(name = "Customer")
 class Customer(@Id var email: String, var name: String, var surname: String) {
-    @OneToMany(mappedBy = "idManager")
+    @OneToMany(mappedBy = "idCustomer")
     val tickets = mutableSetOf<Ticket>()
 }

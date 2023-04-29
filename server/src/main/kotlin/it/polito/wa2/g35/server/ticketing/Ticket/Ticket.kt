@@ -2,7 +2,7 @@ package it.polito.wa2.g35.server.ticketing.Ticket
 
 import it.polito.wa2.g35.server.products.Product
 import it.polito.wa2.g35.server.profiles.Customer.Customer
-import it.polito.wa2.g35.server.profiles.Expert.Expert
+import it.polito.wa2.g35.server.profiles.Employee.Expert
 import it.polito.wa2.g35.server.ticketing.Message.Message
 import it.polito.wa2.g35.server.ticketing.TicketStatus.TicketStatus
 import jakarta.persistence.*

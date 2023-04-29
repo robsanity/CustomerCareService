@@ -1,4 +1,4 @@
-package it.polito.wa2.g35.server.profiles
+package it.polito.wa2.g35.server.profiles.Customer
 
 import it.polito.wa2.g35.server.exceptions.BadRequestException
 import it.polito.wa2.g35.server.exceptions.ProfileNotFoundException
@@ -10,37 +10,37 @@ import org.springframework.web.bind.annotation.*
 
 @RestController
 @CrossOrigin(origins = ["http://localhost:3000"])
-class ProfileController(private val profileService: ProfileService) {
+class CustomerController(private val customerService: CustomerService) {
     @GetMapping("/API/profiles/{email}")
     @ResponseStatus(HttpStatus.OK)
-    fun getProfile(@PathVariable email: String): ProfileDTO? {
-        return profileService.getProfile(email)
+    fun getProfile(@PathVariable email: String): CustomerDTO? {
+        return customerService.getProfile(email)
     }
 
     @PostMapping("/API/profiles")
     @ResponseStatus(HttpStatus.CREATED)
     fun postProfile(
-        @RequestBody @Valid p: ProfileDTO,
+        @RequestBody @Valid p: CustomerDTO,
         br: BindingResult
     ) {
         if (br.hasErrors())
             throw BadRequestException("Bad request format!")
         else
-            profileService.postProfile(p)
+            customerService.postProfile(p)
     }
 
     @PutMapping("/API/profiles/{email}")
     @ResponseStatus(HttpStatus.OK)
     fun updateProfile(
         @PathVariable("email") email: String,
-        @RequestBody @Valid p: ProfileDTO,
+        @RequestBody @Valid p: CustomerDTO,
         br: BindingResult
     ) {
         if (br.hasErrors())
             throw BadRequestException("Bad request format!")
         else
             if (email == p.email) {
-                profileService.updateProfile(p)
+                customerService.updateProfile(p)
             } else
                 throw ProfileNotFoundException("Profile with given email doesn't exists!")
     }

@@ -1,4 +1,4 @@
-package it.polito.wa2.g35.server.ticketing.Expert
+package it.polito.wa2.g35.server.profiles.Expert
 
 import jakarta.persistence.Column
 import jakarta.persistence.Entity

@@ -1,4 +1,4 @@
-package it.polito.wa2.g35.server.profiles
+package it.polito.wa2.g35.server.profiles.Customer
 
 import it.polito.wa2.g35.server.ticketing.Ticket.Ticket
 import jakarta.persistence.Entity
@@ -9,14 +9,7 @@ import jakarta.persistence.Table
 /*Automatically mapped to database table */
 @Entity
 @Table(name = "users")
-class Profile(email: String, name: String, surname: String) {
-    @Id
-    var email: String = email
-    var name: String = name
-    var surname: String = surname
-
+class Customer(@Id var email: String, var name: String, var surname: String) {
     @OneToMany(mappedBy = "idManager")
     val tickets = mutableSetOf<Ticket>()
-
-    var role: String = ""
 }

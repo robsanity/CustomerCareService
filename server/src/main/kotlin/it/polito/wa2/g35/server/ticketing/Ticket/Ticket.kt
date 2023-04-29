@@ -1,7 +1,8 @@
 package it.polito.wa2.g35.server.ticketing.Ticket
 
 import it.polito.wa2.g35.server.products.Product
-import it.polito.wa2.g35.server.profiles.Profile
+import it.polito.wa2.g35.server.profiles.Customer.Customer
+import it.polito.wa2.g35.server.profiles.Expert.Expert
 import it.polito.wa2.g35.server.ticketing.Message.Message
 import it.polito.wa2.g35.server.ticketing.TicketStatus.TicketStatus
 import jakarta.persistence.*
@@ -25,10 +26,13 @@ class Ticket(
     val status: String,
 
     @ManyToOne
-    val idManager: Profile,
+    val idExpert: Expert,
 
     @ManyToOne
     var idProduct: Product,
+
+    @ManyToOne
+    var idCustomer: Customer,
 
     @OneToMany(mappedBy = "idTicket")
     val statusHistory: MutableSet<TicketStatus> = mutableSetOf<TicketStatus>(),

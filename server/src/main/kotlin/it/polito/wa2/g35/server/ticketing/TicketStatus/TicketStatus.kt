@@ -1,6 +1,7 @@
 package it.polito.wa2.g35.server.ticketing.TicketStatus
 
-import it.polito.wa2.g35.server.profiles.Profile
+import it.polito.wa2.g35.server.profiles.Customer.Customer
+import it.polito.wa2.g35.server.profiles.Expert.Expert
 import it.polito.wa2.g35.server.ticketing.Ticket.Ticket
 import jakarta.persistence.*
 import java.util.*
@@ -18,10 +19,12 @@ class TicketStatus(
 
     val status: String,
 
+    val description: String,
+
     @ManyToOne
     var idTicket: Ticket,
 
     @ManyToOne
-    var idExpert: Profile,
+    var idExpert: Expert,
 
     )

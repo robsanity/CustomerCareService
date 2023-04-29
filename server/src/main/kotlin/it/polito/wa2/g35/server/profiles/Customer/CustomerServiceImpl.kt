@@ -1,13 +1,13 @@
-package it.polito.wa2.g35.server.profiles
+package it.polito.wa2.g35.server.profiles.Customer
 
 import it.polito.wa2.g35.server.exceptions.*
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 
 @Service
-class ProfileServiceImpl(private val profileRepository: ProfileRepository) : ProfileService {
+class CustomerServiceImpl(private val profileRepository: CustomerRepository) : CustomerService {
 
-    override fun getProfile(email: String): ProfileDTO? {
+    override fun getProfile(email: String): CustomerDTO? {
         val profile = profileRepository.findByIdOrNull(email)?.toDTO()
         if(profile != null) {
             return profile
@@ -16,11 +16,11 @@ class ProfileServiceImpl(private val profileRepository: ProfileRepository) : Pro
         }
     }
 
-    override fun postProfile(profile: ProfileDTO?): ProfileDTO? {
+    override fun postProfile(profile: CustomerDTO?): CustomerDTO? {
         return if (profile != null) {
             val checkIfProfileExists = profileRepository.findByIdOrNull(profile.email)
             if(checkIfProfileExists == null) {
-                profileRepository.save(Profile(profile.email, profile.name, profile.surname)).toDTO()
+                profileRepository.save(Customer(profile.email, profile.name, profile.surname)).toDTO()
             } else {
                 throw DuplicateProfileException("Profile with given email already exists!")
             }
@@ -28,11 +28,11 @@ class ProfileServiceImpl(private val profileRepository: ProfileRepository) : Pro
             null
     }
 
-    override fun updateProfile(profile: ProfileDTO?): ProfileDTO? {
+    override fun updateProfile(profile: CustomerDTO?): CustomerDTO? {
         return if(profile != null) {
             val checkIfProfileExists = profileRepository.findByIdOrNull(profile.email)
             if (checkIfProfileExists != null) {
-                profileRepository.save(Profile(profile.email, profile.name, profile.surname)).toDTO()
+                profileRepository.save(Customer(profile.email, profile.name, profile.surname)).toDTO()
             } else {
                 throw ProfileNotFoundException("Profile with given email doesn't exists!")
             }

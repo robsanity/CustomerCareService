@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service
 @Service
 class CustomerServiceImpl(private val profileRepository: CustomerRepository) : CustomerService {
 
-    override fun getProfile(email: String): CustomerDTO? {
+    override fun getCustomer(email: String): CustomerDTO? {
         val profile = profileRepository.findByIdOrNull(email)?.toDTO()
         if(profile != null) {
             return profile
@@ -16,7 +16,7 @@ class CustomerServiceImpl(private val profileRepository: CustomerRepository) : C
         }
     }
 
-    override fun postProfile(profile: CustomerDTO?): CustomerDTO? {
+    override fun postCustomer(profile: CustomerDTO?): CustomerDTO? {
         return if (profile != null) {
             val checkIfProfileExists = profileRepository.findByIdOrNull(profile.email)
             if(checkIfProfileExists == null) {
@@ -28,7 +28,7 @@ class CustomerServiceImpl(private val profileRepository: CustomerRepository) : C
             null
     }
 
-    override fun updateProfile(profile: CustomerDTO?): CustomerDTO? {
+    override fun updateCustomer(profile: CustomerDTO?): CustomerDTO? {
         return if(profile != null) {
             val checkIfProfileExists = profileRepository.findByIdOrNull(profile.email)
             if (checkIfProfileExists != null) {

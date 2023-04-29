@@ -14,7 +14,7 @@ class CustomerController(private val customerService: CustomerService) {
     @GetMapping("/API/profiles/{email}")
     @ResponseStatus(HttpStatus.OK)
     fun getProfile(@PathVariable email: String): CustomerDTO? {
-        return customerService.getProfile(email)
+        return customerService.getCustomer(email)
     }
 
     @PostMapping("/API/profiles")
@@ -26,7 +26,7 @@ class CustomerController(private val customerService: CustomerService) {
         if (br.hasErrors())
             throw BadRequestException("Bad request format!")
         else
-            customerService.postProfile(p)
+            customerService.postCustomer(p)
     }
 
     @PutMapping("/API/profiles/{email}")
@@ -40,7 +40,7 @@ class CustomerController(private val customerService: CustomerService) {
             throw BadRequestException("Bad request format!")
         else
             if (email == p.email) {
-                customerService.updateProfile(p)
+                customerService.updateCustomer(p)
             } else
                 throw ProfileNotFoundException("Profile with given email doesn't exists!")
     }

@@ -21,3 +21,4 @@ fun Customer.toDTO() : CustomerDTO {
 fun CustomerDTO.toProfile() : Customer {
     return Customer(this.email, this.name, this.surname)
 }
+

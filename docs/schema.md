@@ -67,6 +67,7 @@ entity Message {
 entity Attachment {
     *id : number <<generated>>
     idMessage : Message
+    fileContent : String
 }
 
 Ticket }|- Customer

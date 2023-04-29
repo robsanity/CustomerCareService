@@ -1,4 +1,4 @@
-package it.polito.wa2.g35.server.profiles.Expert
+package it.polito.wa2.g35.server.profiles.Expert.Role
 
 import jakarta.persistence.Column
 import jakarta.persistence.Entity

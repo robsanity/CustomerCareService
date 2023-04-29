@@ -22,6 +22,8 @@ class Ticket(
 
     val priority: Int,
 
+    val status: String,
+
     @ManyToOne
     val idManager: Profile,
 

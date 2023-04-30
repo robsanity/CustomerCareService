@@ -20,7 +20,7 @@ class Message(
     val messageText: String,
 
     @ManyToOne
-    var idTicket: Ticket,
+    var ticket: Ticket,
 
     var sender: String,
 

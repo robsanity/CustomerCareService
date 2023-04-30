@@ -2,9 +2,10 @@ package it.polito.wa2.g35.server.ticketing.Ticket
 
 import it.polito.wa2.g35.server.products.Product
 import it.polito.wa2.g35.server.profiles.Customer.Customer
-import it.polito.wa2.g35.server.profiles.Employee.Expert
+import it.polito.wa2.g35.server.profiles.Employee.Expert.Expert
 import it.polito.wa2.g35.server.ticketing.Message.Message
 import it.polito.wa2.g35.server.ticketing.TicketStatus.TicketStatus
+import it.polito.wa2.g35.server.ticketing.TicketStatus.TicketStatusValues
 import jakarta.persistence.*
 import java.util.*
 
@@ -21,18 +22,20 @@ class Ticket(
 
     val issueDescription: String,
 
-    val priority: Int,
+    @Enumerated(EnumType.STRING)
+    val priority: TicketPriority,
 
-    val status: String,
-
-    @ManyToOne
-    val idExpert: Expert,
-
-    @ManyToOne
-    var idProduct: Product,
+    @Enumerated(EnumType.STRING)
+    val status: TicketStatusValues,
 
     @ManyToOne
-    var idCustomer: Customer,
+    val expert: Expert,
+
+    @ManyToOne
+    var product: Product,
+
+    @ManyToOne
+    var customer: Customer,
 
     @OneToMany(mappedBy = "idTicket")
     val statusHistory: MutableSet<TicketStatus> = mutableSetOf<TicketStatus>(),
@@ -41,3 +44,9 @@ class Ticket(
     val messages: MutableSet<Message> = mutableSetOf<Message>(),
 
     )
+
+enum class TicketPriority{
+    LOW,
+    MEDIUM,
+    HIGH
+}

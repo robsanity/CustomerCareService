@@ -126,3 +126,51 @@ Create a new attachment
 RequestBody: Attachment
 Response: 201 Created, 422 Bad Request, 500 Server Error, 401 Unauthorized
 ResponseBody: empty
+
+
+## ORDER
+
+### GET
+
+#### /orders/:customerId
+Return the list of customer's orders
+
+RequestBody: Empty
+Response: 200 OK, 422 Bad Request, 500 Server Error, 401 Unauthorize, 404 Not Found
+
+
+#### /order
+Return the order associated to a customer
+
+RequestBody: 
+
+## EXPERT
+
+### GET
+
+#### /experts
+
+Return list of experts
+
+RequestBody: empty
+RequestParam: empty
+Response: 200 OK, 401 Unauthorized, 500 Internal Server Error
+ResponseBody: ExpertDTO[]
+
+#### /expert/:specialization
+
+List of experts by specialization
+
+RequestBody: empty
+RequestParam: specialization: String
+Response: 200 OK, 404 Not Found, 401 Unauthorized, 500 Internal Server Error
+ResponseBody: ExpertDTO[]
+
+#### /expert/:expertId
+
+Get Expert By Id
+
+RequestBody: empty
+RequestParam: expertId: String
+Response: 200 OK, 404 Not Found, 401 Unauthorized, 500 Internal Server Error
+ResponseBody: ExpertDTO

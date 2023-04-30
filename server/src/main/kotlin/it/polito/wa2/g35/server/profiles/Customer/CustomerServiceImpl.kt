@@ -1,6 +1,8 @@
 package it.polito.wa2.g35.server.profiles.Customer
 
 import it.polito.wa2.g35.server.exceptions.*
+import it.polito.wa2.g35.server.profiles.DuplicateProfileException
+import it.polito.wa2.g35.server.profiles.ProfileNotFoundException
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 

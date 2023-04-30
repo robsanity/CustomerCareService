@@ -1,6 +1,6 @@
 package it.polito.wa2.g35.server.ticketing.TicketStatus
 
-import it.polito.wa2.g35.server.profiles.Employee.Expert
+import it.polito.wa2.g35.server.profiles.Employee.Expert.Expert
 import it.polito.wa2.g35.server.ticketing.Ticket.Ticket
 import jakarta.persistence.*
 import java.util.*
@@ -16,14 +16,23 @@ class TicketStatus(
     @Temporal(TemporalType.TIMESTAMP)
     val statusTimestamp: Date,
 
-    val status: String,
+    @Enumerated(EnumType.STRING)
+    val status: TicketStatusValues,
 
     val description: String,
 
     @ManyToOne
-    var idTicket: Ticket,
+    var ticket: Ticket,
 
     @ManyToOne
-    var idExpert: Expert,
+    var expert: Expert,
 
     )
+
+enum class TicketStatusValues {
+    OPEN,
+    IN_PROGRESS,
+    CLOSED,
+    RESOLVED,
+    REOPENED
+}

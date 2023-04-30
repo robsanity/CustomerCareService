@@ -20,8 +20,8 @@ class Order (
     val warrantyDuration: Date,
 
     @ManyToOne
-    val idCustomer: Customer,
+    val customer: Customer,
 
     @ManyToOne
-    val idProduct: Product
+    val product: Product
 )

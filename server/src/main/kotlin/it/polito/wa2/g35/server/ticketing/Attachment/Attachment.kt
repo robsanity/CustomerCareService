@@ -12,7 +12,7 @@ class Attachment(
     var id: Long? = null,
 
     @ManyToOne
-    val idMessage: Message,
+    val message: Message,
 
     val fileContent: String
 )

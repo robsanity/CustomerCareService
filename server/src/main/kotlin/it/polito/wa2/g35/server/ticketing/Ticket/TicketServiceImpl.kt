@@ -23,6 +23,7 @@ class TicketServiceImpl (
 
     override fun getTicketsByStatus(status: TicketStatusValues): List<TicketDTO> {
         /* if (status not in TicketStatusValues /TODO/ trattare eccezione */
+
         val listTicket = ticketRepository.findAll().filter { it.status.compareTo(status) == 0 }.map { it.toDTO() }
         if (!listTicket.isEmpty())
             return listTicket

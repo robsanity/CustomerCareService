@@ -5,7 +5,7 @@ import it.polito.wa2.g35.server.ticketing.Ticket.Ticket
 import java.util.Date
 
 data class MessageDTO(
-    val id: Long,
+    val id: Long?,
     val messageTimestamp: Date,
     val messageText: String,
     val ticket: Ticket,
@@ -13,6 +13,8 @@ data class MessageDTO(
     val attachments: MutableSet<Attachment> = mutableSetOf()
 )
 
-
+fun Message.toDTO() : MessageDTO {
+    return MessageDTO(this.id, this.messageTimestamp, this.messageText, this.ticket, this.sender, this.attachments)
+}
 
 

@@ -127,6 +127,16 @@ RequestBody: Attachment
 Response: 201 Created, 422 Bad Request, 500 Server Error, 401 Unauthorized
 ResponseBody: empty
 
+### GET
+
+#### /attachment/:idAttachment
+Get a attachment with the given id
+
+RequestBody: empty
+RequestParam: idAttachment
+Response: 200 OK, 422 Bad Request, 500 Server Error, 401 Unauthorized
+ResponseBody: empty
+
 
 ## ORDER
 

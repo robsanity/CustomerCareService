@@ -44,9 +44,3 @@ class Ticket(
     val messages: MutableSet<Message> = mutableSetOf<Message>(),
 
     )
-
-enum class TicketPriority{
-    LOW,
-    MEDIUM,
-    HIGH
-}

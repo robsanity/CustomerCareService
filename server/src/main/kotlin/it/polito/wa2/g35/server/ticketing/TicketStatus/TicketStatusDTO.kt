@@ -7,9 +7,9 @@ import java.util.Date
 
 data class TicketStatusDTO (
     val id: String?,
-    val timestamp: Date,
+    val timestamp: Date?,
     val status: TicketStatusValues,
-    val description: String,
+    val description: String?,
     val ticket: Ticket,
     val expert: Expert
 )

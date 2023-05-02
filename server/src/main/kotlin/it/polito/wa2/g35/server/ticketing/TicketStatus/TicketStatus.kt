@@ -14,12 +14,12 @@ class TicketStatus(
     var id: Long? = null,
 
     @Temporal(TemporalType.TIMESTAMP)
-    val statusTimestamp: Date,
+    val statusTimestamp: Date?,
 
     @Enumerated(EnumType.STRING)
     val status: TicketStatusValues,
 
-    val description: String,
+    val description: String?,
 
     @ManyToOne
     var ticket: Ticket,

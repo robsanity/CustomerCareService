@@ -37,10 +37,10 @@ class Ticket(
     @ManyToOne
     var customer: Customer,
 
-    @OneToMany(mappedBy = "idTicket")
+    @OneToMany(mappedBy = "ticket")
     val statusHistory: MutableSet<TicketStatus> = mutableSetOf<TicketStatus>(),
 
-    @OneToMany(mappedBy = "idTicket")
+    @OneToMany(mappedBy = "ticket")
     val messages: MutableSet<Message> = mutableSetOf<Message>(),
 
     )

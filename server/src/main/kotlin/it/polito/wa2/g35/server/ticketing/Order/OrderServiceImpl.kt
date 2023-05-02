@@ -21,7 +21,7 @@ class OrderServiceImpl (private val orderRepository: OrderRepository) : OrderSer
     override fun getOrdersByCustomer(idCustomer: String): List<OrderDTO> {
         val customer = customerService.getCustomer( idCustomer )
         val allOrders = orderRepository.findAll().map { it.toDTO() }
-        val ordersByCustomer = allOrders.filter { it.customer.toString() == idCustomer }
+        val ordersByCustomer = allOrders.filter { it.customer.email == idCustomer }
 
         if(ordersByCustomer.isNotEmpty())
             return ordersByCustomer
@@ -35,7 +35,7 @@ class OrderServiceImpl (private val orderRepository: OrderRepository) : OrderSer
             val customer = customerService.getCustomer( idCustomer )
             val product = productService.getProduct(idProduct)
         */
-        return orderRepository.getOrdersByCustomerAndProduct(idCustomer, idProduct)
+        return orderRepository.getOrdersByCustomerAndProduct(idCustomer, idProduct)?.toDTO()
 
         /*val allOrders = orderRepository.findAll().map { it.toDTO() }
         orderRepository.findBy()

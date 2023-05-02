@@ -10,6 +10,6 @@ import jakarta.persistence.Table
 @Entity
 @Table(name = "Customer")
 class Customer(@Id var email: String, var name: String, var surname: String) {
-    @OneToMany(mappedBy = "idCustomer")
+    @OneToMany(mappedBy = "customer")
     val tickets = mutableSetOf<Ticket>()
 }

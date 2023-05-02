@@ -11,8 +11,8 @@ import jakarta.persistence.InheritanceType
 open class Employee (
     @Column(updatable = false, nullable = false)
     @Id
-    var id: String,
-    val name: String,
-    val surname: String,
-    val email: String
+    open var id: String,
+    open val name: String,
+    open val surname: String,
+    open val email: String
 )

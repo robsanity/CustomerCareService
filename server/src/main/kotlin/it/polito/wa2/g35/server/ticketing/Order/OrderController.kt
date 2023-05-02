@@ -15,13 +15,13 @@ class OrderController(private val orderService: OrderService) {
         return orderService.getOrderByCustomerAndProduct(customerId, productId)
     }
 
-    @GetMapping("/API/orders/")
+    @GetMapping("/API/orders")
     fun getOrders(): List<OrderDTO>? {
         return orderService.getOrders()
     }
 
     @GetMapping("/API/orders/{customerId}")
-    fun getOrdersByCustomer(customerId: String): List<OrderDTO>?{
+    fun getOrdersByCustomer(@PathVariable customerId: String): List<OrderDTO>?{
         return orderService.getOrdersByCustomer(customerId)
     }
 }

@@ -24,6 +24,6 @@ class Message(
 
     var sender: String,
 
-    @OneToMany(mappedBy = "idMessage")
+    @OneToMany(mappedBy = "message")
     val attachments: MutableSet<Attachment> = mutableSetOf()
 )

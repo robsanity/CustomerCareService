@@ -12,6 +12,6 @@ interface TicketRepository: JpaRepository<Ticket, Long> {
 
     //@Query("SELECT t FROM Order t WHERE t.customer.email = :idCustomer AND t.product.id = :idProduct")
     //fun getOrdersByCustomerAndProduct(idCustomer: String, idProduct: String): Order?
-     fun
+
 }
 

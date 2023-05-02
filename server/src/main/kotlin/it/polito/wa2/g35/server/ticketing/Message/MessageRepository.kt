@@ -7,8 +7,6 @@ import org.springframework.data.jpa.repository.Query
 @Repository
 interface MessageRepository: JpaRepository<Message, Long> {
 
-    @Query("SELECT m from Message m WHERE m.ticket.id =: ticketid")
-    fun getMessagesByTicket(ticketid : Long): List<Message>?
-
+    fun getMessagesByTicket(ticketid: Long): List<Message>
 
 }

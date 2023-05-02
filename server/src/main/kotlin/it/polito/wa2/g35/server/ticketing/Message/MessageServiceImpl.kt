@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service
 class MessageServiceImpl (private val messageRepository: MessageRepository) : MessageService {
 
     override fun getMessagesByTicket(ticketid : Long): List<MessageDTO> {
-        return messageRepository.getMessagesByTicket(ticketid).map { it.toDTO() }
+        return messageRepository.getMessagesByTicket(ticketid)?.map { it.toDTO() } ?: emptyList()
     }
 
     override fun postMessage(message: MessageDTO?): MessageDTO? {

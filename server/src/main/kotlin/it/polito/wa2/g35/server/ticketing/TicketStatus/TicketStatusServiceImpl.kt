@@ -7,6 +7,6 @@ import java.util.Date
 class TicketStatusServiceImpl(private val ticketStatusRepository: TicketStatusRepository) : TicketStatusService {
 
     override fun createTicketStatus(ticketStatus: TicketStatusDTO): TicketStatusDTO? {
-        ticketStatusRepository.save(TicketStatus(null, Date(), ticketStatus.status, ticketStatus.?description))
+        return ticketStatusRepository.save(TicketStatus(null, Date(), ticketStatus.status, ticketStatus?.description, ticketStatus.ticket, ticketStatus.expert)).toDTO()
     }
 }

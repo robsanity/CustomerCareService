@@ -12,9 +12,9 @@ class MessageServiceImpl (private val messageRepository: MessageRepository) : Me
 
     override fun postMessage(message: MessageDTO?): MessageDTO? {
         return if (message != null) {
-            messageRepository.save(Message(null, message.ticket, message.author, message.content, message.date))
+            messageRepository.save(Message(null, message.ticket, message.author, message.content, message.date)).toDTO()
         } else {
-            throw
+            throw IllegalArgumentException("Message cannot be null")
         }
     }
 

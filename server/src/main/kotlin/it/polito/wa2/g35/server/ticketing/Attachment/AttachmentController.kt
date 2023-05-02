@@ -16,8 +16,8 @@ import it.polito.wa2.g35.server.exceptions.BadRequestException
 class AttachmentController(private val attachmentService: AttachmentService) {
 
     @GetMapping("API/attachment/{idAttachment}")
-    fun getAttachment(attachmentId: String) : AttachmentDTO? {
-        return attachmentService.getAttachment(attachmentId)
+    fun getAttachment(attachmentId: Long?) : List<AttachmentDTO>? {
+        return attachmentService.getAttachments(attachmentId)
     }
 
     @PostMapping("API/attachment")

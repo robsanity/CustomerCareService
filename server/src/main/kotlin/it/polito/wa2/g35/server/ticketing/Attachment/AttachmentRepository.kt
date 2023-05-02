@@ -6,7 +6,8 @@ import org.springframework.data.jpa.repository.Query
 @Repository
 interface AttachmentRepository: JpaRepository<Attachment, Long>{
 
-    fun getAttachment(attachmentId: String) : AttachmentDTO?
+    @Query("SELECT a from Attachment a WHERE a.id =:attachmentId")
+    fun getAttachments(attachmentId: Long?) : List<Attachment>?
 
     fun postAttachment()
 

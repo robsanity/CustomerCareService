@@ -138,6 +138,12 @@ Return the list of customer's orders
 RequestBody: Empty
 Response: 200 OK, 422 Bad Request, 500 Server Error, 401 Unauthorize, 404 Not Found
 
+#### /orders/:customerId/:productId
+Return the order associated to a customer and a product
+
+RequestBody: Empty
+Response: 200 OK, 422 Bad Request, 500 Server Error, 401 Unauthorize, 404 Not Found
+
 
 #### /order
 Return the order associated to a customer

@@ -1,10 +1,8 @@
 package it.polito.wa2.g35.server.ticketing.Ticket
 
-import it.polito.wa2.g35.server.exceptions.ProductNotFoundException
 import it.polito.wa2.g35.server.ticketing.TicketStatus.TicketStatusValues
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
-import org.springframework.transaction.annotation.Transactional
 
 
 @Service

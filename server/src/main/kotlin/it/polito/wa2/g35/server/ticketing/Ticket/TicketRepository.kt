@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository
 
 @Repository
 interface TicketRepository: JpaRepository<Ticket, Long> {
-    @Query("SELECT t from Ticket")
+    //@Query("SELECT t from Ticket")
 }
 

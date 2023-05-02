@@ -1,7 +1,7 @@
 package it.polito.wa2.g35.server.profiles.Customer
 
 import it.polito.wa2.g35.server.exceptions.BadRequestException
-import it.polito.wa2.g35.server.exceptions.ProfileNotFoundException
+import it.polito.wa2.g35.server.profiles.ProfileNotFoundException
 import jakarta.validation.Valid
 import org.springframework.http.HttpStatus
 import org.springframework.validation.BindingResult

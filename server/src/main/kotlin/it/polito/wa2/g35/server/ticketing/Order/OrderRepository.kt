@@ -8,5 +8,6 @@ import org.springframework.stereotype.Repository
 interface OrderRepository: JpaRepository<Order, Long> {
 
     @Query("SELECT t FROM Order t WHERE t.customer = :customer AND t.product = :product")
-    fun findByCustomerAndProduct(idCustomer: String, idProduct: String): OrderDTO?
+    fun getOrdersByCustomerAndProduct(idCustomer: String, idProduct: String): OrderDTO?
+
 }

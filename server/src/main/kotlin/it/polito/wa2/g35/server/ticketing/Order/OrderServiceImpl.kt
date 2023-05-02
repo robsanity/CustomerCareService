@@ -2,10 +2,8 @@ package it.polito.wa2.g35.server.ticketing.Order
 
 import it.polito.wa2.g35.server.products.ProductService
 import it.polito.wa2.g35.server.profiles.Customer.CustomerService
-import it.polito.wa2.g35.server.profiles.ProfileNotFoundException
 import org.springframework.stereotype.Service
 import org.springframework.beans.factory.annotation.Autowired
-import java.lang.IllegalArgumentException
 
 @Service
 class OrderServiceImpl (private val orderRepository: OrderRepository) : OrderService {
@@ -31,12 +29,13 @@ class OrderServiceImpl (private val orderRepository: OrderRepository) : OrderSer
             return emptyList()
     }
 
-    override fun getOrderByCustomerAndProduct(idCustomer: String, idProduct: String): OrderDTO? {
-        /*val customer = customerService.getCustomer( idCustomer )
 
-        val product = productService.getProduct(idProduct)
-    */
-        return orderRepository.findByCustomerAndProduct(idCustomer, idProduct)
+    override fun getOrderByCustomerAndProduct(idCustomer: String, idProduct: String): OrderDTO? {
+        /*
+            val customer = customerService.getCustomer( idCustomer )
+            val product = productService.getProduct(idProduct)
+        */
+        return orderRepository.getOrdersByCustomerAndProduct(idCustomer, idProduct)
 
         /*val allOrders = orderRepository.findAll().map { it.toDTO() }
         orderRepository.findBy()

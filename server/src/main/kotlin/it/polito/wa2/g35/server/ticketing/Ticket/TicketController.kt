@@ -66,4 +66,20 @@ class TicketController(private val ticketService: TicketService, private val cus
             } else
                 throw TicketConflictException("Ticket with given email doesn't exists!")
     }
+
+    @PatchMapping("/API/tickets/{ticketId}/status/{status}")
+    fun updateTicketStatus(
+        @PathVariable("ticketId") ticketId: Long,
+        @PathVariable("status") status: String
+    ) {
+        ticketService.updateTicketStatus(ticketId, status)
+    }
+
+    @PatchMapping("/API/tickets/{ticketId}/priority/{priority}")
+    fun updateTicketPriority(
+        @PathVariable("ticketId") ticketId: Long,
+        @PathVariable("priority") priority: String
+    ) {
+        ticketService.updateTicketPriority(ticketId, priority)
+    }
 }

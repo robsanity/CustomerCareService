@@ -15,7 +15,10 @@ class MessageServiceImpl (private val messageRepository: MessageRepository) : Me
     lateinit var ticketService: TicketService
 
     override fun getMessagesByTicket(ticketid : Long): List<MessageDTO> {
-        return messageRepository.getMessagesByTicketId(ticketid)?.map { it.toDTO() } ?: throw BadRequestException("Ticket not found")
+        if(ticketService.getTicketById(ticketid) == null)
+            throw TicketNotFoundException("Ticket not found with this ID!")
+        else
+            return messageRepository.getMessagesByTicketId(ticketid).map { it.toDTO() }
     }
 
     override fun getMessageById(messageId: Long): MessageDTO? {

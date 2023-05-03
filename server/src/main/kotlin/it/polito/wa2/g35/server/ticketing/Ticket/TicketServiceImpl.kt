@@ -152,4 +152,37 @@ class TicketServiceImpl(
         return ticketToUpdate.toDTO()
     }
 
+    override fun updateTicketStatus(ticketId: Long, statusValue: String): TicketDTO? {
+        var ticket = getTicketById(ticketId)?.toTicket() ?: throw TicketNotFoundException("Ticket not found!")
+        val status = try {
+            TicketStatusValues.valueOf(statusValue.uppercase())
+        } catch (e: IllegalArgumentException) {
+            throw TicketStatusValueInvalidException("Ticket Status not valid!")
+        }
+        ticket.status = status
+        ticket = ticketRepository.save(ticket)
+        ticketStatusService.createTicketStatus(
+            TicketStatusDTO(
+                id = null,
+                statusTimestamp = null,
+                status = ticket.status,
+                description = ticket.issueDescription,
+                ticket = ticket,
+                expert = ticket.expert
+            )
+        )
+        return ticket.toDTO()
+    }
+
+    override fun updateTicketPriority(ticketId: Long, priorityValue: String): TicketDTO? {
+        val ticket = getTicketById(ticketId)?.toTicket() ?: throw TicketNotFoundException("Ticket not found!")
+        val priority = try {
+            TicketPriority.valueOf(priorityValue.uppercase())
+        } catch (e: IllegalArgumentException) {
+            throw TicketPriorityInvalidException("Ticket Priority not valid!")
+        }
+        ticket.priority = priority
+        return ticketRepository.save(ticket).toDTO()
+    }
+
 }

@@ -9,12 +9,15 @@ data class MessageDTO(
     val messageTimestamp: Date?,
     val messageText: String,
     val ticket: Ticket?,
-    val sender: String?,
-    val attachments: MutableSet<Attachment>? = mutableSetOf()
+    val sender: String?
 )
 
 fun Message.toDTO() : MessageDTO {
-    return MessageDTO(this.id, this.messageTimestamp, this.messageText, this.ticket, this.sender, this.attachments)
+    return MessageDTO(this.id, this.messageTimestamp, this.messageText, this.ticket, this.sender)
+}
+
+fun MessageDTO.toMessage() : Message {
+    return Message(this.id, this.messageTimestamp, this.messageText, this.ticket, this.sender)
 }
 
 

@@ -8,3 +8,7 @@ data class ProductDTO(
 fun Product.toDTO(): ProductDTO {
     return ProductDTO(this.id, this.name)
 }
+
+fun ProductDTO.toProduct(): Product {
+    return Product(this.id, this.name)
+}

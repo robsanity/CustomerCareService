@@ -19,9 +19,9 @@ class Order (
     @Temporal(TemporalType.TIMESTAMP)
     val warrantyDuration: Date,
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     val customer: Customer,
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     val product: Product
 )

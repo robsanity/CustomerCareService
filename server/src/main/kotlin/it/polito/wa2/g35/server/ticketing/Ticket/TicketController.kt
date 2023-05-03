@@ -1,17 +1,10 @@
 package it.polito.wa2.g35.server.ticketing.Ticket;
 
 import it.polito.wa2.g35.server.exceptions.BadRequestException
-import it.polito.wa2.g35.server.profiles.Customer.CustomerDTO
-import it.polito.wa2.g35.server.profiles.Customer.CustomerRepository
 import it.polito.wa2.g35.server.profiles.Customer.CustomerService
-import it.polito.wa2.g35.server.profiles.Customer.toDTO
 import it.polito.wa2.g35.server.profiles.ProfileNotFoundException
-import it.polito.wa2.g35.server.ticketing.Order.OrderDTO
-import it.polito.wa2.g35.server.ticketing.Order.OrderService
-import it.polito.wa2.g35.server.ticketing.TicketStatus.TicketStatusDTO
 import it.polito.wa2.g35.server.ticketing.TicketStatus.TicketStatusValues
 import jakarta.validation.Valid
-import org.springframework.data.repository.findByIdOrNull
 import org.springframework.http.HttpStatus
 import org.springframework.validation.BindingResult
 import org.springframework.web.bind.annotation.*
@@ -32,21 +25,23 @@ class TicketController(private val ticketService: TicketService, private val cus
     }
 
     @GetMapping("/API/tickets/status/{status}")
-    fun getTicketsByStatus(@PathVariable status: TicketStatusValues): List<TicketDTO>?{
-        return ticketService.getTicketsByStatus(status)
+    fun getTicketsByStatus(@PathVariable status: String): List<TicketDTO>?{
+        val statusValue = TicketStatusValues.valueOf(status.uppercase())
+        return ticketService.getTicketsByStatus(statusValue)
     }
 
     @GetMapping("/API/tickets/expert/{expertId}")
-    fun getTicketsByExpert(@PathVariable expert: String): List<TicketDTO>?{
-        return ticketService.getTicketsByExpert(expert)
+    fun getTicketsByExpert(@PathVariable expertId: String): List<TicketDTO>?{
+        return ticketService.getTicketsByExpert(expertId)
     }
 
     @GetMapping("/API/tickets/priority/{priority}")
-    fun getTicketsByPriority(@PathVariable priority: TicketPriority): List<TicketDTO>?{
-        return ticketService.getTicketsByPriority(priority)
+    fun getTicketsByPriority(@PathVariable priority: String): List<TicketDTO>?{
+        val priorityValue = TicketPriority.valueOf(priority.uppercase())
+        return ticketService.getTicketsByPriority(priorityValue)
     }
 
-    @GetMapping("/API/tickets/customer/{customer}")
+    @GetMapping("/API/tickets/customer/{customerId}")
     fun getTicketsByCustomer(@PathVariable customerId: String): List<TicketDTO>?{
         return ticketService.getTicketsByCustomer(customerId)
     }
@@ -54,24 +49,14 @@ class TicketController(private val ticketService: TicketService, private val cus
     @PostMapping("/API/tickets/")
     @ResponseStatus(HttpStatus.CREATED)
     fun postTicket(
-        @RequestBody @Valid ts: TicketDTO,
-        br: BindingResult
+        @RequestBody ts: TicketInputDTO
     ) {
-        if (br.hasErrors())
-            throw BadRequestException("Bad request format!")
-        else {
-            val customerId = ts.id
-            var customer = customerService.getCustomer(customerId.toString())
-            if (customer != null) {
-                ts.customer = customer
-            }
-            ticketService.createTicket(ts)
-        }
+        ticketService.createTicket(ts)
     }
 
     @PutMapping("/API/tickets/{ticketId}")
     @ResponseStatus(HttpStatus.OK)
-    fun updateProfile(
+    fun updateTicket(
         @PathVariable("ticketId") ticketId: Long,
         @RequestBody @Valid p: TicketDTO,
         br: BindingResult
@@ -84,5 +69,4 @@ class TicketController(private val ticketService: TicketService, private val cus
             } else
                 throw ProfileNotFoundException("Ticket with given email doesn't exists!")
     }
-
 }

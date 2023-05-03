@@ -25,7 +25,7 @@ class AttachmentController(private val attachmentService: AttachmentService) {
 
     @PostMapping("API/attachments")
     fun postAttachment(
-        @RequestBody @Valid p: AttachmentDTO,
+        @RequestBody @Valid p: AttachmentInputDTO,
         br: BindingResult
     ){
         if (br.hasErrors())

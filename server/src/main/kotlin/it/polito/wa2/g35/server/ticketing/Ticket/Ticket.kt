@@ -17,19 +17,19 @@ class Ticket(
     var id: Long? = null,
 
     @Temporal(TemporalType.TIMESTAMP)
-    val creationTimeStamp: Date,
+    val creationTimestamp: Date,
 
     val issueDescription: String,
 
     @Enumerated(EnumType.STRING)
-    val priority: TicketPriority,
+    val priority: TicketPriority?,
 
     @Enumerated(EnumType.STRING)
     val status: TicketStatusValues,
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "expert_id")
-    val expert: Expert,
+    val expert: Expert?,
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id")
@@ -38,6 +38,6 @@ class Ticket(
     @ManyToOne(fetch = FetchType.LAZY)
     var customer: Customer,
 
-    @OneToMany(mappedBy = "ticket")
+    @OneToMany(mappedBy = "ticket", fetch = FetchType.LAZY)
     val statusHistory: MutableSet<TicketStatus> = mutableSetOf<TicketStatus>(),
     )

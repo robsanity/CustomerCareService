@@ -11,7 +11,11 @@ class TicketExceptions: ResponseEntityExceptionHandler() {
     @ExceptionHandler(TicketNotFoundException::class)
     fun handleProductNotFound(e: TicketNotFoundException) = ProblemDetail
         .forStatusAndDetail( HttpStatus.NOT_FOUND, e.message!!)
+    @ExceptionHandler(InvalidTicketStatusValueException::class)
+    fun handleTicketStatusValueNotFound(e: InvalidTicketStatusValueException) = ProblemDetail
+        .forStatusAndDetail( HttpStatus.NOT_FOUND, e.message!!)
 }
 
 class TicketNotFoundException(message : String) : RuntimeException(message)
+class InvalidTicketStatusValueException(message : String) : RuntimeException(message)
 

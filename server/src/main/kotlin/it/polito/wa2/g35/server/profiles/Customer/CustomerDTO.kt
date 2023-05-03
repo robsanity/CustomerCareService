@@ -1,7 +1,5 @@
 package it.polito.wa2.g35.server.profiles.Customer
 
-import it.polito.wa2.g35.server.profiles.Customer.Customer
-
 import jakarta.validation.constraints.Email
 import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.Size
@@ -20,7 +18,7 @@ fun Customer.toDTO() : CustomerDTO {
     return CustomerDTO(this.email, this.name, this.surname)
 }
 
-fun CustomerDTO.toProfile() : Customer {
+fun CustomerDTO.toCustomer() : Customer {
     return Customer(this.email, this.name, this.surname)
 }
 

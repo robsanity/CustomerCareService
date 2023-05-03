@@ -11,7 +11,7 @@ class Attachment(
     @Column(updatable = false, nullable = false)
     var id: Long? = null,
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     val message: Message,
 
     val fileContent: String

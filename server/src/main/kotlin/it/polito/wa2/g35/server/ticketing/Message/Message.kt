@@ -19,11 +19,8 @@ class Message(
 
     val messageText: String,
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     var ticket: Ticket?,
 
-    var sender: String?,
-
-    @OneToMany(mappedBy = "message")
-    val attachments: MutableSet<Attachment>? = mutableSetOf()
+    var sender: String?
 )

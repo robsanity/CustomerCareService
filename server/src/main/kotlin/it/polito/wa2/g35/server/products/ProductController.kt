@@ -17,6 +17,6 @@ class ProductController(private val productService: ProductService) {
 
     @GetMapping("/API/products/{productId}")
     fun getProduct(@PathVariable productId: String): ProductDTO? {
-        return productService.getProduct(productId)
+        return productService.getProductById(productId)
     }
 }

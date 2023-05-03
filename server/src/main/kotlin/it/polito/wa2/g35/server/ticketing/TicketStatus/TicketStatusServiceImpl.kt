@@ -1,8 +1,7 @@
 package it.polito.wa2.g35.server.ticketing.TicketStatus
 
-import it.polito.wa2.g35.server.ticketing.Ticket.TicketService
 import org.springframework.stereotype.Service
-import java.util.Date
+import java.util.*
 
 
 @Service

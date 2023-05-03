@@ -19,7 +19,7 @@ class OrderServiceImpl (private val orderRepository: OrderRepository) : OrderSer
     }
 
     override fun getOrdersByCustomer(idCustomer: String): List<OrderDTO> {
-        val customer = customerService.getCustomer( idCustomer )
+        val customer = customerService.getCustomerByEmail( idCustomer )
         val allOrders = orderRepository.findAll().map { it.toDTO() }
         val ordersByCustomer = allOrders.filter { it.customer.email == idCustomer }
 

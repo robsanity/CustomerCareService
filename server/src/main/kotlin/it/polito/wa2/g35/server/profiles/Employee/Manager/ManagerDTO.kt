@@ -1,7 +1,7 @@
 package it.polito.wa2.g35.server.profiles.Employee.Manager
 
 data class ManagerDTO (
-    val id: String,
+    val id: String?,
     val name: String,
     val surname: String,
     val email: String,

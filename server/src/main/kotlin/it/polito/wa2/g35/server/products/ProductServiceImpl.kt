@@ -11,7 +11,7 @@ class ProductServiceImpl(
         return productRepository.findAll().map { it.toDTO() }
     }
 
-    override fun getProduct(productId: String): ProductDTO? {
+    override fun getProductById(productId: String): ProductDTO? {
         val product = productRepository.findByIdOrNull(productId)?.toDTO()
         if(product != null)
             return product

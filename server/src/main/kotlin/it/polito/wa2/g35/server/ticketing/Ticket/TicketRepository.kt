@@ -16,6 +16,6 @@ interface TicketRepository: JpaRepository<Ticket, Long> {
 
      fun getTicketsByPriority(priority: TicketPriority) : List<Ticket>?
 
-     fun getTicketsByCustomer(idCustomer: String) : List<Ticket>?
+     fun getTicketsByCustomerEmail(idCustomer: String) : List<Ticket>?
 
 }

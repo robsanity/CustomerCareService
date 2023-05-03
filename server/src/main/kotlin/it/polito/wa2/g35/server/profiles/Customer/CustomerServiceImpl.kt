@@ -1,6 +1,5 @@
 package it.polito.wa2.g35.server.profiles.Customer
 
-import it.polito.wa2.g35.server.exceptions.*
 import it.polito.wa2.g35.server.profiles.DuplicateProfileException
 import it.polito.wa2.g35.server.profiles.ProfileNotFoundException
 import org.springframework.data.repository.findByIdOrNull
@@ -9,8 +8,8 @@ import org.springframework.stereotype.Service
 @Service
 class CustomerServiceImpl(private val profileRepository: CustomerRepository) : CustomerService {
 
-    override fun getCustomer(email: String): Customer? {
-        val profile = profileRepository.findByIdOrNull(email)
+    override fun getCustomerByEmail(email: String): CustomerDTO? {
+        val profile = profileRepository.findByIdOrNull(email)?.toDTO()
         if(profile != null) {
             return profile
         } else {

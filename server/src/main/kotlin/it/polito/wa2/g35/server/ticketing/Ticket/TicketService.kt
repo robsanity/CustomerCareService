@@ -15,9 +15,9 @@ interface TicketService {
 
     fun getTicketsByCustomer(idCustomer: String) : List<TicketDTO>
 
-    fun createTicket(ticket: TicketDTO) : TicketDTO?
+    fun createTicket(ticket: TicketInputDTO) : TicketDTO?
 
-    fun updateTicket(ticket: TicketDTO) : TicketDTO?
+    fun updateTicket(ticket: TicketInputDTO) : TicketDTO?
 
 
 }

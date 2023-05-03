@@ -13,3 +13,7 @@ fun Expert.toDTO() : ExpertDTO {
     return ExpertDTO(this.id, this.name, this.surname, this.email, this.specialization)
 }
 
+fun ExpertDTO.toExpert() : Expert {
+    return Expert(this.id, this.name, this.surname, this.email, this.specialization)
+}
+

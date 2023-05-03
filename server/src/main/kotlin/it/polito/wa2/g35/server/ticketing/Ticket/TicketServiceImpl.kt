@@ -109,7 +109,7 @@ class TicketServiceImpl (
             currentTicket.product,
             currentTicket.customer
         )
-        val ticketUpdated = ticketRepository.
+        val ticketUpdated = ticketToUpdate
         return ticketToUpdate
 
     }

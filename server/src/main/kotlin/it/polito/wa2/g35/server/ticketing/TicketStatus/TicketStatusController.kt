@@ -14,12 +14,8 @@ class TicketStatusController(private val ticketStatusService: TicketStatusServic
     @PostMapping("/API/status/")
     @ResponseStatus(HttpStatus.CREATED)
     fun postTicketStatus(
-        @RequestBody @Valid ts: TicketStatusDTO,
-        br: BindingResult
+        @RequestBody ts: TicketStatusDTO,
     ) {
-        if (br.hasErrors())
-            throw BadRequestException("Bad request format!")
-        else
-            ticketStatusService.createTicketStatus(ts)
+        ticketStatusService.createTicketStatus(ts)
     }
 }

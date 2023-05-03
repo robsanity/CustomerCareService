@@ -1,7 +1,7 @@
 package it.polito.wa2.g35.server.profiles.Customer
 
 interface CustomerService {
-    fun getCustomer(email: String) : CustomerDTO?
+    fun getCustomer(email: String) : Customer?
 
     fun postCustomer(profile: CustomerDTO?) : CustomerDTO?
 

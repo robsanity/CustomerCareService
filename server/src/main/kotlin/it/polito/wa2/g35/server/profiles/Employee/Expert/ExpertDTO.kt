@@ -12,3 +12,4 @@ data class ExpertDTO (
 fun Expert.toDTO() : ExpertDTO {
     return ExpertDTO(this.id, this.name, this.surname, this.email, this.specialization)
 }
+

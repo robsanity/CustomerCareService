@@ -15,15 +15,15 @@ class Message(
     var id: Long? = null,
 
     @Temporal(TemporalType.TIMESTAMP)
-    val messageTimestamp: Date,
+    val messageTimestamp: Date?,
 
     val messageText: String,
 
     @ManyToOne
-    var ticket: Ticket,
+    var ticket: Ticket?,
 
-    var sender: String,
+    var sender: String?,
 
     @OneToMany(mappedBy = "message")
-    val attachments: MutableSet<Attachment> = mutableSetOf()
+    val attachments: MutableSet<Attachment>? = mutableSetOf()
 )

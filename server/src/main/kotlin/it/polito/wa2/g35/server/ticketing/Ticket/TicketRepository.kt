@@ -12,7 +12,7 @@ interface TicketRepository: JpaRepository<Ticket, Long> {
 
      fun getTicketsByStatus(status: TicketStatusValues) : List<Ticket>?
 
-     fun getTicketsByExpert(idExpert: String) : List<Ticket>?
+     fun getTicketsByExpertId(idExpert: String) : List<Ticket>?
 
      fun getTicketsByPriority(priority: TicketPriority) : List<Ticket>?
 

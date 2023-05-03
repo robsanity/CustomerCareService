@@ -10,8 +10,8 @@ data class TicketStatusDTO (
     val statusTimestamp: Date?,
     val status: TicketStatusValues,
     val description: String?,
-    val ticket: Ticket,
-    val expert: Expert
+    val ticket: Ticket?,
+    val expert: Expert?
 )
 
 fun TicketStatus.toDTO() : TicketStatusDTO {

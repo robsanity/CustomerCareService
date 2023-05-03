@@ -6,11 +6,11 @@ import java.util.Date
 
 data class MessageDTO(
     val id: Long?,
-    val messageTimestamp: Date,
+    val messageTimestamp: Date?,
     val messageText: String,
-    val ticket: Ticket,
-    val sender: String,
-    val attachments: MutableSet<Attachment> = mutableSetOf()
+    val ticket: Ticket?,
+    val sender: String?,
+    val attachments: MutableSet<Attachment>? = mutableSetOf()
 )
 
 fun Message.toDTO() : MessageDTO {

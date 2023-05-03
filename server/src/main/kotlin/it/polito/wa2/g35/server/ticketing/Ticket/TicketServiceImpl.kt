@@ -4,6 +4,7 @@ import it.polito.wa2.g35.server.profiles.Customer.Customer
 import it.polito.wa2.g35.server.profiles.Customer.CustomerDTO
 import it.polito.wa2.g35.server.profiles.Customer.toDTO
 import it.polito.wa2.g35.server.profiles.DuplicateProfileException
+import it.polito.wa2.g35.server.profiles.ProfileNotFoundException
 import it.polito.wa2.g35.server.ticketing.TicketStatus.TicketStatusValues
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
@@ -37,7 +38,7 @@ class TicketServiceImpl (
 
     override fun getTicketsByExpert(idExpert: String): List<TicketDTO> {
         // if(idExpert != /TODO/ get all experts id )
-        val listTicket = ticketRepository.getTicketsByExpert(idExpert)?.map { it.toDTO() }
+        val listTicket = ticketRepository.getTicketsByExpertId(idExpert)?.map { it.toDTO() }
         if (listTicket != null)
             return listTicket
         else
@@ -50,7 +51,7 @@ class TicketServiceImpl (
         if (listTicket != null)
             return listTicket
         else
-            return emptyList() 
+            return emptyList()
     }
 
     override fun getTicketsByCustomer(idCustomer: String): List<TicketDTO> {
@@ -65,17 +66,48 @@ class TicketServiceImpl (
     override fun createTicket(ticket: TicketDTO): TicketDTO? {
         return if (ticket != null) {
             val checkIfTicketExsist = ticketRepository.findByIdOrNull(ticket.id)
-            if(checkIfTicketExsist == null){
-                ticketRepository.save(Ticket(ticket.id,ticket.creationTimeStamp,ticket.issueDescription,ticket.priority,ticket.status,ticket.expert,ticket.product,ticket.customer,ticket.statusHistory,ticket.messages)).toDTO()
+            if (checkIfTicketExsist == null) {
+                ticketRepository.save(
+                    Ticket(
+                        ticket.id,
+                        ticket.creationTimeStamp,
+                        ticket.issueDescription,
+                        ticket.priority,
+                        ticket.status,
+                        ticket.expert,
+                        ticket.product,
+                        ticket.customer,
+                        ticket.statusHistory,
+                    )
+                ).toDTO()
             } else {
-                throw DuplicateProfileException("Profile with given email already exists!")
+                throw DuplicateProfileException("Ticket with given id already exists!")
             }
         } else null
     }
 
 
     override fun updateTicket(ticket: TicketDTO): TicketDTO? {
-        TODO("Not yet implemented")
+        return if (ticket != null) {
+            val checkIfTicketExists = ticketRepository.findByIdOrNull(ticket.id)
+            if (checkIfTicketExists != null) {
+                ticketRepository.save(Ticket(
+                    ticket.id,
+                    ticket.creationTimeStamp,
+                    ticket.issueDescription,
+                    ticket.priority,
+                    ticket.status,
+                    ticket.expert,
+                    ticket.product,
+                    ticket.customer,
+                    ticket.statusHistory,
+                )).toDTO()
+            } else {
+                throw ProfileNotFoundException("Ticket with given id doesn't exists!")
+            }
+        } else {
+            null
+        }
     }
 
 }

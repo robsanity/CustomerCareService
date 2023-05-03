@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*
 class CustomerController(private val customerService: CustomerService) {
     @GetMapping("/API/profiles/{email}")
     @ResponseStatus(HttpStatus.OK)
-    fun getProfile(@PathVariable email: String): CustomerDTO? {
+    fun getProfile(@PathVariable email: String): Customer? {
         return customerService.getCustomer(email)
     }
 

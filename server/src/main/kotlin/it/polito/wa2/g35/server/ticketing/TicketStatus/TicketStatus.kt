@@ -22,17 +22,9 @@ class TicketStatus(
     val description: String?,
 
     @ManyToOne
-    var ticket: Ticket,
+    var ticket: Ticket?,
 
     @ManyToOne
-    var expert: Expert,
+    var expert: Expert?,
 
     )
-
-enum class TicketStatusValues {
-    OPEN,
-    IN_PROGRESS,
-    CLOSED,
-    RESOLVED,
-    REOPENED
-}

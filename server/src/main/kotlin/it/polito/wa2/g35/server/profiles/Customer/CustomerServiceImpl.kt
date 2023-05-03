@@ -9,8 +9,8 @@ import org.springframework.stereotype.Service
 @Service
 class CustomerServiceImpl(private val profileRepository: CustomerRepository) : CustomerService {
 
-    override fun getCustomer(email: String): CustomerDTO? {
-        val profile = profileRepository.findByIdOrNull(email)?.toDTO()
+    override fun getCustomer(email: String): Customer? {
+        val profile = profileRepository.findByIdOrNull(email)
         if(profile != null) {
             return profile
         } else {

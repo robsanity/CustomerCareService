@@ -21,10 +21,10 @@ class TicketStatus(
 
     val description: String?,
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     var ticket: Ticket?,
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     var expert: Expert?,
 
     )

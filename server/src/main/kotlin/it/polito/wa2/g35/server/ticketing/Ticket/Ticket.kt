@@ -27,13 +27,15 @@ class Ticket(
     @Enumerated(EnumType.STRING)
     val status: TicketStatusValues,
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "expert_id")
     val expert: Expert,
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "product_id")
     var product: Product,
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     var customer: Customer,
 
     @OneToMany(mappedBy = "ticket")

@@ -1,13 +1,12 @@
 package it.polito.wa2.g35.server.ticketing.Message
 
-import it.polito.wa2.g35.server.exceptions.BadRequestException
 import it.polito.wa2.g35.server.ticketing.Ticket.TicketNotFoundException
 import it.polito.wa2.g35.server.ticketing.Ticket.TicketService
 import it.polito.wa2.g35.server.ticketing.Ticket.toTicket
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
-import java.util.Date
+import java.util.*
 
 @Service
 class MessageServiceImpl (private val messageRepository: MessageRepository) : MessageService {

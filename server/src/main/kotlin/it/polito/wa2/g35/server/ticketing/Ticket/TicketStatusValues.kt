@@ -5,9 +5,30 @@ enum class TicketStatusValues {
     IN_PROGRESS,
     CLOSED,
     RESOLVED,
-    REOPENED
-}
+    REOPENED;
 
-fun TicketStatusValues.checkStatusUpdateConsistency(oldStatus: TicketStatusValues, newStatus: TicketStatusValues){
-    
+    companion object {
+        fun checkStatusUpdateConsistency(oldStatus: TicketStatusValues, newStatus: String) : Boolean {
+            val newTicketStatus = try {TicketStatusValues.valueOf(newStatus.uppercase())} catch (e : IllegalArgumentException) {
+                throw TicketStatusValueInvalidException("Ticket Status not valid!")
+            }
+            when (oldStatus) {
+                OPEN -> {
+                    return newTicketStatus in arrayOf(IN_PROGRESS, RESOLVED, CLOSED)
+                }
+                IN_PROGRESS -> {
+                    return newTicketStatus in arrayOf(RESOLVED, CLOSED)
+                }
+                CLOSED -> {
+                    return newTicketStatus in arrayOf(REOPENED)
+                }
+                RESOLVED -> {
+                    return newTicketStatus in arrayOf(REOPENED, CLOSED)
+                }
+                REOPENED -> {
+                    return newTicketStatus in arrayOf(RESOLVED, CLOSED, IN_PROGRESS)
+                }
+            }
+        }
+    }
 }

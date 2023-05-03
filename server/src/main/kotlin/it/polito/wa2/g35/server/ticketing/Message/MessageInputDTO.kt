@@ -4,7 +4,7 @@ import java.util.*
 
 data class MessageInputDTO (
     val id: Long?,
-    val messageTimestamp: Date,
+    val messageTimestamp: Date?,
     val messageText: String,
     val ticket: Long,
     val sender: String

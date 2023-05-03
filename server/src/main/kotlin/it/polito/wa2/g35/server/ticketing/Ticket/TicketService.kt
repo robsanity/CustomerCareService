@@ -20,5 +20,4 @@ interface TicketService {
     fun updateTicketStatus(ticketId: Long, statusValue: String) : TicketDTO?
 
     fun updateTicketPriority(ticketId: Long, priorityValue: String) : TicketDTO?
-
 }

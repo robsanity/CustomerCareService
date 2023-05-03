@@ -64,6 +64,6 @@ class TicketController(private val ticketService: TicketService, private val cus
             if (ticketId == p.id) {
                 ticketService.updateTicket(p)
             } else
-                throw TicketConflictException("Ticket with given email doesn't exists!")
+                throw TicketConflictException("Ticket with given id doesn't exists!")
     }
 }

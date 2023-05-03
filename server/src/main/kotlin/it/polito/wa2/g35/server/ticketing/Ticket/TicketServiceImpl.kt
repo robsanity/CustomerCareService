@@ -139,16 +139,19 @@ class TicketServiceImpl(
                 currentTicket.customer
             )
         )
-        ticketStatusService.createTicketStatus(
-            TicketStatusDTO(
-                id = null,
-                statusTimestamp = null,
-                status = ticketToUpdate.status,
-                description = ticketToUpdate.issueDescription,
-                ticket = ticketToUpdate,
-                expert = ticketToUpdate.expert
+
+        if(currentTicket.status != ticketToUpdate.status){
+            ticketStatusService.createTicketStatus(
+                TicketStatusDTO(
+                    id = null,
+                    statusTimestamp = null,
+                    status = ticketToUpdate.status,
+                    description = ticketToUpdate.issueDescription,
+                    ticket = ticketToUpdate,
+                    expert = ticketToUpdate.expert
+                )
             )
-        )
+        }
         return ticketToUpdate.toDTO()
     }
 

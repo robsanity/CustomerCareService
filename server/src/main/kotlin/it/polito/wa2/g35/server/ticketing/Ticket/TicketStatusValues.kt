@@ -7,3 +7,7 @@ enum class TicketStatusValues {
     RESOLVED,
     REOPENED
 }
+
+fun TicketStatusValues.checkStatusUpdateConsistency(oldStatus: TicketStatusValues, newStatus: TicketStatusValues){
+    
+}

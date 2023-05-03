@@ -2,9 +2,6 @@ package it.polito.wa2.g35.server.ticketing.Ticket;
 
 import it.polito.wa2.g35.server.exceptions.BadRequestException
 import it.polito.wa2.g35.server.profiles.Customer.CustomerService
-import it.polito.wa2.g35.server.profiles.ProfileNotFoundException
-import it.polito.wa2.g35.server.ticketing.TicketStatus.TicketStatusValues
-import jakarta.validation.Valid
 import org.springframework.http.HttpStatus
 import org.springframework.validation.BindingResult
 import org.springframework.web.bind.annotation.*
@@ -58,7 +55,7 @@ class TicketController(private val ticketService: TicketService, private val cus
     @ResponseStatus(HttpStatus.OK)
     fun updateTicket(
         @PathVariable("ticketId") ticketId: Long,
-        @RequestBody @Valid p: TicketDTO,
+        @RequestBody p: TicketInputDTO,
         br: BindingResult
     ) {
         if (br.hasErrors())
@@ -67,6 +64,6 @@ class TicketController(private val ticketService: TicketService, private val cus
             if (ticketId == p.id) {
                 ticketService.updateTicket(p)
             } else
-                throw ProfileNotFoundException("Ticket with given email doesn't exists!")
+                throw TicketConflictException("Ticket with given email doesn't exists!")
     }
 }

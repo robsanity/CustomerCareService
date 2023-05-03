@@ -11,11 +11,18 @@ class TicketExceptions: ResponseEntityExceptionHandler() {
     @ExceptionHandler(TicketNotFoundException::class)
     fun handleProductNotFound(e: TicketNotFoundException) = ProblemDetail
         .forStatusAndDetail( HttpStatus.NOT_FOUND, e.message!!)
-    @ExceptionHandler(InvalidTicketStatusValueException::class)
-    fun handleTicketStatusValueNotFound(e: InvalidTicketStatusValueException) = ProblemDetail
-        .forStatusAndDetail( HttpStatus.NOT_FOUND, e.message!!)
+    @ExceptionHandler(TicketConflictException::class)
+    fun handleTicketConflict(e: TicketConflictException) = ProblemDetail
+        .forStatusAndDetail( HttpStatus.CONFLICT, e.message!!)
+    @ExceptionHandler(TicketStatusValueInvalidException::class)
+    fun handleTicketStatusValueInvalid(e: TicketStatusValueInvalidException) = ProblemDetail
+        .forStatusAndDetail( HttpStatus.CONFLICT, e.message!!)
+    @ExceptionHandler(TicketPriorityInvalidException::class)
+    fun handleTicketPriorityInvalid(e: TicketPriorityInvalidException) = ProblemDetail
+        .forStatusAndDetail( HttpStatus.CONFLICT, e.message!!)
 }
 
 class TicketNotFoundException(message : String) : RuntimeException(message)
-class InvalidTicketStatusValueException(message : String) : RuntimeException(message)
-
+class TicketConflictException(message: String) : RuntimeException(message)
+class TicketStatusValueInvalidException(message : String) : RuntimeException(message)
+class TicketPriorityInvalidException(message: String) : RuntimeException(message)

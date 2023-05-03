@@ -4,7 +4,6 @@ import it.polito.wa2.g35.server.products.Product
 import it.polito.wa2.g35.server.profiles.Customer.Customer
 import it.polito.wa2.g35.server.profiles.Employee.Expert.Expert
 import it.polito.wa2.g35.server.ticketing.TicketStatus.TicketStatus
-import it.polito.wa2.g35.server.ticketing.TicketStatus.TicketStatusValues
 import jakarta.persistence.*
 import java.util.*
 
@@ -25,7 +24,7 @@ class Ticket(
     val priority: TicketPriority?,
 
     @Enumerated(EnumType.STRING)
-    val status: TicketStatusValues,
+    val status: TicketStatusValues?,
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "expert_id")

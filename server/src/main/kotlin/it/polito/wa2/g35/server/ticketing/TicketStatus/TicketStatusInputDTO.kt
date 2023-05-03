@@ -1,5 +1,6 @@
 package it.polito.wa2.g35.server.ticketing.TicketStatus
 
+import it.polito.wa2.g35.server.ticketing.Ticket.TicketStatusValues
 import java.util.*
 
 data class TicketStatusInputDTO (

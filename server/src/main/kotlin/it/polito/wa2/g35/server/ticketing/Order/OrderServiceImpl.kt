@@ -31,23 +31,6 @@ class OrderServiceImpl (private val orderRepository: OrderRepository) : OrderSer
 
 
     override fun getOrderByCustomerAndProduct(idCustomer: String, idProduct: String): OrderDTO? {
-        /*
-            val customer = customerService.getCustomer( idCustomer )
-            val product = productService.getProduct(idProduct)
-        */
         return orderRepository.getOrdersByCustomerAndProduct(idCustomer, idProduct)?.toDTO()
-
-        /*val allOrders = orderRepository.findAll().map { it.toDTO() }
-        orderRepository.findBy()
-        try {
-            val orderByCustomerAndProduct = allOrders.map {
-                it.customer.toString() == idCustomer
-                        && it.product.toString() == idProduct
-            }
-            return orderByCustomerAndProduct
-        } catch ( e: IllegalArgumentException) {
-            return null
-        } */
-
     }
 }

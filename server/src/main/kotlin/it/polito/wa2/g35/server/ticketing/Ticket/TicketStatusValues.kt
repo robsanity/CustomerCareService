@@ -1,4 +1,4 @@
-package it.polito.wa2.g35.server.ticketing.TicketStatus
+package it.polito.wa2.g35.server.ticketing.Ticket
 
 enum class TicketStatusValues {
     OPEN,

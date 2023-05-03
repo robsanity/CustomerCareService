@@ -2,6 +2,7 @@ package it.polito.wa2.g35.server.ticketing.TicketStatus
 
 import it.polito.wa2.g35.server.profiles.Employee.Expert.Expert
 import it.polito.wa2.g35.server.ticketing.Ticket.Ticket
+import it.polito.wa2.g35.server.ticketing.Ticket.TicketStatusValues
 import jakarta.persistence.*
 import java.util.*
 
@@ -17,7 +18,7 @@ class TicketStatus(
     val statusTimestamp: Date?,
 
     @Enumerated(EnumType.STRING)
-    val status: TicketStatusValues,
+    val status: TicketStatusValues?,
 
     val description: String?,
 

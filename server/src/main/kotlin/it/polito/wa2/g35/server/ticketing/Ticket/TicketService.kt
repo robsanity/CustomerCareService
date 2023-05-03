@@ -1,7 +1,5 @@
 package it.polito.wa2.g35.server.ticketing.Ticket
 
-import it.polito.wa2.g35.server.ticketing.TicketStatus.TicketStatusValues
-
 interface TicketService {
     fun getAll() : List<TicketDTO>
 
@@ -18,6 +16,5 @@ interface TicketService {
     fun createTicket(ticket: TicketInputDTO) : TicketDTO?
 
     fun updateTicket(ticket: TicketInputDTO) : TicketDTO?
-
 
 }

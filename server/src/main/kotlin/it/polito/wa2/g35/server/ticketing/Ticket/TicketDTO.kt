@@ -3,7 +3,6 @@ package it.polito.wa2.g35.server.ticketing.Ticket
 import it.polito.wa2.g35.server.products.Product
 import it.polito.wa2.g35.server.profiles.Customer.Customer
 import it.polito.wa2.g35.server.profiles.Employee.Expert.Expert
-import it.polito.wa2.g35.server.ticketing.TicketStatus.TicketStatusValues
 import java.util.*
 
 data class TicketDTO(
@@ -11,7 +10,7 @@ data class TicketDTO(
     val creationTimestamp: Date,
     val issueDescription: String,
     val priority: TicketPriority?,
-    val status: TicketStatusValues,
+    val status: TicketStatusValues?,
     val expert: Expert?,
     val product: Product,
     var customer: Customer

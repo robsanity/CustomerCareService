@@ -21,10 +21,10 @@ class Ticket(
     val issueDescription: String,
 
     @Enumerated(EnumType.STRING)
-    val priority: TicketPriority?,
+    var priority: TicketPriority?,
 
     @Enumerated(EnumType.STRING)
-    val status: TicketStatusValues?,
+    var status: TicketStatusValues?,
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "expert_id")

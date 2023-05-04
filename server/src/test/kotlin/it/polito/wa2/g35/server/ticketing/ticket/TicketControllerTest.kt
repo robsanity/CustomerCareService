@@ -16,13 +16,8 @@ import it.polito.wa2.g35.server.ticketing.order.Order
 import it.polito.wa2.g35.server.ticketing.order.OrderInputDTO
 import it.polito.wa2.g35.server.ticketing.order.OrderService
 import it.polito.wa2.g35.server.products.ProductDTO
-import it.polito.wa2.g35.server.products.ProductService
 import it.polito.wa2.g35.server.profiles.customer.CustomerDTO
-import it.polito.wa2.g35.server.profiles.customer.CustomerService
 import it.polito.wa2.g35.server.profiles.employee.expert.ExpertDTO
-import it.polito.wa2.g35.server.profiles.employee.expert.ExpertService
-import it.polito.wa2.g35.server.ticketing.order.OrderInputDTO
-import it.polito.wa2.g35.server.ticketing.order.OrderService
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.BeforeEach
@@ -121,9 +116,9 @@ class TicketControllerTest {
         val customer1 = Customer("prova@example.it", "Franco", "Galati")
         println(Date())
         val order1 = OrderInputDTO(null, "prova@example.it", "1", Date(), Date(130, 1, 1))
-        expertService.postExpert(expert1.toDTO())
-        productService.postProduct(product1.toDTO())
-        customerService.postCustomer(customer1.toDTO())
+        expertService.createExpert(expert1.toDTO())
+        productService.createProduct(product1.toDTO())
+        customerService.createCustomer(customer1.toDTO())
         orderService.createOrder(order1)
         val ticket1 = TicketInputDTO(
             null,

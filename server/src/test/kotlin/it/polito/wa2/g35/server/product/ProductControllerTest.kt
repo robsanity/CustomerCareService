@@ -1,13 +1,9 @@
 package it.polito.wa2.g35.server.product
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import it.polito.wa2.g35.server.products.Product
 import it.polito.wa2.g35.server.products.ProductDTO
 import it.polito.wa2.g35.server.products.ProductRepository
 import it.polito.wa2.g35.server.products.ProductService
-import it.polito.wa2.g35.server.profiles.customer.CustomerDTO
-import it.polito.wa2.g35.server.profiles.customer.CustomerRepository
-import it.polito.wa2.g35.server.ticketing.ticket.TicketDTO
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -60,8 +56,6 @@ class ProductControllerTest {
         productRepository.deleteAll()
     }
 
-
-    /*
     @Test
     fun `Create a Product` (){
         val product = ProductDTO("prod1", "Ciao")
@@ -80,12 +74,13 @@ class ProductControllerTest {
         Assertions.assertEquals(product.id, createdProduct.id)
         Assertions.assertEquals(product.name, createdProduct.name)
 
-    } */
+    }
+
     @Test
     fun `Create a Product with already existing id` (){
         val product = ProductDTO("1", "Ciao")
         productService.createProduct(product)
-        val result = mockMvc
+        mockMvc
             .perform(
                 MockMvcRequestBuilders.post("/API/products")
                     .contentType(MediaType.APPLICATION_JSON)

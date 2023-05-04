@@ -26,10 +26,10 @@ class ProductController(private val productService: ProductService) {
     fun postProduct(
         @RequestBody @Valid p: ProductDTO,
         br: BindingResult
-    ) {
+    ) : ProductDTO? {
         if (br.hasErrors())
             throw BadRequestException("Bad request format!")
         else
-            productService.createProduct(p)
+            return productService.createProduct(p)
     }
 }

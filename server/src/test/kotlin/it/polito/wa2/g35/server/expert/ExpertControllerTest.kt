@@ -3,15 +3,14 @@ package it.polito.wa2.g35.server.expert
 import com.fasterxml.jackson.databind.ObjectMapper
 import it.polito.wa2.g35.server.products.*
 import it.polito.wa2.g35.server.profiles.customer.*
-import it.polito.wa2.g35.server.profiles.employee.expert.Expert
-import it.polito.wa2.g35.server.profiles.employee.expert.ExpertRepository
-import it.polito.wa2.g35.server.profiles.employee.expert.ExpertService
-import it.polito.wa2.g35.server.profiles.employee.expert.toDTO
+import it.polito.wa2.g35.server.profiles.employee.expert.*
 import it.polito.wa2.g35.server.ticketing.order.OrderRepository
 import it.polito.wa2.g35.server.ticketing.order.OrderService
+import it.polito.wa2.g35.server.ticketing.ticket.TicketDTO
 import net.minidev.json.JSONArray
 import org.junit.jupiter.api.BeforeEach
 import org.hamcrest.Matchers.*
+import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
@@ -35,6 +34,7 @@ import java.util.*
 @AutoConfigureMockMvc
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @Testcontainers
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 class ExpertControllerTest {
     @Autowired
     lateinit var mockMvc: MockMvc
@@ -77,7 +77,6 @@ class ExpertControllerTest {
     }
 
     @BeforeEach
-    @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
     fun beforeEach() {
         expertRepository.deleteAll()
         customerRepository.deleteAll()
@@ -88,19 +87,20 @@ class ExpertControllerTest {
     fun `create a new Expert`() {
         val expert = Expert("10", "Luca", "Ruberto", "luca10@example.it", "Boh")
         val expertDto = expert.toDTO()
-        expertService.createExpert(expertDto)
 
-        mockMvc.perform(
+        val result = mockMvc.perform(
             MockMvcRequestBuilders.post("/API/experts")
                 .contentType("application/json")
                 .content(objectMapper.writeValueAsString(expertDto))
         ).andExpect(MockMvcResultMatchers.status().isCreated)
-            .andExpect(MockMvcResultMatchers.jsonPath("$.id").value("10"))
-            .andExpect(MockMvcResultMatchers.jsonPath("$.name").value("Luca"))
-            .andExpect(MockMvcResultMatchers.jsonPath("$.surname").value("Ruberto"))
-            .andExpect(MockMvcResultMatchers.jsonPath("$.email").value("luca10@example.it"))
-            .andExpect(MockMvcResultMatchers.jsonPath("$.specialization").value("Boh"))
+            .andReturn()
 
+        val returnedExpert = objectMapper.readValue(result.response.contentAsString, ExpertDTO::class.java)
+        Assertions.assertEquals(expertDto?.id, returnedExpert.id)
+        Assertions.assertEquals(expertDto?.name, returnedExpert.name)
+        Assertions.assertEquals(expertDto?.surname, returnedExpert.surname)
+        Assertions.assertEquals(expertDto?.email, returnedExpert.email)
+        Assertions.assertEquals(expertDto?.specialization, returnedExpert.specialization)
     }
 
     @Test

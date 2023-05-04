@@ -13,7 +13,7 @@ class OrderExceptions: ResponseEntityExceptionHandler() {
         .forStatusAndDetail( HttpStatus.NOT_FOUND, e.message!!)
     @ExceptionHandler(WarrantyExpiredException::class)
     fun handleWarrantyExpired(e: WarrantyExpiredException) = ProblemDetail
-        .forStatusAndDetail( HttpStatus.NOT_FOUND, e.message!!)
+        .forStatusAndDetail( HttpStatus.CONFLICT, e.message!!)
 }
 
 class OrderNotFoundException(message : String) : RuntimeException(message)

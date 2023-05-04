@@ -115,7 +115,7 @@ class TicketServiceImpl(
                 )
             )
             return ticketToSave.toDTO()
-                }
+        }
     }
 
 
@@ -125,7 +125,7 @@ class TicketServiceImpl(
             getTicketById(ticket.id!!)?.toTicket() ?: throw TicketNotFoundException("Ticket not found with this id!")
         val expert = expertService.getExpertById(ticket.expertId)?.toExpert()
             ?: throw ProfileNotFoundException("Expert not found with this id!")
-        if(!TicketStatusValues.checkStatusUpdateConsistency(currentTicket.status, ticket.status))
+        if (!TicketStatusValues.checkStatusUpdateConsistency(currentTicket.status, ticket.status))
             throw TicketStatusUpdateConflictException("Ticket Status update conflict!")
         val ticketToUpdate = ticketRepository.save(
             Ticket(
@@ -149,7 +149,7 @@ class TicketServiceImpl(
                 currentTicket.customer
             )
         )
-        if(currentTicket.status != ticketToUpdate.status){
+        if (currentTicket.status != ticketToUpdate.status) {
             ticketStatusService.createTicketStatus(
                 TicketStatusDTO(
                     id = null,
@@ -171,7 +171,7 @@ class TicketServiceImpl(
         } catch (e: IllegalArgumentException) {
             throw TicketStatusValueInvalidException("Ticket Status not valid!")
         }
-        if(!TicketStatusValues.checkStatusUpdateConsistency(ticket.status, statusValue))
+        if (!TicketStatusValues.checkStatusUpdateConsistency(ticket.status, statusValue))
             throw TicketStatusUpdateConflictException("Ticket Status update conflict!")
         ticket.status = status
         ticket = ticketRepository.save(ticket)

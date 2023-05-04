@@ -18,7 +18,6 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.http.MediaType
-import org.springframework.test.annotation.DirtiesContext
 import org.springframework.test.context.DynamicPropertyRegistry
 import org.springframework.test.context.DynamicPropertySource
 import org.springframework.test.web.servlet.MockMvc
@@ -33,7 +32,6 @@ import java.util.*
 @AutoConfigureMockMvc
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @Testcontainers
-//@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 class TicketControllerTest {
 
     @Autowired
@@ -210,7 +208,7 @@ class TicketControllerTest {
     }
 
     @Test
-    fun testPostTicket() {
+    fun testCreateTicket() {
         ticketRepository.deleteAll()
         val ticket = TicketInputDTO(
             null,
@@ -225,7 +223,7 @@ class TicketControllerTest {
 
         val requestBody = objectMapper.writeValueAsString(ticket)
 
-        val result = mockMvc.perform(
+        mockMvc.perform(
             MockMvcRequestBuilders
                 .post("/API/tickets/")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -234,6 +232,42 @@ class TicketControllerTest {
             .andReturn()
 
         assertEquals(1, ticketRepository.count())
+    }
+
+    @Test
+    fun testCreateTicketWithWarrantyExpired() {
+        val dateCreation = Date()
+        ticketRepository.deleteAll()
+        orderRepository.deleteAll()
+        orderService.createOrder(
+            OrderInputDTO(
+                null,
+                "prova@example.it",
+                "1",
+                dateCreation,
+                dateCreation
+            )
+        )
+        val ticket = TicketInputDTO(
+            null,
+            null,
+            "description",
+            null,
+            TicketStatusValues.OPEN.name,
+            "1",
+            "1",
+            "prova@example.it"
+        )
+
+        val requestBody = objectMapper.writeValueAsString(ticket)
+
+        mockMvc.perform(
+            MockMvcRequestBuilders
+                .post("/API/tickets/")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(requestBody)
+        ).andExpect(MockMvcResultMatchers.status().isConflict)
+            .andReturn()
     }
 
     @Test
@@ -268,7 +302,7 @@ class TicketControllerTest {
     @Test
     fun testGetTicketsByStatusWrong() {
         ticketRepository.deleteAll()
-        val ticket1 = ticketService.createTicket(
+        ticketService.createTicket(
             TicketInputDTO(
                 null,
                 null,
@@ -332,7 +366,7 @@ class TicketControllerTest {
     @Test
     fun testGetTicketsByExpertWrong() {
         ticketRepository.deleteAll()
-        val ticket1 = ticketService.createTicket(
+        ticketService.createTicket(
             TicketInputDTO(
                 null,
                 null,
@@ -345,7 +379,7 @@ class TicketControllerTest {
             )
         )
 
-        val result = mockMvc.perform(
+        mockMvc.perform(
             MockMvcRequestBuilders.get("/API/tickets/expert/99")
                 .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(MockMvcResultMatchers.status().isNotFound)
@@ -431,6 +465,223 @@ class TicketControllerTest {
 
         mockMvc.perform(
             MockMvcRequestBuilders.get("/API/tickets/priority/wrong")
+                .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(MockMvcResultMatchers.status().isConflict)
+            .andReturn()
+    }
+
+    @Test
+    fun testGetTicketsByCustomer() {
+        ticketRepository.deleteAll()
+        val ticket1 = ticketService.createTicket(
+            TicketInputDTO(
+                null,
+                null,
+                "description 1",
+                null,
+                TicketStatusValues.OPEN.name,
+                null,
+                "1",
+                "prova@example.it"
+            )
+        )
+
+        val result = mockMvc.perform(
+            MockMvcRequestBuilders.get("/API/tickets/customer/${ticket1?.customer?.email}")
+                .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(MockMvcResultMatchers.status().isOk)
+            .andReturn()
+
+        val content = result.response.contentAsString
+        val tickets = objectMapper.readValue(content, Array<TicketDTO>::class.java)
+        assertEquals(1, tickets.size)
+        assertEquals(ticket1?.id, tickets[0].id)
+    }
+
+    @Test
+    fun testGetTicketsByCustomerWrong() {
+        ticketRepository.deleteAll()
+        ticketService.createTicket(
+            TicketInputDTO(
+                null,
+                null,
+                "description 1",
+                null,
+                TicketStatusValues.OPEN.name,
+                null,
+                "1",
+                "prova@example.it"
+            )
+        )
+
+        mockMvc.perform(
+            MockMvcRequestBuilders.get("/API/tickets/customer/wrong@wrong.it")
+                .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(MockMvcResultMatchers.status().isNotFound)
+            .andReturn()
+    }
+
+    @Test
+    fun testUpdateTicket() {
+        ticketRepository.deleteAll()
+        val ticket1 = ticketService.createTicket(
+            TicketInputDTO(
+                null,
+                null,
+                "description 1",
+                null,
+                TicketStatusValues.OPEN.name,
+                null,
+                "1",
+                "prova@example.it"
+            )
+        )
+
+        val result = mockMvc.perform(
+            MockMvcRequestBuilders.put("/API/tickets/${ticket1?.id}")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(
+                    objectMapper.writeValueAsString(
+                        TicketInputDTO(
+                            ticket1?.id,
+                            null,
+                            "description 2",
+                            TicketPriority.LOW.name,
+                            TicketStatusValues.IN_PROGRESS.name,
+                            "1",
+                            ticket1?.product?.id.toString(),
+                            ticket1?.customer?.email.toString()
+                        )
+                    )
+                )
+        ).andExpect(MockMvcResultMatchers.status().isOk)
+            .andReturn()
+
+        val content = result.response.contentAsString
+        val ticket = objectMapper.readValue(content, TicketDTO::class.java)
+
+        assertEquals(ticket?.status?.name, TicketStatusValues.IN_PROGRESS.name)
+        assertEquals(ticket?.priority?.name, TicketPriority.LOW.name)
+    }
+
+    @Test
+    fun testUpdateTicketStatus() {
+        ticketRepository.deleteAll()
+        val ticket1 = ticketService.createTicket(
+            TicketInputDTO(
+                null,
+                null,
+                "description 1",
+                null,
+                TicketStatusValues.OPEN.name,
+                null,
+                "1",
+                "prova@example.it"
+            )
+        )
+
+        mockMvc.perform(
+            MockMvcRequestBuilders.patch("/API/tickets/${ticket1?.id}/status/in_progress")
+                .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(MockMvcResultMatchers.status().isOk)
+            .andReturn()
+
+        val ticket = ticketService.getTicketById(ticket1?.id!!)
+
+        assertEquals(ticket?.status?.name, TicketStatusValues.IN_PROGRESS.name)
+    }
+
+    @Test
+    fun testUpdateTicketStatusWrong() {
+        ticketRepository.deleteAll()
+        val ticket1 = ticketService.createTicket(
+            TicketInputDTO(
+                null,
+                null,
+                "description 1",
+                null,
+                TicketStatusValues.OPEN.name,
+                null,
+                "1",
+                "prova@example.it"
+            )
+        )
+
+        mockMvc.perform(
+            MockMvcRequestBuilders.patch("/API/tickets/${ticket1?.id}/status/wrong")
+                .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(MockMvcResultMatchers.status().isConflict)
+            .andReturn()
+    }
+
+    @Test
+    fun testUpdateTicketStatusFlowConflict() {
+        ticketRepository.deleteAll()
+        val ticket1 = ticketService.createTicket(
+            TicketInputDTO(
+                null,
+                null,
+                "description 1",
+                null,
+                TicketStatusValues.OPEN.name,
+                null,
+                "1",
+                "prova@example.it"
+            )
+        )
+
+        mockMvc.perform(
+            MockMvcRequestBuilders.patch("/API/tickets/${ticket1?.id}/status/reopened")
+                .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(MockMvcResultMatchers.status().isConflict)
+            .andReturn()
+    }
+
+    @Test
+    fun testUpdateTicketPriority() {
+        ticketRepository.deleteAll()
+        val ticket1 = ticketService.createTicket(
+            TicketInputDTO(
+                null,
+                null,
+                "description 1",
+                null,
+                TicketStatusValues.OPEN.name,
+                null,
+                "1",
+                "prova@example.it"
+            )
+        )
+
+        mockMvc.perform(
+            MockMvcRequestBuilders.patch("/API/tickets/${ticket1?.id}/priority/medium")
+                .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(MockMvcResultMatchers.status().isOk)
+            .andReturn()
+
+        val ticket = ticketService.getTicketById(ticket1?.id!!)
+
+        assertEquals(ticket?.priority?.name, TicketPriority.MEDIUM.name)
+    }
+
+    @Test
+    fun testUpdateTicketPriorityWrong() {
+        ticketRepository.deleteAll()
+        val ticket1 = ticketService.createTicket(
+            TicketInputDTO(
+                null,
+                null,
+                "description 1",
+                null,
+                TicketStatusValues.OPEN.name,
+                null,
+                "1",
+                "prova@example.it"
+            )
+        )
+
+        mockMvc.perform(
+            MockMvcRequestBuilders.patch("/API/tickets/${ticket1?.id}/priority/wrong")
                 .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(MockMvcResultMatchers.status().isConflict)
             .andReturn()

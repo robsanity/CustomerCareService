@@ -238,7 +238,7 @@ class TicketControllerTest {
             .andReturn()
 
         val insertedTicket = objectMapper.readValue(result.response.contentAsString, TicketDTO::class.java)
-        
+
         // Then
 /*val returnedTicket = objectMapper.readValue(result.response.contentAsString, TicketDTO::class.java)
         assertEquals(ticket?.id, returnedTicket.id)

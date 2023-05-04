@@ -19,4 +19,12 @@ class ProductServiceImpl(
             throw ProductNotFoundException("Product not found with this product id!")
     }
 
+    override fun postProduct(product: ProductDTO) : ProductDTO? {
+        val newProduct = Product(
+            product.id,
+            product.name,
+        )
+        return productRepository.save(newProduct).toDTO()
+    }
+
 }

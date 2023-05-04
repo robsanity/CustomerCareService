@@ -1,4 +1,4 @@
-package it.polito.wa2.g35.server.ticketing.ticket;
+package it.polito.wa2.g35.server.ticketing.ticket
 
 import it.polito.wa2.g35.server.exceptions.BadRequestException
 import org.springframework.http.HttpStatus

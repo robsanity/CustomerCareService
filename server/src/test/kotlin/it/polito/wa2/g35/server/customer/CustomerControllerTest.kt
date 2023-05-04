@@ -1,4 +1,4 @@
-package it.polito.wa2.g35.server.expert
+package it.polito.wa2.g35.server.customer
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import it.polito.wa2.g35.server.profiles.customer.*

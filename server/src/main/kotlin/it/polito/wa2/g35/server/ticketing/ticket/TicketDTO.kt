@@ -1,6 +1,5 @@
 package it.polito.wa2.g35.server.ticketing.ticket
 
-import com.fasterxml.jackson.annotation.JsonCreator
 import it.polito.wa2.g35.server.products.Product
 import it.polito.wa2.g35.server.profiles.customer.Customer
 import it.polito.wa2.g35.server.profiles.employee.expert.Expert

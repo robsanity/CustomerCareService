@@ -14,10 +14,10 @@ class AttachmentServiceImpl(private val attachmentRepository: AttachmentReposito
     lateinit var messageService: MessageService
 
     override fun getAttachmentsByMessageById(messageId: Long?): List<AttachmentDTO> {
-        if (messageId != null) {
-             return attachmentRepository.getAttachmentsByMessageId(messageId).map { it.toDTO() }
+        return if (messageId != null) {
+            attachmentRepository.getAttachmentsByMessageId(messageId).map { it.toDTO() }
         } else {
-            return emptyList()
+            emptyList()
         }
     }
 

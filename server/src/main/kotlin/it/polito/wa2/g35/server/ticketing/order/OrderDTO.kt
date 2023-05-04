@@ -2,8 +2,7 @@ package it.polito.wa2.g35.server.ticketing.order
 
 import it.polito.wa2.g35.server.products.Product
 import it.polito.wa2.g35.server.profiles.customer.Customer
-import it.polito.wa2.g35.server.ticketing.message.Message
-import java.util.Date
+import java.util.*
 
 data class OrderDTO (
     val id: Long?,

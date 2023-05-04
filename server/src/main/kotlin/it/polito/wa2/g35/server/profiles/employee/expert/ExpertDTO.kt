@@ -1,9 +1,5 @@
 package it.polito.wa2.g35.server.profiles.employee.expert
 
-import it.polito.wa2.g35.server.products.Product
-import it.polito.wa2.g35.server.profiles.customer.Customer
-import java.util.*
-
 
 data class ExpertDTO (
     val id: String?,

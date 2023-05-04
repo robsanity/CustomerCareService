@@ -1,6 +1,5 @@
 package it.polito.wa2.g35.server.products
 
-import it.polito.wa2.g35.server.profiles.DuplicateProfileException
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 

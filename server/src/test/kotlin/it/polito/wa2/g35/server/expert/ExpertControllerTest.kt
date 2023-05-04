@@ -1,16 +1,14 @@
 package it.polito.wa2.g35.server.expert
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import it.polito.wa2.g35.server.products.*
-import it.polito.wa2.g35.server.profiles.customer.*
+import it.polito.wa2.g35.server.products.ProductRepository
+import it.polito.wa2.g35.server.profiles.customer.CustomerRepository
+import it.polito.wa2.g35.server.profiles.customer.CustomerService
 import it.polito.wa2.g35.server.profiles.employee.expert.*
 import it.polito.wa2.g35.server.ticketing.order.OrderRepository
 import it.polito.wa2.g35.server.ticketing.order.OrderService
-import it.polito.wa2.g35.server.ticketing.ticket.TicketDTO
-import net.minidev.json.JSONArray
-import org.junit.jupiter.api.BeforeEach
-import org.hamcrest.Matchers.*
 import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
@@ -26,8 +24,6 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers
 import org.testcontainers.containers.PostgreSQLContainer
 import org.testcontainers.junit.jupiter.Container
 import org.testcontainers.junit.jupiter.Testcontainers
-import java.text.SimpleDateFormat
-import java.util.*
 
 
 @SpringBootTest(webEnvironment= SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -43,24 +39,13 @@ class ExpertControllerTest {
     lateinit var objectMapper: ObjectMapper
 
     @Autowired
-    lateinit var orderRepository: OrderRepository
-
-    @Autowired
-    lateinit var orderService: OrderService
-
-    @Autowired
     lateinit var customerRepository: CustomerRepository
 
     @Autowired
     lateinit var expertRepository: ExpertRepository
-    @Autowired
-    lateinit var customerService: CustomerService
 
     @Autowired
     lateinit var expertService: ExpertService
-
-    @Autowired
-    lateinit var productRepository: ProductRepository
 
     companion object {
         @Container
@@ -96,11 +81,11 @@ class ExpertControllerTest {
             .andReturn()
 
         val returnedExpert = objectMapper.readValue(result.response.contentAsString, ExpertDTO::class.java)
-        Assertions.assertEquals(expertDto?.id, returnedExpert.id)
-        Assertions.assertEquals(expertDto?.name, returnedExpert.name)
-        Assertions.assertEquals(expertDto?.surname, returnedExpert.surname)
-        Assertions.assertEquals(expertDto?.email, returnedExpert.email)
-        Assertions.assertEquals(expertDto?.specialization, returnedExpert.specialization)
+        Assertions.assertEquals(expertDto.id, returnedExpert.id)
+        Assertions.assertEquals(expertDto.name, returnedExpert.name)
+        Assertions.assertEquals(expertDto.surname, returnedExpert.surname)
+        Assertions.assertEquals(expertDto.email, returnedExpert.email)
+        Assertions.assertEquals(expertDto.specialization, returnedExpert.specialization)
     }
 
     @Test

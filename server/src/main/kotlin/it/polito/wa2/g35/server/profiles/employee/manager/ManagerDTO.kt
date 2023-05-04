@@ -1,9 +1,5 @@
 package it.polito.wa2.g35.server.profiles.employee.manager
 
-import it.polito.wa2.g35.server.products.Product
-import it.polito.wa2.g35.server.profiles.customer.Customer
-import java.util.*
-
 data class ManagerDTO (
     val id: String?,
     val name: String,

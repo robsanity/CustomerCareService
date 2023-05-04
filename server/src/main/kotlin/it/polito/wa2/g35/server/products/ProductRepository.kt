@@ -6,6 +6,4 @@ import org.springframework.stereotype.Repository
 
 // capable of interacting with a database
 @Repository
-interface ProductRepository: JpaRepository<Product, String> {
-
-}
+interface ProductRepository: JpaRepository<Product, String>

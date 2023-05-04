@@ -1,10 +1,8 @@
 package it.polito.wa2.g35.server.profiles.customer
 
-import it.polito.wa2.g35.server.products.Product
 import jakarta.validation.constraints.Email
 import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.Size
-import java.util.*
 
 
 data class CustomerDTO(

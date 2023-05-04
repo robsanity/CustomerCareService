@@ -6,9 +6,8 @@ import it.polito.wa2.g35.server.products.toProduct
 import it.polito.wa2.g35.server.profiles.ProfileNotFoundException
 import it.polito.wa2.g35.server.profiles.customer.CustomerService
 import it.polito.wa2.g35.server.profiles.customer.toCustomer
-import org.springframework.stereotype.Service
 import org.springframework.beans.factory.annotation.Autowired
-import java.util.*
+import org.springframework.stereotype.Service
 
 @Service
 class OrderServiceImpl(private val orderRepository: OrderRepository) : OrderService {
@@ -28,10 +27,10 @@ class OrderServiceImpl(private val orderRepository: OrderRepository) : OrderServ
         val allOrders = orderRepository.findAll().map { it.toDTO() }
         val ordersByCustomer = allOrders.filter { it.customer.email == idCustomer }
 
-        if (ordersByCustomer.isNotEmpty())
-            return ordersByCustomer
+        return if (ordersByCustomer.isNotEmpty())
+            ordersByCustomer
         else
-            return emptyList()
+            emptyList()
     }
 
     override fun getOrderByCustomerAndProduct(idCustomer: String, idProduct: String): OrderDTO? {

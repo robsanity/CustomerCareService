@@ -8,7 +8,6 @@ import it.polito.wa2.g35.server.ticketing.order.OrderInputDTO
 import it.polito.wa2.g35.server.ticketing.order.OrderRepository
 import it.polito.wa2.g35.server.ticketing.order.OrderService
 import it.polito.wa2.g35.server.ticketing.ticketStatus.TicketStatusRepository
-import org.hamcrest.Matchers.hasSize
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test

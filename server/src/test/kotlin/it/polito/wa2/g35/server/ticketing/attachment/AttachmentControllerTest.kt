@@ -1,4 +1,4 @@
-package it.polito.wa2.g35.server.ticketing.ticket
+package it.polito.wa2.g35.server.ticketing.attachment
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import it.polito.wa2.g35.server.products.*
@@ -7,17 +7,12 @@ import it.polito.wa2.g35.server.profiles.employee.expert.Expert
 import it.polito.wa2.g35.server.profiles.employee.expert.ExpertRepository
 import it.polito.wa2.g35.server.profiles.employee.expert.ExpertService
 import it.polito.wa2.g35.server.profiles.employee.expert.toDTO
-import it.polito.wa2.g35.server.ticketing.attachment.AttachmentDTO
-import it.polito.wa2.g35.server.ticketing.attachment.AttachmentInputDTO
-import it.polito.wa2.g35.server.ticketing.attachment.AttachmentRepository
-import it.polito.wa2.g35.server.ticketing.attachment.AttachmentService
-import it.polito.wa2.g35.server.ticketing.message.Message
-import it.polito.wa2.g35.server.ticketing.message.MessageDTO
 import it.polito.wa2.g35.server.ticketing.message.MessageInputDTO
 import it.polito.wa2.g35.server.ticketing.message.MessageService
 import it.polito.wa2.g35.server.ticketing.order.OrderInputDTO
 import it.polito.wa2.g35.server.ticketing.order.OrderRepository
 import it.polito.wa2.g35.server.ticketing.order.OrderService
+import it.polito.wa2.g35.server.ticketing.ticket.*
 import it.polito.wa2.g35.server.ticketing.ticketStatus.TicketStatusRepository
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -151,7 +146,7 @@ class AttachmentControllerTest {
     fun `Get attachment by Id` (){
         // Given
         val ticketList = ticketService.getAll()
-        val message = messageService.postMessage(MessageInputDTO(null, Date(), "Ciao",ticketList.get(0).id!!, "Expert"))
+        val message = messageService.postMessage(MessageInputDTO(null, Date(), "Ciao", ticketList[0].id!!, "Expert"))
         val attachment = attachmentService.postAttachment(AttachmentInputDTO(null, message?.id!!, "Boh"))
         // Wheg
         val result = mockMvc.perform(MockMvcRequestBuilders.get("/API/attachments/${attachment?.id}")
@@ -171,11 +166,11 @@ class AttachmentControllerTest {
     fun `Get attachment by message Id`(){
         val ticketList = ticketService.getAll()
 
-        messageService.postMessage(MessageInputDTO(null, Date(), "Ciao", ticketList.get(0).id!!, "Expert"))
-        val messageList = messageService.getMessagesByTicket(ticketList.get(0).id!!)
-        val attachmentInput = AttachmentInputDTO(null, messageList.get(0).id!! , "Boh")
+        messageService.postMessage(MessageInputDTO(null, Date(), "Ciao", ticketList[0].id!!, "Expert"))
+        val messageList = messageService.getMessagesByTicket(ticketList[0].id!!)
+        val attachmentInput = AttachmentInputDTO(null, messageList[0].id!! , "Boh")
         val attachment = attachmentService.postAttachment(attachmentInput)
-        val result = mockMvc.perform(MockMvcRequestBuilders.get("/API/attachments/message/${messageList.get(0)?.id}")
+        val result = mockMvc.perform(MockMvcRequestBuilders.get("/API/attachments/message/${messageList[0].id}")
             .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(MockMvcResultMatchers.status().isOk)
             .andReturn()
@@ -184,7 +179,7 @@ class AttachmentControllerTest {
         val returnedAttachment = objectMapper.readValue(result.response.contentAsString, Array<AttachmentDTO>::class.java)
 
         assertEquals(attachment?.id, returnedAttachment[0].id)
-        assertEquals(attachment?.message?.id, returnedAttachment[0].message?.id)
+        assertEquals(attachment?.message?.id, returnedAttachment[0].message.id)
         assertEquals(attachment?.fileContent, returnedAttachment[0].fileContent)
     }
 
@@ -192,9 +187,9 @@ class AttachmentControllerTest {
     fun `Post attachment by Id` (){
         val ticketList = ticketService.getAll()
 
-        messageService.postMessage(MessageInputDTO(null, Date(), "Ciao", ticketList.get(0).id!!, "Expert"))
-        val messageList = messageService.getMessagesByTicket(ticketList.get(0).id!!)
-        val attachmentInput = AttachmentInputDTO(null, messageList.get(0).id!! , "Boh")
+        messageService.postMessage(MessageInputDTO(null, Date(), "Ciao", ticketList[0].id!!, "Expert"))
+        val messageList = messageService.getMessagesByTicket(ticketList[0].id!!)
+        val attachmentInput = AttachmentInputDTO(null, messageList[0].id!! , "Boh")
 
         // Wheg
 

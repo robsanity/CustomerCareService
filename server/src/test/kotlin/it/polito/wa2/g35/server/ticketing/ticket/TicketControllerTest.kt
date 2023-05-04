@@ -1,6 +1,14 @@
 package it.polito.wa2.g35.server.ticketing.ticket
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import it.polito.wa2.g35.server.products.ProductDTO
+import it.polito.wa2.g35.server.products.ProductService
+import it.polito.wa2.g35.server.profiles.customer.CustomerDTO
+import it.polito.wa2.g35.server.profiles.customer.CustomerService
+import it.polito.wa2.g35.server.profiles.employee.expert.ExpertDTO
+import it.polito.wa2.g35.server.profiles.employee.expert.ExpertService
+import it.polito.wa2.g35.server.ticketing.order.OrderInputDTO
+import it.polito.wa2.g35.server.ticketing.order.OrderService
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
@@ -17,6 +25,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers
 import org.testcontainers.containers.PostgreSQLContainer
 import org.testcontainers.junit.jupiter.Container
 import org.testcontainers.junit.jupiter.Testcontainers
+import java.util.*
 
 @SpringBootTest(webEnvironment=SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
@@ -36,6 +45,20 @@ class TicketControllerTest {
     @Autowired
     lateinit var ticketRepository: TicketRepository
 
+    @Autowired
+    lateinit var customerService: CustomerService
+
+    @Autowired
+    lateinit var productService: ProductService
+
+    @Autowired
+    lateinit var expertService: ExpertService
+
+    @Autowired
+    lateinit var orderService: OrderService
+
+
+
     companion object {
         @Container
         val postgres = PostgreSQLContainer("postgres:latest")
@@ -48,79 +71,81 @@ class TicketControllerTest {
             registry.add("spring.datasource.password", postgres::getPassword)
             registry.add("spring.jpa.hibernate.ddl-auto") { "create-drop" }
         }
-
-        @JvmStatic
-        @BeforeAll
-        fun setup(ticketControllerTest: TicketControllerTest) {
-            ticketControllerTest.ticketRepository.deleteAll()
-            val ticket1 = TicketInputDTO(
-                null,
-                null,
-                "description 1",
-                TicketPriority.LOW.name,
-                TicketStatusValues.OPEN.name,
-                "123",
-                "112233",
-                "test1@example.com"
-            )
-            val ticket2 = TicketInputDTO(
-                null,
-                null,
-                "description 2",
-                TicketPriority.MEDIUM.name,
-                TicketStatusValues.OPEN.name,
-                "456",
-                "445566",
-                "test2@example.com"
-            )
-            val ticket3 = TicketInputDTO(
-                null,
-                null,
-                "description 3",
-                TicketPriority.HIGH.name,
-                TicketStatusValues.CLOSED.name,
-                "789",
-                "778899",
-                "test3@example.com"
-            )
-            ticketControllerTest.ticketService.createTicket(ticket1)
-            ticketControllerTest.ticketService.createTicket(ticket2)
-            ticketControllerTest.ticketService.createTicket(ticket3)
-        }
     }
 
     @Test
-    fun `Given no tickets, when getTickets, then return empty list`() {
+    fun `Empty Ticket list`() {
         // Given
-        //ticketRepository.deleteAll()
+        ticketRepository.deleteAll()
 
         // When
         val result = mockMvc
-            .perform(MockMvcRequestBuilders.get("/API/tickets")
-                .contentType(MediaType.APPLICATION_JSON)
+            .perform(
+                MockMvcRequestBuilders.get("/API/tickets")
+                    .contentType(MediaType.APPLICATION_JSON)
             ).andExpect(MockMvcResultMatchers.status().isOk)
             .andReturn()
 
         // Then
-        assertEquals(3, result.response.contentLength)
+        assertEquals("[]", result.response.contentAsString)
     }
 
     @Test
-    fun `Given one ticket, when getTicketById, then return the ticket`() {
+    fun `Insert one ticket and get it`() {
         // Given
         ticketRepository.deleteAll()
-        val ticket = TicketInputDTO(null, null, "description", TicketPriority.LOW.name, TicketStatusValues.OPEN.name, "123", "112233", "test@example.com")
-        val savedTicket = ticketService.createTicket(ticket)
+        val expert = expertService.createExpert(ExpertDTO("exp123", "name", "surname", "expert@example.com", "automotive"))
+        val product = productService.createProduct(
+            ProductDTO(
+                "1234abc",
+                "Example Product"
+            )
+        )
+        val customer = customerService.createCustomer(
+            CustomerDTO(
+                "customer@example.com",
+                "customer name",
+                "customer surname"
+            )
+        )
+        orderService.createOrder(
+            OrderInputDTO(
+                null,
+                customer!!.email,
+                product!!.id,
+                Date(),
+                Date(Date().time + 2 * 60 * 60 * 1000) //Now + 2 hours
+            )
+        )
+        val ticket = ticketService.createTicket(
+            TicketInputDTO(
+                null,
+                null,
+                "description",
+                null,
+                TicketStatusValues.OPEN.name,
+                expert!!.id,
+                product.id,
+                customer.email
+            )
+        )
 
         // When
         val result = mockMvc.perform(
-            MockMvcRequestBuilders.get("/API/tickets/${savedTicket?.id}")
+            MockMvcRequestBuilders.get("/API/tickets/${ticket?.id}")
                 .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(MockMvcResultMatchers.status().isOk)
             .andReturn()
 
         // Then
         val returnedTicket = objectMapper.readValue(result.response.contentAsString, TicketDTO::class.java)
-        assertEquals(savedTicket, returnedTicket)
+        assertEquals(ticket?.id, returnedTicket.id)
+        assertEquals(ticket?.creationTimestamp, returnedTicket.creationTimestamp)
+        assertEquals(ticket?.issueDescription, returnedTicket.issueDescription)
+        assertEquals(ticket?.status, returnedTicket.status)
+        assertEquals(ticket?.expert?.id, returnedTicket.expert?.id)
+        assertEquals(ticket?.product?.id, returnedTicket.product.id)
+        assertEquals(ticket?.customer?.email, returnedTicket.customer.email)
+        assertEquals(ticket?.priority, returnedTicket.priority)
     }
 }

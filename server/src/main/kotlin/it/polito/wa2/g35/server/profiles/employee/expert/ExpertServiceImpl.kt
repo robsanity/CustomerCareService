@@ -16,7 +16,7 @@ class ExpertServiceImpl(private val expertRepository: ExpertRepository) : Expert
         return expertRepository.findBySpecialization(specialization).map { it.toDTO() }
     }
 
-    override fun postExpert(expert: ExpertDTO): ExpertDTO? {
+    override fun createExpert(expert: ExpertDTO): ExpertDTO? {
         return if (expert != null) {
             val checkIfProfileExists = expertRepository.findByIdOrNull(expert.id)
             if(checkIfProfileExists == null) {

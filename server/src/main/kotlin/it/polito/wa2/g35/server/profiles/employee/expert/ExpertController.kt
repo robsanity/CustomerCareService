@@ -1,7 +1,6 @@
 package it.polito.wa2.g35.server.profiles.employee.expert
 
 import it.polito.wa2.g35.server.exceptions.BadRequestException
-import it.polito.wa2.g35.server.profiles.customer.CustomerDTO
 import jakarta.validation.Valid
 import org.springframework.http.HttpStatus
 import org.springframework.validation.BindingResult
@@ -28,6 +27,6 @@ class ExpertController(private val expertService: ExpertService){
         if (br.hasErrors())
             throw BadRequestException("Bad request format!")
         else
-            expertService.postExpert(p)
+            expertService.createExpert(p)
     }
 }

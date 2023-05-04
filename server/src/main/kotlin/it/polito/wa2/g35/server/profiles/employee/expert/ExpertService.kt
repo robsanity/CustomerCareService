@@ -5,5 +5,5 @@ interface ExpertService {
 
     fun getExpertBySpecialization(specialization: String?) : List<ExpertDTO>
 
-    fun postExpert(expert: ExpertDTO): ExpertDTO?
+    fun createExpert(expert: ExpertDTO): ExpertDTO?
 }

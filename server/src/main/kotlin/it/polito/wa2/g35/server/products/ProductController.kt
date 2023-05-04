@@ -1,7 +1,6 @@
 package it.polito.wa2.g35.server.products
 
 import it.polito.wa2.g35.server.exceptions.BadRequestException
-import it.polito.wa2.g35.server.profiles.customer.CustomerDTO
 import jakarta.validation.Valid
 import org.springframework.http.HttpStatus
 import org.springframework.validation.BindingResult
@@ -31,6 +30,6 @@ class ProductController(private val productService: ProductService) {
         if (br.hasErrors())
             throw BadRequestException("Bad request format!")
         else
-            productService.postProduct(p)
+            productService.createProduct(p)
     }
 }

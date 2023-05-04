@@ -207,7 +207,7 @@ class TicketControllerTest {
     }
 
     @Test
-    fun testPostTicket() {
+    fun testCreateTicket() {
         ticketRepository.deleteAll()
         val ticket = TicketInputDTO(
             null,
@@ -222,7 +222,7 @@ class TicketControllerTest {
 
         val requestBody = objectMapper.writeValueAsString(ticket)
 
-        val result = mockMvc.perform(
+        mockMvc.perform(
             MockMvcRequestBuilders
                 .post("/API/tickets/")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -231,6 +231,42 @@ class TicketControllerTest {
             .andReturn()
 
         assertEquals(1, ticketRepository.count())
+    }
+
+    @Test
+    fun testCreateTicketWithWarrantyExpired() {
+        val dateCreation = Date()
+        ticketRepository.deleteAll()
+        orderRepository.deleteAll()
+        orderService.createOrder(
+            OrderInputDTO(
+                null,
+                "prova@example.it",
+                "1",
+                dateCreation,
+                dateCreation
+            )
+        )
+        val ticket = TicketInputDTO(
+            null,
+            null,
+            "description",
+            null,
+            TicketStatusValues.OPEN.name,
+            "1",
+            "1",
+            "prova@example.it"
+        )
+
+        val requestBody = objectMapper.writeValueAsString(ticket)
+
+        mockMvc.perform(
+            MockMvcRequestBuilders
+                .post("/API/tickets/")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(requestBody)
+        ).andExpect(MockMvcResultMatchers.status().isConflict)
+            .andReturn()
     }
 
     @Test
@@ -265,7 +301,7 @@ class TicketControllerTest {
     @Test
     fun testGetTicketsByStatusWrong() {
         ticketRepository.deleteAll()
-        val ticket1 = ticketService.createTicket(
+        ticketService.createTicket(
             TicketInputDTO(
                 null,
                 null,
@@ -329,7 +365,7 @@ class TicketControllerTest {
     @Test
     fun testGetTicketsByExpertWrong() {
         ticketRepository.deleteAll()
-        val ticket1 = ticketService.createTicket(
+        ticketService.createTicket(
             TicketInputDTO(
                 null,
                 null,
@@ -342,7 +378,7 @@ class TicketControllerTest {
             )
         )
 
-        val result = mockMvc.perform(
+        mockMvc.perform(
             MockMvcRequestBuilders.get("/API/tickets/expert/99")
                 .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(MockMvcResultMatchers.status().isNotFound)
@@ -464,7 +500,7 @@ class TicketControllerTest {
     @Test
     fun testGetTicketsByCustomerWrong() {
         ticketRepository.deleteAll()
-        val ticket1 = ticketService.createTicket(
+        ticketService.createTicket(
             TicketInputDTO(
                 null,
                 null,
@@ -543,7 +579,7 @@ class TicketControllerTest {
             )
         )
 
-        val result = mockMvc.perform(
+        mockMvc.perform(
             MockMvcRequestBuilders.patch("/API/tickets/${ticket1?.id}/status/in_progress")
                 .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(MockMvcResultMatchers.status().isOk)
@@ -616,7 +652,7 @@ class TicketControllerTest {
             )
         )
 
-        val result = mockMvc.perform(
+        mockMvc.perform(
             MockMvcRequestBuilders.patch("/API/tickets/${ticket1?.id}/priority/medium")
                 .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(MockMvcResultMatchers.status().isOk)
@@ -643,7 +679,7 @@ class TicketControllerTest {
             )
         )
 
-        val result = mockMvc.perform(
+        mockMvc.perform(
             MockMvcRequestBuilders.patch("/API/tickets/${ticket1?.id}/priority/wrong")
                 .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(MockMvcResultMatchers.status().isConflict)

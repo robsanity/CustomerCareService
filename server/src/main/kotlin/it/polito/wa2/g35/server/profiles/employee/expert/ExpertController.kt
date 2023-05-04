@@ -23,10 +23,10 @@ class ExpertController(private val expertService: ExpertService){
     fun postExpert(
         @RequestBody @Valid p: ExpertDTO,
         br: BindingResult
-    ) {
+    ) : ExpertDTO? {
         if (br.hasErrors())
             throw BadRequestException("Bad request format!")
         else
-            expertService.createExpert(p)
+            return expertService.createExpert(p)
     }
 }

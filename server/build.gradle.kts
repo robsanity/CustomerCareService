@@ -6,6 +6,7 @@ plugins {
     kotlin("jvm") version "1.7.22"
     kotlin("plugin.spring") version "1.7.22"
     kotlin("plugin.jpa") version "1.7.22"
+    id("com.google.cloud.tools.jib") version "3.3.1"
 }
 
 group = "it.polito.wa2.g35"
@@ -46,5 +47,11 @@ tasks.withType<Test> {
 dependencyManagement {
     imports {
         mavenBom("org.testcontainers:testcontainers-bom:1.16.3")
+    }
+}
+
+jib {
+    to {
+        image ="lab02-server:latest"
     }
 }

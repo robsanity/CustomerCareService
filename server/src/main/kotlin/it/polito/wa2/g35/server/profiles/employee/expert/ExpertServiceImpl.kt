@@ -20,7 +20,7 @@ class ExpertServiceImpl(private val expertRepository: ExpertRepository) : Expert
         return if (expert != null) {
             val checkIfProfileExists = expertRepository.findByIdOrNull(expert.id)
             if(checkIfProfileExists == null) {
-                expertRepository.save(Expert(expert.id, expert.name, expert.surname, expert.email,expert.specialization)).toDTO()
+                return expertRepository.save(Expert(expert.id, expert.name, expert.surname, expert.email,expert.specialization)).toDTO()
             } else {
                 throw DuplicateProfileException("Profile with given email already exists!")
             }

@@ -22,7 +22,6 @@ import org.testcontainers.containers.PostgreSQLContainer
 import org.testcontainers.junit.jupiter.Container
 import org.testcontainers.junit.jupiter.Testcontainers
 import java.text.SimpleDateFormat
-import java.util.*
 
 
 @SpringBootTest(webEnvironment= SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -77,45 +76,45 @@ class OrderControllerTest {
         productRepository.deleteAll()
 
         // CREATE CUSTOMERS
-        val customer1 = Customer(
+        val customer1 = CustomerDTO(
             "michele.galati@example.com",
             "michele",
             "galati"
-        ).toDTO()
-        val customer2 = Customer(
+        )
+        val customer2 = CustomerDTO(
             "roberto.diciaula@example.com",
             "roberto",
             "di ciaula"
-        ).toDTO()
-        val customer3 = Customer(
+        )
+        val customer3 = CustomerDTO(
             "michele.morgigno@example.com",
             "michele",
             "morgigno"
-        ).toDTO()
+        )
         customerService.createCustomer(customer1)
         customerService.createCustomer(customer2)
         customerService.createCustomer(customer3)
 
         // CREATE PRODUCTS
-        val product1 = Product(
+        val product1 = ProductDTO(
             "prod1",
             "iPhone 11 pro",
-        ).toDTO()
-        val product2 = Product(
+        )
+        val product2 = ProductDTO(
             "prod2",
             "MacBook Pro 14",
-        ).toDTO()
-        val product3 = Product(
+        )
+        val product3 = ProductDTO(
             "prod3",
             "Samsung Galaxy S21",
-        ).toDTO()
+        )
         productService.createProduct(product1)
         productService.createProduct(product2)
         productService.createProduct(product3)
     }
 
     @Test
-    fun `create a new Order`() {
+    fun createNewOrder () {
         // Given
         //orderRepository.deleteAll()
 
@@ -393,7 +392,6 @@ class OrderControllerTest {
         orderService.createOrder(order2)
         orderService.createOrder(order3)
 
-        val customerId = "michele.galati@example.com"
         val customer = CustomerDTO(
             "michele.galati@example.com",
             "michele",
@@ -401,7 +399,7 @@ class OrderControllerTest {
         )
 
         mockMvc.perform(
-            MockMvcRequestBuilders.get("/API/orders/${customer?.email}")
+            MockMvcRequestBuilders.get("/API/orders/${customer.email}")
                 .contentType("application/json")
                 .content(objectMapper.writeValueAsString(order1))
         ).andExpect(MockMvcResultMatchers.status().isOk)
@@ -453,7 +451,6 @@ class OrderControllerTest {
         orderService.createOrder(order2)
         orderService.createOrder(order3)
 
-        val customerId = "michele.galati@example.com"
         val customer = CustomerDTO(
             "michelle.galati@example.com",
             "michele",
@@ -461,7 +458,7 @@ class OrderControllerTest {
         )
 
         mockMvc.perform(
-            MockMvcRequestBuilders.get("/API/orders/${customer?.email}")
+            MockMvcRequestBuilders.get("/API/orders/${customer.email}")
                 .contentType("application/json")
                 .content(objectMapper.writeValueAsString(order1))
         ).andExpect(MockMvcResultMatchers.status().isNotFound)

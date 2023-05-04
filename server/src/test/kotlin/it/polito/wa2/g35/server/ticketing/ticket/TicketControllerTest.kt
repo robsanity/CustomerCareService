@@ -2,27 +2,21 @@ package it.polito.wa2.g35.server.ticketing.ticket
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import it.polito.wa2.g35.server.products.Product
+import it.polito.wa2.g35.server.products.ProductDTO
 import it.polito.wa2.g35.server.products.ProductService
 import it.polito.wa2.g35.server.products.toDTO
 import it.polito.wa2.g35.server.profiles.customer.Customer
-import it.polito.wa2.g35.server.profiles.customer.CustomerRepository
+import it.polito.wa2.g35.server.profiles.customer.CustomerDTO
 import it.polito.wa2.g35.server.profiles.customer.CustomerService
 import it.polito.wa2.g35.server.profiles.customer.toDTO
 import it.polito.wa2.g35.server.profiles.employee.expert.Expert
-import it.polito.wa2.g35.server.profiles.employee.expert.ExpertRepository
+import it.polito.wa2.g35.server.profiles.employee.expert.ExpertDTO
 import it.polito.wa2.g35.server.profiles.employee.expert.ExpertService
 import it.polito.wa2.g35.server.profiles.employee.expert.toDTO
-import it.polito.wa2.g35.server.ticketing.order.Order
 import it.polito.wa2.g35.server.ticketing.order.OrderInputDTO
 import it.polito.wa2.g35.server.ticketing.order.OrderService
-import it.polito.wa2.g35.server.products.ProductDTO
-import it.polito.wa2.g35.server.profiles.customer.CustomerDTO
-import it.polito.wa2.g35.server.profiles.employee.expert.ExpertDTO
 import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.BeforeAll
-import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import org.mockito.Mock
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
@@ -37,9 +31,6 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers
 import org.testcontainers.containers.PostgreSQLContainer
 import org.testcontainers.junit.jupiter.Container
 import org.testcontainers.junit.jupiter.Testcontainers
-import java.text.SimpleDateFormat
-import java.time.LocalDate
-import java.util.*
 import java.util.*
 
 @SpringBootTest(webEnvironment=SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -220,15 +211,7 @@ class TicketControllerTest {
             MockMvcRequestBuilders.get("/API/tickets/${ticket?.id}")
                 .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(MockMvcResultMatchers.status().isOk)
-            .perform(
-                MockMvcRequestBuilders.get("/API/tickets")
-                    .contentType(MediaType.APPLICATION_JSON)
-            ).andExpect(MockMvcResultMatchers.status().isOk)
             .andReturn()
-
-        val content = result.response.contentAsString
-        val tickets = ObjectMapper().readValue(content, Array<TicketDTO>::class.java)
-        assertEquals(3, tickets.size)
 
         // Then
         val returnedTicket = objectMapper.readValue(result.response.contentAsString, TicketDTO::class.java)

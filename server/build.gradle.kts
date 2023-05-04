@@ -28,6 +28,8 @@ dependencies {
     testImplementation("org.apache.httpcomponents:httpclient")
     testImplementation ("org.testcontainers:junit-jupiter:1.16.3")
     testImplementation("org.testcontainers:postgresql:1.16.3")
+    testImplementation("org.junit.jupiter:junit-jupiter-params")
+
 }
 
 tasks.withType<KotlinCompile> {

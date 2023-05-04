@@ -3,7 +3,6 @@ package it.polito.wa2.g35.server.ticketing.ticket
 import it.polito.wa2.g35.server.products.Product
 import it.polito.wa2.g35.server.profiles.customer.Customer
 import it.polito.wa2.g35.server.profiles.employee.expert.Expert
-import it.polito.wa2.g35.server.ticketing.ticketStatus.TicketStatus
 import jakarta.persistence.*
 import java.util.*
 
@@ -24,7 +23,7 @@ class Ticket(
     var priority: TicketPriority?,
 
     @Enumerated(EnumType.STRING)
-    var status: TicketStatusValues?,
+    var status: TicketStatusValues,
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "expert_id")
@@ -36,7 +35,4 @@ class Ticket(
 
     @ManyToOne(fetch = FetchType.LAZY)
     var customer: Customer,
-
-    @OneToMany(mappedBy = "ticket", fetch = FetchType.LAZY)
-    val statusHistory: MutableSet<TicketStatus> = mutableSetOf<TicketStatus>(),
     )

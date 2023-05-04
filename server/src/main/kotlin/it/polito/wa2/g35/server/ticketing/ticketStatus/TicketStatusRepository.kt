@@ -5,4 +5,5 @@ import org.springframework.stereotype.Repository
 
 @Repository
 interface TicketStatusRepository : JpaRepository<TicketStatus, Long> {
+    fun getTicketStatusesByTicketId(ticketId: Long) : List<TicketStatus>
 }

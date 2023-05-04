@@ -4,4 +4,6 @@ interface TicketStatusService {
 
     fun createTicketStatus(ticketStatus: TicketStatusDTO) : TicketStatusDTO?
 
+    fun getTicketStatusesByTicketId(ticketId: Long) : List<TicketStatusDTO>
+
 }

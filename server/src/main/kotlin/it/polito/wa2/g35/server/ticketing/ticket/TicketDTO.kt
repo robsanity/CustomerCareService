@@ -10,7 +10,7 @@ data class TicketDTO(
     val creationTimestamp: Date,
     val issueDescription: String,
     val priority: TicketPriority?,
-    val status: TicketStatusValues?,
+    val status: TicketStatusValues,
     val expert: Expert?,
     val product: Product,
     var customer: Customer

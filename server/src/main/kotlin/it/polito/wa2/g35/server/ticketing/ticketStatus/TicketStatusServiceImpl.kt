@@ -10,4 +10,8 @@ class TicketStatusServiceImpl(private val ticketStatusRepository: TicketStatusRe
     override fun createTicketStatus(ticketStatus: TicketStatusDTO): TicketStatusDTO? {
         return ticketStatusRepository.save(TicketStatus(ticketStatus.id, Date(), ticketStatus.status, ticketStatus.description, ticketStatus.ticket, ticketStatus.expert )).toDTO()
     }
+
+    override fun getTicketStatusesByTicketId(ticketId: Long): List<TicketStatusDTO> {
+        return ticketStatusRepository.getTicketStatusesByTicketId(ticketId).map { it.toDTO() }
+    }
 }

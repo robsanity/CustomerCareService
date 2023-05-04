@@ -1,13 +1,10 @@
 package it.polito.wa2.g35.server.ticketing.attachment
 
-import org.springframework.web.bind.annotation.RestController
-import org.springframework.web.bind.annotation.CrossOrigin
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PostMapping
+import it.polito.wa2.g35.server.exceptions.BadRequestException
 import jakarta.validation.Valid
+import org.springframework.http.HttpStatus
 import org.springframework.validation.BindingResult
 import org.springframework.web.bind.annotation.*
-import it.polito.wa2.g35.server.exceptions.BadRequestException
 
 @RestController
 @CrossOrigin(origins = ["http://localhost:3000"])
@@ -24,6 +21,7 @@ class AttachmentController(private val attachmentService: AttachmentService) {
     }
 
     @PostMapping("API/attachments")
+    @ResponseStatus(HttpStatus.CREATED)
     fun postAttachment(
         @RequestBody @Valid p: AttachmentInputDTO,
         br: BindingResult

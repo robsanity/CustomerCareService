@@ -20,9 +20,13 @@ class TicketExceptions: ResponseEntityExceptionHandler() {
     @ExceptionHandler(TicketPriorityInvalidException::class)
     fun handleTicketPriorityInvalid(e: TicketPriorityInvalidException) = ProblemDetail
         .forStatusAndDetail( HttpStatus.CONFLICT, e.message!!)
+    @ExceptionHandler(TicketStatusUpdateConflictException::class)
+    fun handleTicketStatusUpdateConflict(e: TicketStatusUpdateConflictException) = ProblemDetail
+        .forStatusAndDetail( HttpStatus.CONFLICT, e.message!!)
 }
 
 class TicketNotFoundException(message : String) : RuntimeException(message)
 class TicketConflictException(message: String) : RuntimeException(message)
 class TicketStatusValueInvalidException(message : String) : RuntimeException(message)
 class TicketPriorityInvalidException(message: String) : RuntimeException(message)
+class TicketStatusUpdateConflictException(message: String) : RuntimeException(message)

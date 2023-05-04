@@ -57,12 +57,12 @@ class TicketController(private val ticketService: TicketService) {
         @PathVariable("ticketId") ticketId: Long,
         @RequestBody p: TicketInputDTO,
         br: BindingResult
-    ) {
+    ) : TicketDTO? {
         if (br.hasErrors())
             throw BadRequestException("Bad request format!")
         else
             if (ticketId == p.id) {
-                ticketService.updateTicket(p)
+                return ticketService.updateTicket(p)
             } else
                 throw TicketConflictException("Ticket with given id doesn't exists!")
     }

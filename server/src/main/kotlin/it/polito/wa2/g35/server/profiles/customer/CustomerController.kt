@@ -26,7 +26,7 @@ class CustomerController(private val customerService: CustomerService) {
         if (br.hasErrors())
             throw BadRequestException("Bad request format!")
         else
-            customerService.postCustomer(p)
+            customerService.createCustomer(p)
     }
 
     @PutMapping("/API/profiles/{email}")

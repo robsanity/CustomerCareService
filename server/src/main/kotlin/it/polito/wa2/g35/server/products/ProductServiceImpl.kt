@@ -23,7 +23,7 @@ class ProductServiceImpl(
             throw ProductNotFoundException("Product not found with this product id!")
     }
 
-    override fun postProduct(product: ProductDTO?): ProductDTO? {
+    override fun createProduct(product: ProductDTO?): ProductDTO? {
         return if (product != null) {
             val checkIfProductExsist = productRepository.findByIdOrNull(product.id)
             if(checkIfProductExsist == null) {

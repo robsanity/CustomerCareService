@@ -14,7 +14,7 @@ class Order (
     var id: Long? = null,
 
     @Temporal(TemporalType.TIMESTAMP)
-    val Date: Date,
+    val date: Date,
 
     @Temporal(TemporalType.TIMESTAMP)
     val warrantyDuration: Date,

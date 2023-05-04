@@ -22,8 +22,7 @@ class TicketController(private val ticketService: TicketService) {
     @GetMapping("/API/tickets/status/{status}")
     @ResponseStatus(HttpStatus.OK)
     fun getTicketsByStatus(@PathVariable status: String): List<TicketDTO>?{
-        val statusValue = TicketStatusValues.valueOf(status.uppercase())
-        return ticketService.getTicketsByStatus(statusValue)
+        return ticketService.getTicketsByStatus(status)
     }
 
     @GetMapping("/API/tickets/expert/{expertId}")
@@ -35,8 +34,7 @@ class TicketController(private val ticketService: TicketService) {
     @GetMapping("/API/tickets/priority/{priority}")
     @ResponseStatus(HttpStatus.OK)
     fun getTicketsByPriority(@PathVariable priority: String): List<TicketDTO>?{
-        val priorityValue = TicketPriority.valueOf(priority.uppercase())
-        return ticketService.getTicketsByPriority(priorityValue)
+        return ticketService.getTicketsByPriority(priority)
     }
 
     @GetMapping("/API/tickets/customer/{customerId}")

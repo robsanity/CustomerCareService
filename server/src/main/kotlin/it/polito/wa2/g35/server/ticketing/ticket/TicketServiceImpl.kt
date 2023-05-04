@@ -48,9 +48,14 @@ class TicketServiceImpl(
         return ticketRepository.findByIdOrNull(id)?.toDTO() ?: throw TicketNotFoundException("Ticket not found!")
     }
 
-    override fun getTicketsByStatus(status: TicketStatusValues): List<TicketDTO> {
-        val listTicket = ticketRepository.getTicketsByStatus(status)?.map { it.toDTO() }
-        return listTicket ?: emptyList()
+    override fun getTicketsByStatus(status: String): List<TicketDTO> {
+        try {
+            val statusValue = TicketStatusValues.valueOf(status.uppercase())
+            val listTicket = ticketRepository.getTicketsByStatus(statusValue)?.map { it.toDTO() }
+            return listTicket ?: emptyList()
+        } catch (e: IllegalArgumentException) {
+            throw TicketStatusValueInvalidException("Ticket status not valid!")
+        }
     }
 
     override fun getTicketsByExpert(idExpert: String): List<TicketDTO> {
@@ -59,9 +64,14 @@ class TicketServiceImpl(
         return listTicket ?: emptyList()
     }
 
-    override fun getTicketsByPriority(priority: TicketPriority): List<TicketDTO> {
-        val listTicket = ticketRepository.getTicketsByPriority(priority)?.map { it.toDTO() }
-        return listTicket ?: emptyList()
+    override fun getTicketsByPriority(priority: String): List<TicketDTO> {
+        try {
+            val priorityValue = TicketPriority.valueOf(priority.uppercase())
+            val listTicket = ticketRepository.getTicketsByPriority(priorityValue)?.map { it.toDTO() }
+            return listTicket ?: emptyList()
+        } catch (e: IllegalArgumentException) {
+            throw TicketPriorityInvalidException("Ticket priority not valid!")
+        }
     }
 
     override fun getTicketsByCustomer(idCustomer: String): List<TicketDTO> {

@@ -5,11 +5,11 @@ interface TicketService {
 
     fun getTicketById(id: Long) : TicketDTO?
 
-    fun getTicketsByStatus(status: TicketStatusValues): List<TicketDTO>
+    fun getTicketsByStatus(status: String): List<TicketDTO>
 
     fun getTicketsByExpert(idExpert: String): List<TicketDTO>
 
-    fun getTicketsByPriority(priority: TicketPriority): List<TicketDTO>
+    fun getTicketsByPriority(priority: String): List<TicketDTO>
 
     fun getTicketsByCustomer(idCustomer: String) : List<TicketDTO>
 

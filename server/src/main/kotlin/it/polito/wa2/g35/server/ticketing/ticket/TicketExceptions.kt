@@ -14,7 +14,7 @@ class TicketExceptions: ResponseEntityExceptionHandler() {
     @ExceptionHandler(TicketConflictException::class)
     fun handleTicketConflict(e: TicketConflictException) = ProblemDetail
         .forStatusAndDetail( HttpStatus.CONFLICT, e.message!!)
-    @ExceptionHandler(TicketStatusValueInvalidException::class)
+    @ExceptionHandler(TicketStatusValueInvalidException::class, IllegalArgumentException::class)
     fun handleTicketStatusValueInvalid(e: TicketStatusValueInvalidException) = ProblemDetail
         .forStatusAndDetail( HttpStatus.CONFLICT, e.message!!)
     @ExceptionHandler(TicketPriorityInvalidException::class)

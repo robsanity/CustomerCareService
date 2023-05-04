@@ -94,6 +94,20 @@ class TicketControllerTest {
 
 
 
+    @Autowired
+    lateinit var customerService: CustomerService
+
+    @Autowired
+    lateinit var productService: ProductService
+
+    @Autowired
+    lateinit var expertService: ExpertService
+
+    @Autowired
+    lateinit var orderService: OrderService
+
+
+
     companion object {
         @Container
         val postgres = PostgreSQLContainer("postgres:latest")
@@ -166,7 +180,10 @@ class TicketControllerTest {
         )
 
         // When
-        val result = mockMvc
+        val result = mockMvc.perform(
+            MockMvcRequestBuilders.get("/API/tickets/${ticket?.id}")
+                .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(MockMvcResultMatchers.status().isOk)
             .perform(
                 MockMvcRequestBuilders.get("/API/tickets")
                     .contentType(MediaType.APPLICATION_JSON)
@@ -178,6 +195,15 @@ class TicketControllerTest {
         assertEquals(3, tickets.size)
 
         // Then
+        val returnedTicket = objectMapper.readValue(result.response.contentAsString, TicketDTO::class.java)
+        assertEquals(ticket?.id, returnedTicket.id)
+        assertEquals(ticket?.creationTimestamp, returnedTicket.creationTimestamp)
+        assertEquals(ticket?.issueDescription, returnedTicket.issueDescription)
+        assertEquals(ticket?.status, returnedTicket.status)
+        assertEquals(ticket?.expert?.id, returnedTicket.expert?.id)
+        assertEquals(ticket?.product?.id, returnedTicket.product.id)
+        assertEquals(ticket?.customer?.email, returnedTicket.customer.email)
+        assertEquals(ticket?.priority, returnedTicket.priority)
     }
 
 

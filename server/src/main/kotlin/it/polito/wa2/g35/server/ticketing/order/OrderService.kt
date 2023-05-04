@@ -11,4 +11,5 @@ interface OrderService {
 
     fun getOrderByCustomerAndProduct(idCustomer: String, idProduct: String): OrderDTO?
 
+    fun createOrder(order: OrderInputDTO): OrderDTO?
 }

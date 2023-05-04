@@ -1,16 +1,12 @@
 package it.polito.wa2.g35.server.ticketing.ticket;
 
 import it.polito.wa2.g35.server.exceptions.BadRequestException
-import it.polito.wa2.g35.server.profiles.customer.CustomerService
 import org.springframework.http.HttpStatus
 import org.springframework.validation.BindingResult
 import org.springframework.web.bind.annotation.*
-
-
 @RestController
 @CrossOrigin(origins = ["http://localhost:3000"])
-class TicketController(private val ticketService: TicketService, private val customerService: CustomerService) {
-
+class TicketController(private val ticketService: TicketService) {
     @GetMapping("/API/tickets")
     @ResponseStatus(HttpStatus.OK)
     fun getTickets(): List<TicketDTO>? {

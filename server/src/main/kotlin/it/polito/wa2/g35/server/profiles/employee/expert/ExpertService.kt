@@ -4,4 +4,6 @@ interface ExpertService {
     fun getExpertById(expertId: String?) : ExpertDTO?
 
     fun getExpertBySpecialization(specialization: String?) : List<ExpertDTO>
+
+    fun createExpert(expert: ExpertDTO): ExpertDTO?
 }

@@ -9,8 +9,6 @@ import it.polito.wa2.g35.server.profiles.customer.Customer
 import it.polito.wa2.g35.server.profiles.customer.CustomerRepository
 import it.polito.wa2.g35.server.profiles.customer.CustomerService
 import it.polito.wa2.g35.server.profiles.customer.toDTO
-import it.polito.wa2.g35.server.ticketing.ticket.TicketRepository
-import it.polito.wa2.g35.server.ticketing.ticket.TicketService
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
@@ -85,13 +83,13 @@ class OrderControllerTest {
             "michele",
             "galati"
         ).toDTO()
-        customerService.postCustomer(customer)
+        customerService.createCustomer(customer)
 
         val product = Product(
             "prod1",
             "product1",
         ).toDTO()
-        productService.postProduct(product)
+        productService.createProduct(product)
 
         val order = OrderInputDTO(
             null,

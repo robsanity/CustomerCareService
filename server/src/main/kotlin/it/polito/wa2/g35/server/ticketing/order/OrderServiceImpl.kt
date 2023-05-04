@@ -42,14 +42,15 @@ class OrderServiceImpl(private val orderRepository: OrderRepository) : OrderServ
         val customer = customerService.getCustomerByEmail(order.customerId) ?: throw ProfileNotFoundException("Profile not found with this id!")
         val product = productService.getProductById(order.productId) ?: throw ProductNotFoundException("Product not found with this id!")
 
-        val newOrder = Order(
-            null,
-            Date(),
-            order.warrantyDuration,
-            customer.toCustomer(),
-            product.toProduct()
-        )
-        return orderRepository.save(newOrder).toDTO()
+        return orderRepository.save(
+            Order(
+                null,
+                Date(),
+                order.warrantyDuration,
+                customer.toCustomer(),
+                product.toProduct()
+            )
+        ).toDTO()
     }
 
 }

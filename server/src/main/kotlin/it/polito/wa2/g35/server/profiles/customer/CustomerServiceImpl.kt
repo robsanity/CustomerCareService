@@ -17,7 +17,7 @@ class CustomerServiceImpl(private val profileRepository: CustomerRepository) : C
         }
     }
 
-    override fun postCustomer(profile: CustomerDTO?): CustomerDTO? {
+    override fun createCustomer(profile: CustomerDTO?): CustomerDTO? {
         return if (profile != null) {
             val checkIfProfileExists = profileRepository.findByIdOrNull(profile.email)
             if(checkIfProfileExists == null) {

@@ -10,6 +10,9 @@ data class MessageDTO(
     val ticket: Ticket?,
     val sender: String?
 )
+{
+    constructor() : this(null,null,"", null,"")
+}
 
 fun Message.toDTO() : MessageDTO {
     return MessageDTO(this.id, this.messageTimestamp, this.messageText, this.ticket, this.sender)

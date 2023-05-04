@@ -49,8 +49,8 @@ class TicketController(private val ticketService: TicketService) {
     @ResponseStatus(HttpStatus.CREATED)
     fun postTicket(
         @RequestBody ts: TicketInputDTO
-    ) {
-        ticketService.createTicket(ts)
+    ) : TicketDTO? {
+        return ticketService.createTicket(ts)
     }
 
     @PutMapping("/API/tickets/{ticketId}")

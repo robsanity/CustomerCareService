@@ -10,12 +10,12 @@ import org.springframework.web.bind.annotation.*
 @CrossOrigin(origins = ["http://localhost:3000"])
 class AttachmentController(private val attachmentService: AttachmentService) {
 
-    @GetMapping("API/attachments/{messageId}")
+    @GetMapping("API/attachments/message/{messageId}")
     fun getAttachmentsByMessageId(@PathVariable messageId: Long?) : List<AttachmentDTO>? {
         return attachmentService.getAttachmentsByMessageById(messageId)
     }
 
-    @GetMapping("API/attachment/{attachmentId}")
+    @GetMapping("API/attachments/{attachmentId}")
     fun getAttachment(@PathVariable attachmentId: Long?) : AttachmentDTO? {
         return attachmentService.getAttachmentById(attachmentId)
     }

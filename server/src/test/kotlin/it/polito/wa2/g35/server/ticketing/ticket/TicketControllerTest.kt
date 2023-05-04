@@ -1,22 +1,19 @@
 package it.polito.wa2.g35.server.ticketing.ticket
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import it.polito.wa2.g35.server.products.Product
-import it.polito.wa2.g35.server.products.ProductDTO
-import it.polito.wa2.g35.server.products.ProductService
-import it.polito.wa2.g35.server.products.toDTO
-import it.polito.wa2.g35.server.profiles.customer.Customer
-import it.polito.wa2.g35.server.profiles.customer.CustomerDTO
-import it.polito.wa2.g35.server.profiles.customer.CustomerService
-import it.polito.wa2.g35.server.profiles.customer.toDTO
-import it.polito.wa2.g35.server.profiles.employee.expert.Expert
-import it.polito.wa2.g35.server.profiles.employee.expert.ExpertDTO
-import it.polito.wa2.g35.server.profiles.employee.expert.ExpertService
-import it.polito.wa2.g35.server.profiles.employee.expert.toDTO
+import com.fasterxml.jackson.module.kotlin.readValue
+import it.polito.wa2.g35.server.products.*
+import it.polito.wa2.g35.server.profiles.customer.*
+import it.polito.wa2.g35.server.profiles.employee.expert.*
 import it.polito.wa2.g35.server.ticketing.order.OrderInputDTO
+import it.polito.wa2.g35.server.ticketing.order.OrderRepository
 import it.polito.wa2.g35.server.ticketing.order.OrderService
+import it.polito.wa2.g35.server.ticketing.ticketStatus.TicketStatus
+import it.polito.wa2.g35.server.ticketing.ticketStatus.TicketStatusRepository
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.TestInstance
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
@@ -25,6 +22,7 @@ import org.springframework.http.MediaType
 import org.springframework.test.annotation.DirtiesContext
 import org.springframework.test.context.DynamicPropertyRegistry
 import org.springframework.test.context.DynamicPropertySource
+import org.springframework.test.context.event.annotation.BeforeTestExecution
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers
@@ -37,7 +35,6 @@ import java.util.*
 @AutoConfigureMockMvc
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @Testcontainers
-
 class TicketControllerTest {
 
     @Autowired
@@ -56,16 +53,31 @@ class TicketControllerTest {
     lateinit var expertService: ExpertService
 
     @Autowired
+    lateinit var expertRepository: ExpertRepository
+
+    @Autowired
     lateinit var productService: ProductService
+
+    @Autowired
+    lateinit var productRepository: ProductRepository
 
     @Autowired
     lateinit var customerService: CustomerService
 
     @Autowired
+    lateinit var customerRepository: CustomerRepository
+
+    @Autowired
     lateinit var orderService: OrderService
 
+    @Autowired
+    lateinit var orderRepository: OrderRepository
+
+    @Autowired
+    lateinit var ticketStatusRepository: TicketStatusRepository
 
 
+    @TestInstance(TestInstance.Lifecycle.PER_CLASS)
     companion object {
         @Container
         val postgres = PostgreSQLContainer("postgres:latest")
@@ -80,11 +92,29 @@ class TicketControllerTest {
         }
     }
 
+    @BeforeEach
+    @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
+    fun beforeEach() {
+        ticketStatusRepository.deleteAll()
+        ticketRepository.deleteAll()
+        orderRepository.deleteAll()
+        expertRepository.deleteAll()
+        productRepository.deleteAll()
+        customerRepository.deleteAll()
+        val expert1 = Expert("1", "Mimmo", "Lello", "1@example.it", "Fiche strette")
+        val product1 = Product("1", "Product 1")
+        val customer1 = Customer("prova@example.it", "Franco", "Galati")
+        val order1 = OrderInputDTO(null, "prova@example.it", "1", Date(), Date(Date().time + 2 * 60 * 60 * 1000))
+        expertService.createExpert(expert1.toDTO())
+        productService.createProduct(product1.toDTO())
+        customerService.createCustomer(customer1.toDTO())
+        orderService.createOrder(order1)
+    }
+
     @Test
-    fun `Empty Ticket list`() {
+    fun testGetEmptyTicketList() {
         // Given
         ticketRepository.deleteAll()
-
         // When
         val result = mockMvc
             .perform(
@@ -98,19 +128,7 @@ class TicketControllerTest {
     }
 
     @Test
-    @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
-    fun `Given no tickets, when getTickets, then return empty list`() {
-        ticketRepository.deleteAll()
-        expertService
-        val expert1 = Expert("1", "Mimmo", "Lello", "1@example.it", "Fiche strette")
-        val product1 = Product("1", "Sborra fresca")
-        val customer1 = Customer("prova@example.it", "Franco", "Galati")
-        println(Date())
-        val order1 = OrderInputDTO(null, "prova@example.it", "1", Date(), Date(130, 1, 1))
-        expertService.createExpert(expert1.toDTO())
-        productService.createProduct(product1.toDTO())
-        customerService.createCustomer(customer1.toDTO())
-        orderService.createOrder(order1)
+    fun testThreeTicketList() {
         val ticket1 = TicketInputDTO(
             null,
             null,
@@ -145,9 +163,6 @@ class TicketControllerTest {
         ticketService.createTicket(ticket2)
         ticketService.createTicket(ticket3)
 
-        // Given
-        //ticketRepository.deleteAll()
-
         // When
         val result = mockMvc
             .perform(
@@ -163,36 +178,9 @@ class TicketControllerTest {
         // Then
     }
 
-
-
-
-@Test
-    fun `Insert one ticket and get it`() {
+    @Test
+    fun testGetTicketById() {
         // Given
-        ticketRepository.deleteAll()
-        val expert = expertService.createExpert(ExpertDTO("exp123", "name", "surname", "expert@example.com", "automotive"))
-        val product = productService.createProduct(
-            ProductDTO(
-                "1234abc",
-                "Example Product"
-            )
-        )
-        val customer = customerService.createCustomer(
-            CustomerDTO(
-                "customer@example.com",
-                "customer name",
-                "customer surname"
-            )
-        )
-        orderService.createOrder(
-            OrderInputDTO(
-                null,
-                customer!!.email,
-                product!!.id,
-                Date(),
-                Date(Date().time + 2 * 60 * 60 * 1000) //Now + 2 hours
-            )
-        )
         val ticket = ticketService.createTicket(
             TicketInputDTO(
                 null,
@@ -200,9 +188,9 @@ class TicketControllerTest {
                 "description",
                 null,
                 TicketStatusValues.OPEN.name,
-                expert!!.id,
-                product.id,
-                customer.email
+                "1",
+                "1",
+                "prova@example.it"
             )
         )
 
@@ -225,5 +213,42 @@ class TicketControllerTest {
         assertEquals(ticket?.priority, returnedTicket.priority)
     }
 
+    @Test
+    fun testPostTicket() {
+        val ticket = TicketInputDTO(
+            null,
+            null,
+            "description",
+            null,
+            TicketStatusValues.OPEN.name,
+            "1",
+            "1",
+            "prova@example.it"
+        )
+
+        val requestBody = objectMapper.writeValueAsString(ticket)
+
+        // When
+        val result = mockMvc.perform(
+            MockMvcRequestBuilders
+                .post("/API/tickets/")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(requestBody)
+        ).andExpect(MockMvcResultMatchers.status().isCreated)
+            .andReturn()
+
+        val insertedTicket = objectMapper.readValue(result.response.contentAsString, TicketDTO::class.java)
+        
+        // Then
+/*val returnedTicket = objectMapper.readValue(result.response.contentAsString, TicketDTO::class.java)
+        assertEquals(ticket?.id, returnedTicket.id)
+        assertEquals(ticket?.creationTimestamp, returnedTicket.creationTimestamp)
+        assertEquals(ticket?.issueDescription, returnedTicket.issueDescription)
+        assertEquals(ticket?.status, returnedTicket.status)
+        assertEquals(ticket?.expert?.id, returnedTicket.expert?.id)
+        assertEquals(ticket?.product?.id, returnedTicket.product.id)
+        assertEquals(ticket?.customer?.email, returnedTicket.customer.email)
+        assertEquals(ticket?.priority, returnedTicket.priority)*/
+    }
 
 }

@@ -45,7 +45,7 @@ class OrderServiceImpl(private val orderRepository: OrderRepository) : OrderServ
         return orderRepository.save(
             Order(
                 null,
-                Date(),
+                order.date,
                 order.warrantyDuration,
                 customer.toCustomer(),
                 product.toProduct()

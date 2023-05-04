@@ -7,8 +7,7 @@ import it.polito.wa2.g35.server.profiles.employee.expert.Expert
 import java.util.*
 
 
-
-data class TicketDTO(
+data class TicketDTO constructor(
     val id: Long?,
     val creationTimestamp: Date,
     val issueDescription: String,

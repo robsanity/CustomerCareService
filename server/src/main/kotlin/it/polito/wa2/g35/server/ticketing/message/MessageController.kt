@@ -15,10 +15,10 @@ class MessageController (private val messageService: MessageService) {
     @PostMapping("/API/messages")
     @ResponseStatus(HttpStatus.CREATED)
     fun postMessage(@RequestBody message: MessageInputDTO,
-                    br: BindingResult) {
+                    br: BindingResult) : MessageDTO? {
         if(br.hasErrors())
             throw BadRequestException("Bad request format!")
         else
-            messageService.postMessage(message)
+            return messageService.postMessage(message)
     }
 }

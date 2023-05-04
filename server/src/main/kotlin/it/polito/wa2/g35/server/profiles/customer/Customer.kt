@@ -6,5 +6,5 @@ import jakarta.persistence.Table
 
 /*Automatically mapped to database table */
 @Entity
-@Table(name = "Customer")
+@Table(name = "customer")
 class Customer(@Id var email: String, var name: String, var surname: String)

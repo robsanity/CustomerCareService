@@ -4,7 +4,7 @@ import it.polito.wa2.g35.server.ticketing.message.Message
 import jakarta.persistence.*
 
 @Entity
-@Table(name = "Attachment")
+@Table(name = "attachment")
 class Attachment(
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)

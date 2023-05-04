@@ -6,7 +6,7 @@ import jakarta.persistence.*
 import java.util.Date
 
 @Entity
-@Table(name = "Orders")
+@Table(name = "orders")
 class Order (
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)

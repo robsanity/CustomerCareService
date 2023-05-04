@@ -5,7 +5,7 @@ import jakarta.persistence.*
 import java.util.*
 
 @Entity
-@Table(name = "Message")
+@Table(name = "message")
 class Message(
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)

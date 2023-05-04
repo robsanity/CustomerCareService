@@ -13,5 +13,5 @@ data class OrderDTO (
 )
 
 fun Order.toDTO() : OrderDTO {
-    return OrderDTO(this.id, this.customer, this.product, this.Date, this.warrantyDuration)
+    return OrderDTO(this.id, this.customer, this.product, this.date, this.warrantyDuration)
 }

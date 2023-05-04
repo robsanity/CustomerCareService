@@ -104,17 +104,17 @@ class ExpertControllerTest {
     }
 
     @Test
-    fun `create a new Expert with existing email`() {
+    fun `create a new Expert with existing id`() {
         val expert = Expert("2", "Luca", "Ruberto", "luca2@example.it", "Boh")
         val expertDto = expert.toDTO()
         expertService.createExpert(expertDto)
-        val expert2 = Expert("3", "Luca", "Ruberto", "luca2@example.it", "Boh")
+        val expert2 = Expert("2", "Luca", "Ruberto", "luca2@example.it", "Boh")
         val expert2Dto = expert2.toDTO()
         //expertService.createExpert(expertDto)
         mockMvc.perform(
             MockMvcRequestBuilders.post("/API/experts")
                 .contentType("application/json")
-                .content(objectMapper.writeValueAsString(expertDto))
+                .content(objectMapper.writeValueAsString(expert2Dto))
         ).andExpect(MockMvcResultMatchers.status().isConflict)
 
     }
@@ -147,7 +147,7 @@ class ExpertControllerTest {
         val expert = Expert("4", "Luca", "Ruberto", "luca4@example.it", "Ah")
         val expertDto = expert.toDTO()
         expertService.createExpert(expertDto)
-        val expert2 = Expert("5", "Luca", "Ruberto", "luca5@example.it", "Ah")
+        val expert2 = Expert("5", "Luca", "Rubert", "luca5@example.it", "Ah")
         val expert2Dto = expert2.toDTO()
         expertService.createExpert(expert2Dto)
         mockMvc.perform(
@@ -161,6 +161,11 @@ class ExpertControllerTest {
             .andExpect(MockMvcResultMatchers.jsonPath("$[0].surname").value("Ruberto"))
             .andExpect(MockMvcResultMatchers.jsonPath("$[0].email").value("luca4@example.it"))
             .andExpect(MockMvcResultMatchers.jsonPath("$[0].specialization").value("Ah"))
+            .andExpect(MockMvcResultMatchers.jsonPath("$[1].id").value("5"))
+            .andExpect(MockMvcResultMatchers.jsonPath("$[1].name").value("Luca"))
+            .andExpect(MockMvcResultMatchers.jsonPath("$[1].surname").value("Rubert"))
+            .andExpect(MockMvcResultMatchers.jsonPath("$[1].email").value("luca5@example.it"))
+            .andExpect(MockMvcResultMatchers.jsonPath("$[1].specialization").value("Ah"))
     }
 
 

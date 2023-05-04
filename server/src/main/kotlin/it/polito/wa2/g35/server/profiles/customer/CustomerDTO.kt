@@ -1,8 +1,10 @@
 package it.polito.wa2.g35.server.profiles.customer
 
+import it.polito.wa2.g35.server.products.Product
 import jakarta.validation.constraints.Email
 import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.Size
+import java.util.*
 
 
 data class CustomerDTO(
@@ -13,6 +15,10 @@ data class CustomerDTO(
     @field:Size(min=2,max=25) @NotBlank
     var surname: String
 )
+{
+    constructor() : this("","","")
+}
+
 
 fun Customer.toDTO() : CustomerDTO {
     return CustomerDTO(this.email, this.name, this.surname)

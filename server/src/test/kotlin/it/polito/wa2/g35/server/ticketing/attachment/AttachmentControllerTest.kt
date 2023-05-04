@@ -42,6 +42,7 @@ import org.springframework.test.annotation.DirtiesContext
 @AutoConfigureMockMvc
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @Testcontainers
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 class AttachmentControllerTest {
 
     @Autowired
@@ -79,10 +80,8 @@ class AttachmentControllerTest {
     @Autowired
     lateinit var messageService: MessageService
 
-
     @Autowired
     lateinit var expertRepository: ExpertRepository
-
 
     @Autowired
     lateinit var productRepository: ProductRepository
@@ -117,17 +116,16 @@ class AttachmentControllerTest {
     }
 
     @BeforeEach
-    @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
     fun beforeEach() {
-        ticketStatusRepository.deleteAll()
-        ticketRepository.deleteAll()
-        orderRepository.deleteAll()
-        expertRepository.deleteAll()
-        productRepository.deleteAll()
-        customerRepository.deleteAll()
-        messageRepository.deleteAll()
-        attachmentRepository.deleteAll()
-        val expert1 = Expert("1", "Mimmo", "Lello", "1@example.it", "Fiche strette")
+                    attachmentRepository.deleteAll()
+                    messageRepository.deleteAll()
+                    ticketStatusRepository.deleteAll()
+                    ticketRepository.deleteAll()
+                    orderRepository.deleteAll()
+                    expertRepository.deleteAll()
+                    productRepository.deleteAll()
+                    customerRepository.deleteAll()
+            val expert1 = Expert("1", "Mimmo", "Lello", "1@example.it", "Fiche strette")
         val product1 = Product("1", "Product 1")
         val customer1 = Customer("prova@example.it", "Franco", "Galati")
         val order1 = OrderInputDTO(null, "prova@example.it", "1", Date(), Date(Date().time + 2 * 60 * 60 * 1000))
@@ -157,7 +155,7 @@ class AttachmentControllerTest {
         val attachment = attachmentService.postAttachment(AttachmentInputDTO(null, message?.id!!, "Boh"))
         // Wheg
         val result = mockMvc.perform(MockMvcRequestBuilders.get("/API/attachments/${attachment?.id}")
-                .contentType(MediaType.APPLICATION_JSON)
+            .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(MockMvcResultMatchers.status().isOk)
             .andReturn()
 
@@ -170,24 +168,44 @@ class AttachmentControllerTest {
     }
 
     @Test
+    fun `Get attachment by message Id`(){
+        val ticketList = ticketService.getAll()
+
+        messageService.postMessage(MessageInputDTO(null, Date(), "Ciao", ticketList.get(0).id!!, "Expert"))
+        val messageList = messageService.getMessagesByTicket(ticketList.get(0).id!!)
+        val attachmentInput = AttachmentInputDTO(null, messageList.get(0).id!! , "Boh")
+        val attachment = attachmentService.postAttachment(attachmentInput)
+        val result = mockMvc.perform(MockMvcRequestBuilders.get("/API/attachments/message/${messageList.get(0)?.id}")
+            .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(MockMvcResultMatchers.status().isOk)
+            .andReturn()
+
+        //Then
+        val returnedAttachment = objectMapper.readValue(result.response.contentAsString, Array<AttachmentDTO>::class.java)
+
+        assertEquals(attachment?.id, returnedAttachment[0].id)
+        assertEquals(attachment?.message?.id, returnedAttachment[0].message?.id)
+        assertEquals(attachment?.fileContent, returnedAttachment[0].fileContent)
+    }
+
+    @Test
     fun `Post attachment by Id` (){
         val ticketList = ticketService.getAll()
 
-        val message = messageService.postMessage(MessageInputDTO(null, Date(), "Ciao", ticketList.get(0).id!!, "Expert"))
-
-        val attachment = attachmentService.postAttachment(AttachmentInputDTO(null, message?.id!!, "Boh"))
+        messageService.postMessage(MessageInputDTO(null, Date(), "Ciao", ticketList.get(0).id!!, "Expert"))
+        val messageList = messageService.getMessagesByTicket(ticketList.get(0).id!!)
+        val attachmentInput = AttachmentInputDTO(null, messageList.get(0).id!! , "Boh")
 
         // Wheg
 
         val result = mockMvc.perform(
             MockMvcRequestBuilders.post("/API/attachments")
-                .contentType("application/json")
-                .content(objectMapper.writeValueAsString(attachment))
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(attachmentInput))
         ).andExpect(MockMvcResultMatchers.status().isCreated)
-            .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(attachment?.id))
-            .andExpect(MockMvcResultMatchers.jsonPath("$.message").value(attachment?.message?.id))
-            .andExpect(MockMvcResultMatchers.jsonPath("$.fileContent").value(attachment?.fileContent))
-
+            .andReturn()
+        val attach = attachmentService.getAttachmentsByMessageById(attachmentInput.messageId)
+        assertEquals(1,attach.size)
     }
 
 

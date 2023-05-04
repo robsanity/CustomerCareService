@@ -1,5 +1,9 @@
 package it.polito.wa2.g35.server.profiles.employee.expert
 
+import it.polito.wa2.g35.server.products.Product
+import it.polito.wa2.g35.server.profiles.customer.Customer
+import java.util.*
+
 
 data class ExpertDTO (
     val id: String?,
@@ -8,6 +12,10 @@ data class ExpertDTO (
     val email: String,
     val specialization: String
     )
+{
+    constructor() : this("", "","","","")
+}
+
 
 fun Expert.toDTO() : ExpertDTO {
     return ExpertDTO(this.id, this.name, this.surname, this.email, this.specialization)

@@ -80,34 +80,6 @@ class TicketControllerTest {
 
 
 
-    @Autowired
-    lateinit var customerService: CustomerService
-
-    @Autowired
-    lateinit var productService: ProductService
-
-    @Autowired
-    lateinit var expertService: ExpertService
-
-    @Autowired
-    lateinit var orderService: OrderService
-
-
-
-    @Autowired
-    lateinit var customerService: CustomerService
-
-    @Autowired
-    lateinit var productService: ProductService
-
-    @Autowired
-    lateinit var expertService: ExpertService
-
-    @Autowired
-    lateinit var orderService: OrderService
-
-
-
     companion object {
         @Container
         val postgres = PostgreSQLContainer("postgres:latest")
@@ -140,6 +112,75 @@ class TicketControllerTest {
     }
 
     @Test
+    @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
+    fun `Given no tickets, when getTickets, then return empty list`() {
+        ticketRepository.deleteAll()
+        expertService
+        val expert1 = Expert("1", "Mimmo", "Lello", "1@example.it", "Fiche strette")
+        val product1 = Product("1", "Sborra fresca")
+        val customer1 = Customer("prova@example.it", "Franco", "Galati")
+        println(Date())
+        val order1 = OrderInputDTO(null, "prova@example.it", "1", Date(), Date(130, 1, 1))
+        expertService.postExpert(expert1.toDTO())
+        productService.postProduct(product1.toDTO())
+        customerService.postCustomer(customer1.toDTO())
+        orderService.createOrder(order1)
+        val ticket1 = TicketInputDTO(
+            null,
+            null,
+            "description 1",
+            TicketPriority.LOW.name,
+            TicketStatusValues.OPEN.name,
+            "1",
+            "1",
+            "prova@example.it"
+        )
+        val ticket2 = TicketInputDTO(
+            null,
+            null,
+            "description 2",
+            TicketPriority.MEDIUM.name,
+            TicketStatusValues.OPEN.name,
+            "1",
+            "1",
+            "prova@example.it"
+        )
+        val ticket3 = TicketInputDTO(
+            null,
+            null,
+            "description 3",
+            TicketPriority.HIGH.name,
+            TicketStatusValues.CLOSED.name,
+            "1",
+            "1",
+            "prova@example.it"
+        )
+        ticketService.createTicket(ticket1)
+        ticketService.createTicket(ticket2)
+        ticketService.createTicket(ticket3)
+
+        // Given
+        //ticketRepository.deleteAll()
+
+        // When
+        val result = mockMvc
+            .perform(
+                MockMvcRequestBuilders.get("/API/tickets")
+                    .contentType(MediaType.APPLICATION_JSON)
+            ).andExpect(MockMvcResultMatchers.status().isOk)
+            .andReturn()
+
+        val content = result.response.contentAsString
+        val tickets = ObjectMapper().readValue(content, Array<TicketDTO>::class.java)
+        assertEquals(3, tickets.size)
+
+        // Then
+    }
+
+
+
+
+@Test
     fun `Insert one ticket and get it`() {
         // Given
         ticketRepository.deleteAll()

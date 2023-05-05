@@ -564,6 +564,43 @@ class TicketControllerTest {
     }
 
     @Test
+    fun testUpdateTicketConflict() {
+        ticketRepository.deleteAll()
+        val ticket1 = ticketService.createTicket(
+            TicketInputDTO(
+                null,
+                null,
+                "description 1",
+                null,
+                TicketStatusValues.OPEN.name,
+                null,
+                "1",
+                "prova@example.it"
+            )
+        )
+
+        val result = mockMvc.perform(
+            MockMvcRequestBuilders.put("/API/tickets/99")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(
+                    objectMapper.writeValueAsString(
+                        TicketInputDTO(
+                            ticket1?.id,
+                            null,
+                            "description 2",
+                            TicketPriority.LOW.name,
+                            TicketStatusValues.IN_PROGRESS.name,
+                            "1",
+                            ticket1?.product?.id.toString(),
+                            ticket1?.customer?.email.toString()
+                        )
+                    )
+                )
+        ).andExpect(MockMvcResultMatchers.status().isConflict)
+            .andReturn()
+    }
+
+    @Test
     fun testUpdateTicketStatus() {
         ticketRepository.deleteAll()
         val ticket1 = ticketService.createTicket(

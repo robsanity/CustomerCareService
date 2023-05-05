@@ -17,8 +17,7 @@ data class TicketStatusDTO (
     val expert: Expert?
 )
 {
-    constructor() : this(null,Date(), TicketStatusValues.valueOf(""),"",Ticket(null,Date(),"",
-        TicketPriority.valueOf(""), TicketStatusValues.valueOf(""),Expert("","","","",""),Product("",""),Customer("","","")),Expert("","","","",""))
+    constructor() : this(null,Date(), TicketStatusValues.valueOf(""),"",null,null)
 }
 
 
